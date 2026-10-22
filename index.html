@@ -1,0 +1,716 @@
+<!doctype html>
+<html lang="fr" data-lang="fr" data-page="home">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Stanislas Urbi & Orbi</title>
+<meta name="description" content="Stanislas Urbi & Orbi, un projet de Daniel Denise : une ligne géodésique partie de l'index de la statue de Stanislas à Nancy fait le tour de la Terre.">
+<meta name="theme-color" content="#ecebe5">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Stanislas Urbi & Orbi">
+<meta property="og:description" content="Que montre le doigt de Stanislas ? Un voyage de 39 998 km depuis la place Stanislas, à Nancy.">
+<meta property="og:image" content="assets/img/statue/main-index.webp">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 40'%3E%3Crect x='26' y='3' width='22' height='34' rx='11' fill='none' stroke='%23a3a3a6' stroke-width='4'/%3E%3Cpath d='M4 2.5 V25 A11 11 0 0 0 26 25 V13' fill='none' stroke='%23d3222a' stroke-width='4'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/instrument-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+<script>
+(function(){var d=document.documentElement;d.classList.add('js');
+try{var l=localStorage.getItem('suo-lang');if(l==='en'||l==='fr'){d.dataset.lang=l;d.lang=l;}
+var c=localStorage.getItem('suo-calm');var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(c==='1'||(c===null&&rm))d.classList.add('calm');
+if(sessionStorage.getItem('suo-seen')==='1'||d.dataset.page!=='home')d.classList.add('no-loader');}catch(e){}
+setTimeout(function(){d.classList.add('split-fallback')},3500);})();
+</script>
+<style>.split-fallback [data-split]{visibility:visible!important}</style>
+</head>
+<body>
+<div class="paper-tex" aria-hidden="true" style="background-image:url(assets/img/grok/g-texture-papier-carte-16x9.webp)"></div>
+<a class="sr-only" href="#main"><span data-l="fr" lang="fr">Aller au contenu</span><span data-l="en" lang="en">Skip to content</span></a>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <svg class="uo" viewBox="0 0 52 40" aria-hidden="true" focusable="false"><defs><linearGradient id="uoGuo" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#d3222a"/><stop offset="1" stop-color="#8e171c"/></linearGradient></defs><rect class="uo-o" x="26" y="3" width="22" height="34" rx="11" fill="none" stroke="#a3a3a6" stroke-width="3.4"/><path class="uo-u" d="M4 2.5 V25 A11 11 0 0 0 26 25 V13" fill="none" stroke="#d3222a" stroke-width="3.4" stroke-linecap="butt"/><path class="uo-j" d="M26 25 V13 A11 11 0 0 1 32 5" fill="none" stroke="url(#uoGuo)" stroke-width="3.4"/></svg>
+    <div class="loader-line"></div>
+    <div class="loader-coords mono"><span class="lc-lat">48°41′36,77″ N</span><br><span class="lc-lon">6°10′59,78″ E</span></div>
+  </div>
+</div>
+
+<header class="site-header" id="top">
+  <a class="brand" href="index.html" aria-label="Stanislas Urbi & Orbi, accueil">
+    <svg class="" viewBox="0 0 52 40" aria-hidden="true" focusable="false"><defs><linearGradient id="uoG" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#d3222a"/><stop offset="1" stop-color="#8e171c"/></linearGradient></defs><rect class="uo-o" x="26" y="3" width="22" height="34" rx="11" fill="none" stroke="#a3a3a6" stroke-width="3.4"/><path class="uo-u" d="M4 2.5 V25 A11 11 0 0 0 26 25 V13" fill="none" stroke="#d3222a" stroke-width="3.4" stroke-linecap="butt"/><path class="uo-j" d="M26 25 V13 A11 11 0 0 1 32 5" fill="none" stroke="url(#uoG)" stroke-width="3.4"/></svg>
+    <span class="wordmark"><small>stanislas</small><b>URBI<span>&amp;</span>ORBI</b></span>
+  </a>
+  <nav class="nav" aria-label="Navigation principale">
+    <a href="index.html#ligne" data-nav="ligne"><span data-l="fr" lang="fr">La ligne</span><span data-l="en" lang="en">The line</span></a>
+    <a href="exposition.html"><span data-l="fr" lang="fr">L’exposition</span><span data-l="en" lang="en">The exhibition</span></a>
+    <a href="portraits.html"><span data-l="fr" lang="fr">Portraits</span><span data-l="en" lang="en">Portraits</span></a>
+    <a href="index.html#daniel-denise">Daniel Denise</a>
+    <a href="#contact"><span data-l="fr" lang="fr">Contact</span><span data-l="en" lang="en">Contact</span></a>
+  </nav>
+  <div class="tools">
+    <div class="lang-switch" role="group" aria-label="Langue / Language">
+      <button type="button" data-set-lang="fr" aria-pressed="true">FR</button>
+      <button type="button" data-set-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button type="button" class="tool" data-sound aria-pressed="false" title="Son">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="wave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+      <span class="sr-only"><span data-l="fr" lang="fr">Activer le son</span><span data-l="en" lang="en">Turn sound on</span></span>
+    </button>
+    <button type="button" class="tool" data-calm aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 12h4M17 12h4M12 3v4M12 17v4"/><circle cx="12" cy="12" r="3.2"/></svg>
+      <span class="tool-label"><span data-l="fr" lang="fr">Mode calme</span><span data-l="en" lang="en">Calm mode</span></span>
+    </button>
+    <button type="button" class="tool menu-btn" data-menu aria-expanded="false" aria-controls="mobile-nav">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+      <span class="sr-only">Menu</span>
+    </button>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobile-nav" aria-label="Menu">
+  <a href="index.html#ligne"><span class="mono">01</span><span data-l="fr" lang="fr">La ligne</span><span data-l="en" lang="en">The line</span></a>
+  <a href="exposition.html"><span class="mono">02</span><span data-l="fr" lang="fr">L’exposition</span><span data-l="en" lang="en">The exhibition</span></a>
+  <a href="portraits.html"><span class="mono">03</span><span data-l="fr" lang="fr">Portraits</span><span data-l="en" lang="en">Portraits</span></a>
+  <a href="index.html#daniel-denise"><span class="mono">04</span>Daniel Denise</a>
+  <a href="#contact"><span class="mono">05</span><span data-l="fr" lang="fr">Contact</span><span data-l="en" lang="en">Contact</span></a>
+</nav>
+
+<div class="thread" aria-hidden="true"><div class="thread-fill"></div><div class="thread-head"></div></div>
+
+<main id="main">
+
+
+<!-- ============ HÉROS ============ -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="ph has-img" data-grok="g-accueil-ombre-doigt-16x9" data-grok-m="g-accueil-ombre-doigt-9x16" aria-hidden="true"><div class="ph-img ph-d" style="background-image:url(assets/img/grok/g-accueil-ombre-doigt-16x9.webp)"></div><div class="ph-img ph-m" style="background-image:url(assets/img/grok/g-accueil-ombre-doigt-9x16.webp)"></div><div class="ph-art pav"><svg class="shadow-arm" viewBox="0 0 800 300" aria-hidden="true"><path d="M800 120 C640 118 560 112 470 118 C400 122 330 112 250 110 C170 108 90 112 20 120 C10 121 8 132 20 134 C90 140 170 140 260 146 C330 151 360 168 420 178 C520 194 640 186 800 190 Z" fill="#17181a"/></svg></div></div>
+  <svg class="hero-line" aria-hidden="true"><path d=""/></svg>
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1 id="hero-title" class="display" data-split><span data-l="fr" lang="fr">Que montre le doigt de Stanislas&nbsp;?</span><span data-l="en" lang="en">What is Stanislas pointing at?</span></h1>
+      <div class="hero-sub">
+        <span class="mono red hero-ll">48°41′36,77″ N<br>6°10′59,78″ E</span>
+        <p><span data-l="fr" lang="fr">Prolongée tout droit, la direction de son index devient une ligne de 39 998 kilomètres qui fait le tour de la Terre. Un projet de Daniel Denise, relevé par l’IGN en 2004 et exposé aux Galeries Poirel de Nancy en 2005.</span><span data-l="en" lang="en">Extended straight ahead, the direction of his index finger becomes a 39,998-kilometre line around the Earth. A project by Daniel Denise, surveyed by the IGN in 2004 and exhibited at the Galeries Poirel in Nancy in 2005.</span></p>
+      </div>
+    </div>
+    <figure class="hero-hand" data-hand>
+      <img src="assets/img/statue/main-index.webp" width="529" height="353" alt="La main de la statue de Stanislas, index tendu" data-alt-fr="La main de la statue de Stanislas, index tendu" data-alt-en="The hand of the Stanislas statue, index finger pointing" loading="eager" decoding="async">
+      <span class="tip" data-tip></span>
+      <figcaption class="hero-coords mono"><span data-l="fr" lang="fr">azimut</span><span data-l="en" lang="en">azimuth</span> 325°45′46″</figcaption>
+    </figure>
+  </div>
+  <a class="scroll-cue" href="#question"><span class="cue-line"></span><span data-l="fr" lang="fr">Suivre la ligne</span><span data-l="en" lang="en">Follow the line</span></a>
+</section>
+
+<!-- ============ LA QUESTION ============ -->
+<section class="question" id="question" aria-labelledby="q-title">
+  <h2 id="q-title" class="sr-only"><span data-l="fr" lang="fr">La question</span><span data-l="en" lang="en">The question</span></h2>
+  <div class="q-scroll">
+    <div class="wrap q-pin">
+      <div class="q-steps">
+        <div class="q-step" data-qstep="0">
+          <span class="q-num">1 / 3</span>
+          <p class="lede"><span data-l="fr" lang="fr">Sur la place qui porte son nom, la statue de Stanislas Leszczynski, roi de Pologne et dernier duc de Lorraine, tend l’index. Elle est l’œuvre du sculpteur Georges Jacquot.</span><span data-l="en" lang="en">On the square that bears his name, the statue of Stanislas Leszczynski, King of Poland and last Duke of Lorraine, points its index finger. It is the work of the sculptor Georges Jacquot.</span></p>
+        </div>
+        <div class="q-step" data-qstep="1">
+          <span class="q-num">2 / 3</span>
+          <p class="lede"><span data-l="fr" lang="fr">La commission qui l’a commandée l’affirme : « Stanislas désigne le médaillon du portrait de Louis XV », au sommet de l’arc Héré.</span><span data-l="en" lang="en">The commission that ordered it says so: Stanislas points at the medallion portrait of Louis XV, at the top of the Héré arch.</span></p>
+        </div>
+        <div class="q-step" data-qstep="2">
+          <span class="q-num">3 / 3</span>
+          <p class="lede"><span data-l="fr" lang="fr">Au pied du socle, Daniel Denise fait un autre constat : « le doigt du roi de Pologne ne montre pas l’effigie de Louis XV ». Alors, que montre-t-il&nbsp;?</span><span data-l="en" lang="en">Standing at the foot of the plinth, Daniel Denise sees something else: the King of Poland’s finger does not point at Louis XV’s effigy. So what is it pointing at?</span></p>
+        </div>
+      </div>
+      <div class="q-stage" data-qstage>
+        <div class="q-ambient"><div class="ph has-img" data-grok="g-question-boussole-4x5" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-question-boussole-4x5.webp)"></div><div class="ph-art "></div></div></div>
+        <figure class="q-img here print" style="--r:-2deg"><img src="assets/img/nancy/porte-here.webp" width="604" height="800" alt="L&#39;arc Héré vu de la place Stanislas" data-alt-fr="L&#39;arc Héré vu de la place Stanislas" data-alt-en="The Héré arch seen from Place Stanislas" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">L’arc Héré</span><span data-l="en" lang="en">The Héré arch</span></figcaption></figure>
+        <figure class="q-img medal print"><img src="assets/img/statue/medaillon-louis-xv.webp" width="440" height="567" alt="Médaillon de Louis XV" data-alt-fr="Médaillon de Louis XV" data-alt-en="Medallion of Louis XV" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Médaillon de Louis XV</span><span data-l="en" lang="en">Medallion of Louis XV</span></figcaption></figure>
+        <figure class="q-img statue print"><img src="assets/img/statue/statue.webp" width="326" height="457" alt="La statue de Stanislas sur la place Stanislas" data-alt-fr="La statue de Stanislas sur la place Stanislas" data-alt-en="The statue of Stanislas on Place Stanislas" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">La statue de Stanislas</span><span data-l="en" lang="en">The Stanislas statue</span></figcaption></figure>
+        <svg class="q-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <circle class="target" cx="0" cy="0" r="0"/>
+          <path class="aim" d=""/>
+          <path class="miss" d=""/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="padding-bottom: clamp(90px, 12vh, 160px)">
+    <div class="q-details">
+      <figure><img src="assets/img/statue/visage-profil.webp" width="353" height="529" alt="Visage de la statue, de trois quarts" data-alt-fr="Visage de la statue, de trois quarts" data-alt-en="Face of the statue, three-quarter view" loading="lazy" decoding="async"></figure>
+      <figure><img src="assets/img/statue/couronne.webp" width="353" height="529" alt="Couronne sculptée sur la statue" data-alt-fr="Couronne sculptée sur la statue" data-alt-en="Sculpted crown on the statue" loading="lazy" decoding="async"></figure>
+      <figure><img src="assets/img/statue/aigle.webp" width="353" height="529" alt="Aigle en relief sur la statue" data-alt-fr="Aigle en relief sur la statue" data-alt-en="Eagle in relief on the statue" loading="lazy" decoding="async"></figure>
+      <figure><img src="assets/img/statue/visage-face.webp" width="353" height="529" alt="Visage de la statue, de face" data-alt-fr="Visage de la statue, de face" data-alt-en="Face of the statue, front view" loading="lazy" decoding="async"></figure>
+      <figure class="land"><img src="assets/img/statue/socle-signature.webp" width="529" height="353" alt="Pieds de la statue et signature du sculpteur sur le socle" data-alt-fr="Pieds de la statue et signature du sculpteur sur le socle" data-alt-en="Feet of the statue and the sculptor&#39;s signature on the base" loading="lazy" decoding="async"></figure>
+    </div>
+    <p class="q-details-cap small muted"><span data-l="fr" lang="fr">Détails de la statue en bronze, photographiés pour le site. La signature du sculpteur se lit sur le socle.</span><span data-l="en" lang="en">Details of the bronze statue, photographed for the website. The sculptor’s signature can be read on the base.</span></p>
+  </div>
+</section>
+
+<!-- ============ LE RELEVÉ ============ -->
+<section class="releve section-pad" id="releve" aria-labelledby="releve-title" data-cursor="cross">
+  <div class="wrap">
+    <div class="releve-head">
+      <div>
+        <p class="kicker"><span data-l="fr" lang="fr">6 mai 2004, place Stanislas</span><span data-l="en" lang="en">6 May 2004, Place Stanislas</span></p>
+        <h2 id="releve-title" data-split><span data-l="fr" lang="fr">L’IGN mesure l’index</span><span data-l="en" lang="en">The IGN measures the finger</span></h2>
+        <p class="lede" style="margin-top:28px"><span data-l="fr" lang="fr">Une nacelle hisse les géodésiens de l’Institut géographique national jusqu’à la main de la statue.</span><span data-l="en" lang="en">An aerial platform lifts the surveyors of the French National Geographic Institute up to the statue’s hand.</span></p>
+        <p style="margin-top:20px" class="muted"><span data-l="fr" lang="fr">Une antenne GPS est posée sur l’index, d’autres stations relèvent les points au sol. Leur calcul donne la direction exacte que montre le doigt.</span><span data-l="en" lang="en">A GPS antenna is placed on the index finger while other stations survey points on the ground. Their calculation gives the exact direction the finger points to.</span></p>
+      </div>
+      <figure class="compass-fig">
+        <div class="station"><div class="ph has-img" data-grok="g-releve-station-4x5" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-releve-station-4x5.webp)"></div><div class="ph-art "></div></div></div>
+        <div class="compass" data-compass>
+          <svg viewBox="-110 -110 220 220" aria-hidden="true">
+            <circle r="100" fill="none" stroke="currentColor" stroke-opacity=".25"/>
+            <circle r="76" fill="none" stroke="currentColor" stroke-opacity=".12"/>
+            <g class="ticks"></g>
+            <text x="0" y="-84" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="currentColor">N</text>
+            <text x="86" y="3" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="currentColor" opacity=".5">E</text>
+            <text x="0" y="92" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="currentColor" opacity=".5">S</text>
+            <text x="-86" y="3" text-anchor="middle" font-family="IBM Plex Mono" font-size="9" fill="currentColor" opacity=".5">O</text>
+            <path class="arc" d="" fill="none" stroke="#d3222a" stroke-width="2"/>
+            <g class="needle"><line x1="0" y1="0" x2="0" y2="-96" stroke="#d3222a" stroke-width="2"/><circle r="4" fill="#d3222a"/></g>
+          </svg>
+          <div class="az mono"><b data-az>0°00′00″</b><span data-l="fr" lang="fr">azimut du doigt</span><span data-l="en" lang="en">azimuth of the finger</span></div>
+        </div>
+      </figure>
+    </div>
+  </div>
+  <div class="strip-wrap">
+    <div class="strip-scroller" data-strip-scroller>
+      <div class="strip" data-strip>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/place-releve.webp" data-cap-fr="La place Stanislas pendant le relevé" data-cap-en="Place Stanislas during the survey"><img src="assets/img/releve/place-releve.webp" width="636" height="424" alt="La place Stanislas pendant le relevé" data-alt-fr="La place Stanislas pendant le relevé" data-alt-en="Place Stanislas during the survey" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 01</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/nacelle.webp" data-cap-fr="Nacelle élévatrice au pied de la statue" data-cap-en="Aerial work platform at the foot of the statue"><img src="assets/img/releve/nacelle.webp" width="313" height="477" alt="Nacelle élévatrice au pied de la statue" data-alt-fr="Nacelle élévatrice au pied de la statue" data-alt-en="Aerial work platform at the foot of the statue" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 02</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/nacelle-statue.webp" data-cap-fr="Géodésienne dans la nacelle près de la statue" data-cap-en="Surveyor in the platform near the statue"><img src="assets/img/releve/nacelle-statue.webp" width="337" height="477" alt="Géodésienne dans la nacelle près de la statue" data-alt-fr="Géodésienne dans la nacelle près de la statue" data-alt-en="Surveyor in the platform near the statue" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 03</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/doigt-antenne.webp" data-cap-fr="Antenne GPS posée sur l'index de la statue, 6 mai 2004" data-cap-en="GPS antenna placed on the statue's index finger, 6 May 2004"><img src="assets/img/releve/doigt-antenne.webp" width="636" height="424" alt="Antenne GPS posée sur l&#39;index de la statue, 6 mai 2004" data-alt-fr="Antenne GPS posée sur l&#39;index de la statue, 6 mai 2004" data-alt-en="GPS antenna placed on the statue&#39;s index finger, 6 May 2004" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 04</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/doigt-antenne-2.webp" data-cap-fr="La statue avec l'antenne sur l'index" data-cap-en="The statue with the antenna on its index finger"><img src="assets/img/releve/doigt-antenne-2.webp" width="316" height="477" alt="La statue avec l&#39;antenne sur l&#39;index" data-alt-fr="La statue avec l&#39;antenne sur l&#39;index" data-alt-en="The statue with the antenna on its index finger" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 05</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/visee.webp" data-cap-fr="Géodésienne à l'instrument de mesure" data-cap-en="Surveyor at the measuring instrument"><img src="assets/img/releve/visee.webp" width="318" height="477" alt="Géodésienne à l&#39;instrument de mesure" data-alt-fr="Géodésienne à l&#39;instrument de mesure" data-alt-en="Surveyor at the measuring instrument" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 06</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/gps-grille.webp" data-cap-fr="Récepteur GPS sur trépied devant une grille dorée" data-cap-en="GPS receiver on tripod in front of a gilded gate"><img src="assets/img/releve/gps-grille.webp" width="318" height="477" alt="Récepteur GPS sur trépied devant une grille dorée" data-alt-fr="Récepteur GPS sur trépied devant une grille dorée" data-alt-en="GPS receiver on tripod in front of a gilded gate" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 07</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/gps.webp" data-cap-fr="Géodésien réglant le récepteur GPS" data-cap-en="Surveyor adjusting the GPS receiver"><img src="assets/img/releve/gps.webp" width="636" height="424" alt="Géodésien réglant le récepteur GPS" data-alt-fr="Géodésien réglant le récepteur GPS" data-alt-en="Surveyor adjusting the GPS receiver" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 08</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/station.webp" data-cap-fr="Géodésiens à la station de mesure" data-cap-en="Surveyors at the measuring station"><img src="assets/img/releve/station.webp" width="636" height="424" alt="Géodésiens à la station de mesure" data-alt-fr="Géodésiens à la station de mesure" data-alt-en="Surveyors at the measuring station" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 09</span></figure>
+        
+        <figure class="frame" data-zoomable data-src="assets/img/releve/equipe.webp" data-cap-fr="L'équipe de l'IGN sur la place" data-cap-en="The IGN team on the square"><img src="assets/img/releve/equipe.webp" width="319" height="477" alt="L&#39;équipe de l&#39;IGN sur la place" data-alt-fr="L&#39;équipe de l&#39;IGN sur la place" data-alt-en="The IGN team on the square" loading="lazy" decoding="async"><span class="fno">6.5.2004 / 10</span></figure>
+        
+      </div>
+    </div>
+    <div class="wrap strip-caps small muted"><span><span data-l="fr" lang="fr">Photographies du relevé, 6 mai 2004.</span><span data-l="en" lang="en">Photographs of the survey, 6 May 2004.</span></span><span class="mono"><span data-l="fr" lang="fr">IGN, service de géodésie</span><span data-l="en" lang="en">IGN, geodesy department</span></span></div>
+  </div>
+  <div class="wrap">
+    <div class="releve-facts">
+      <div><b>325°45′46,05″</b><span class="small muted"><span data-l="fr" lang="fr">Azimut de la direction du doigt, mesuré du point 2 vers le point 1.</span><span data-l="en" lang="en">Azimuth of the finger’s direction, measured from point 2 to point 1.</span></span></div>
+      <div><b>IAG-GRS80</b><span class="small muted"><span data-l="fr" lang="fr">Ellipsoïde de référence des calculs, menés avec les logiciels GEODIC9 et GEO2.</span><span data-l="en" lang="en">Reference ellipsoid for the calculations, made with the GEODIC9 and GEO2 software.</span></span></div>
+      <div><b><span data-l="fr" lang="fr">1 point / 1 000 km</span><span data-l="en" lang="en">1 point / 1,000 km</span></b><span class="small muted"><span data-l="fr" lang="fr">Le tracé est calculé point par point, avec un nouvel azimut aux points 19 et 38.</span><span data-l="en" lang="en">The route is computed point by point, with a new azimuth at points 19 and 38.</span></span></div>
+    </div>
+    <div class="points">
+      <figure class="print" data-zoomable data-src="assets/img/releve/points-statue.webp" data-cap-fr="Statue de Stanislas avec les points de mesure 1, 2 et 3" data-cap-en="Stanislas statue with measuring points 1, 2 and 3"><img src="assets/img/releve/points-statue.webp" width="378" height="504" alt="Statue de Stanislas avec les points de mesure 1, 2 et 3" data-alt-fr="Statue de Stanislas avec les points de mesure 1, 2 et 3" data-alt-en="Stanislas statue with measuring points 1, 2 and 3" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Statue de Stanislas avec les points de mesure 1, 2 et 3</span><span data-l="en" lang="en">Stanislas statue with measuring points 1, 2 and 3</span></figcaption></figure>
+      <div>
+        <h3><span data-l="fr" lang="fr">« Mesurez ce doigt »</span><span data-l="en" lang="en">“Measure this finger”</span></h3>
+        <p style="margin-top:16px" class="muted"><span data-l="fr" lang="fr">Le lendemain, L’Est Républicain raconte comment, à l’initiative d’un plasticien nancéien, l’index de Stanislas a fait l’objet de toutes les attentions des ingénieurs de l’Institut géographique.</span><span data-l="en" lang="en">The next day, L’Est Républicain told how, at the initiative of a Nancy artist, Stanislas’s finger received the full attention of the Geographic Institute’s engineers.</span></p>
+        <figure class="print" style="max-width:420px;margin-top:24px" data-zoomable data-src="assets/img/presse/est-2004-05-07.webp" data-cap-fr="L'Est Républicain, 7 mai 2004 : Mesurez ce doigt" data-cap-en="L'Est Républicain, 7 May 2004: Measure this finger"><img src="assets/img/presse/est-2004-05-07.webp" srcset="assets/img/presse/est-2004-05-07-800.webp 800w, assets/img/presse/est-2004-05-07.webp 1600w" sizes="420px" width="1600" height="951" alt="L&#39;Est Républicain, 7 mai 2004 : Mesurez ce doigt" data-alt-fr="L&#39;Est Républicain, 7 mai 2004 : Mesurez ce doigt" data-alt-en="L&#39;Est Républicain, 7 May 2004: Measure this finger" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">L&#39;Est Républicain, 7 mai 2004 : Mesurez ce doigt</span><span data-l="en" lang="en">L&#39;Est Républicain, 7 May 2004: Measure this finger</span></figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sky-band" aria-hidden="true">
+  <div class="ph has-img" data-grok="g-ciel-fil-rouge-16x9" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-ciel-fil-rouge-16x9.webp)"></div><div class="ph-art "></div></div>
+  <p><span data-l="fr" lang="fr">Vers le nord-ouest, tout droit.</span><span data-l="en" lang="en">North-west, straight ahead.</span><span class="mono">325°45′46,05″</span></p>
+</div>
+
+<!-- ============ LE TOUR DU MONDE ============ -->
+<section class="monde on-night" id="ligne" aria-labelledby="monde-title" data-night>
+  <div class="wrap monde-intro">
+    <div class="ph has-img" data-grok="g-tour-terre-orbite-16x9" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-tour-terre-orbite-16x9.webp)"></div><div class="ph-art orbit"></div></div>
+    <p class="kicker">48°41′36,77″ N, 6°10′59,78″ E</p>
+    <h2 id="monde-title" data-split><span data-l="fr" lang="fr">La Terre au bout du doigt</span><span data-l="en" lang="en">The Earth at your fingertip</span></h2>
+    <p class="lede" style="margin-top:28px"><span data-l="fr" lang="fr">Prolongée sans jamais tourner, la direction de l’index devient une ligne géodésique. Elle traverse l’Europe, le Groenland et l’Amérique du Nord, longe l’Antarctique, remonte l’Afrique et revient à Nancy.</span><span data-l="en" lang="en">Extended without ever turning, the direction of the finger becomes a geodesic line. It crosses Europe, Greenland and North America, skirts Antarctica, travels up Africa and comes back to Nancy.</span></p>
+    <p style="margin-top:20px"><span data-l="fr" lang="fr">Faites défiler pour suivre la ligne.</span><span data-l="en" lang="en">Scroll to follow the line.</span></p>
+  </div>
+  <div class="globe-track" data-globe-track>
+    <div class="globe-stage" data-globe-stage>
+      <div class="globe-stars"></div>
+      <div class="ph has-img" data-grok="g-tour-terre-orbite-16x9" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-tour-terre-orbite-16x9.webp)"></div><div class="ph-art orbit"></div></div>
+      <canvas class="globe-canvas" data-globe aria-label="Globe animé montrant le tracé de la ligne géodésique" role="img"></canvas>
+      <svg class="globe-fallback" data-globe-fallback viewBox="0 0 360 180" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Carte du tracé de la ligne géodésique"></svg>
+      <div class="globe-hud">
+        <div class="km"><span class="km-num" data-km>0</span><span class="km-unit"><span data-l="fr" lang="fr">kilomètres depuis l’index</span><span data-l="en" lang="en">kilometres from the finger</span></span><span class="km-place" data-place>Nancy</span></div>
+        <figure class="map-card" data-map-card><div class="print"><img alt="" data-map-img></div><figcaption class="small" data-map-cap></figcaption></figure>
+        <div class="milestones">
+          
+          
+          <div class="milestone" data-ms="0"><b><span data-l="fr" lang="fr">Départ : l’index de Stanislas</span><span data-l="en" lang="en">Start: Stanislas’s finger</span></b><span><span data-l="fr" lang="fr">48°41′36,77″ N, 6°10′59,78″ E. Azimut 325°45′46″, vers le nord-ouest.</span><span data-l="en" lang="en">48°41′36.77″ N, 6°10′59.78″ E. Azimuth 325°45′46″, towards the north-west.</span></span></div>
+          
+          <div class="milestone" data-ms="4015"><b><span data-l="fr" lang="fr">68°13′ N</span><span data-l="en" lang="en">68°13′ N</span></b><span><span data-l="fr" lang="fr">La latitude la plus haute de la ligne, près des côtes du Groenland.</span><span data-l="en" lang="en">The line’s highest latitude, near the coast of Greenland.</span></span></div>
+          
+          <div class="milestone" data-ms="20000"><b><span data-l="fr" lang="fr">Aux antipodes de Nancy</span><span data-l="en" lang="en">Nancy’s antipode</span></b><span><span data-l="fr" lang="fr">À mi-parcours, la ligne passe à l’opposé exact du départ, dans le Pacifique Sud. Les terres les plus proches, les îles Chatham, sont à environ 548 km.</span><span data-l="en" lang="en">Halfway round, the line passes the exact opposite of its start, in the South Pacific. The nearest land, the Chatham Islands, is about 548 km away.</span></span></div>
+          
+          <div class="milestone" data-ms="24015"><b><span data-l="fr" lang="fr">68°13′ S</span><span data-l="en" lang="en">68°13′ S</span></b><span><span data-l="fr" lang="fr">La latitude la plus basse, le long de la côte de l’Antarctique.</span><span data-l="en" lang="en">The lowest latitude, along the coast of Antarctica.</span></span></div>
+          
+          <div class="milestone" data-ms="39998"><b><span data-l="fr" lang="fr">39 998,57 km</span><span data-l="en" lang="en">39,998.57 km</span></b><span><span data-l="fr" lang="fr">La ligne retrouve la latitude de départ, à environ 33 km à l’est de la statue.</span><span data-l="en" lang="en">The line returns to its starting latitude, about 33 km east of the statue.</span></span></div>
+          
+        </div>
+        <p class="globe-note small"><span data-l="fr" lang="fr">Tracé recalculé pour cette maquette à partir des valeurs publiées sur le site (point de départ, azimut, longueur). Illustratif.</span><span data-l="en" lang="en">Route recomputed for this mock-up from the values published on the website (starting point, azimuth, length). Illustrative.</span></p>
+        <div class="globe-progress"><i data-gprog></i></div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap monde-after">
+    <div class="monde-after-grid">
+      <div>
+        <h3><span data-l="fr" lang="fr">Le tracé de l’IGN</span><span data-l="en" lang="en">The IGN’s route</span></h3>
+        <p style="margin-top:16px"><span data-l="fr" lang="fr">Le service de géodésie de l’IGN calcule un point tous les 1 000 kilomètres. Quand les logiciels atteignent leurs limites, vers le 21e point, le calcul repart du 19e, puis du 38e, avec un nouvel azimut. La ligne est complète lorsque sa latitude redevient celle du départ.</span><span data-l="en" lang="en">The IGN’s geodesy department computes one point every 1,000 kilometres. When the software reaches its limits, around point 21, the calculation restarts from point 19, then from point 38, with a new azimuth. The line is complete when its latitude returns to that of the start.</span></p>
+        <p class="small" style="margin-top:20px"><span data-l="fr" lang="fr">Images de la Terre : NASA Blue Marble, Reto Stöckli. Animation 3D de l’exposition : Andrew Wayne, Planetary Visions (Royaume-Uni).</span><span data-l="en" lang="en">Images of the Earth: NASA Blue Marble, Reto Stöckli. 3D animation in the exhibition: Andrew Wayne, Planetary Visions (UK).</span></p>
+      </div>
+      <figure class="print" data-zoomable data-src="assets/img/ligne/carte-ign.webp" data-cap-fr="Planisphère IGN avec le tracé de la ligne géodésique" data-cap-en="IGN world map with the geodesic line"><img src="assets/img/ligne/carte-ign.webp" width="890" height="689" alt="Planisphère IGN avec le tracé de la ligne géodésique" data-alt-fr="Planisphère IGN avec le tracé de la ligne géodésique" data-alt-en="IGN world map with the geodesic line" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Planisphère IGN avec le tracé de la ligne géodésique</span><span data-l="en" lang="en">IGN world map with the geodesic line</span></figcaption></figure>
+    </div>
+    <div class="trio">
+      
+      <figure class="print" data-zoomable data-src="assets/img/ligne/presentation-1.webp" data-cap-fr="Public devant les cartes du tracé, 2004" data-cap-en="Visitors in front of the route maps, 2004"><img src="assets/img/ligne/presentation-1.webp" width="567" height="417" alt="Public devant les cartes du tracé, 2004" data-alt-fr="Public devant les cartes du tracé, 2004" data-alt-en="Visitors in front of the route maps, 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Public devant les cartes du tracé, 2004</span><span data-l="en" lang="en">Visitors in front of the route maps, 2004</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/ligne/presentation-2.webp" data-cap-fr="Présentation officielle du tracé, 2004" data-cap-en="Official presentation of the route, 2004"><img src="assets/img/ligne/presentation-2.webp" width="810" height="530" alt="Présentation officielle du tracé, 2004" data-alt-fr="Présentation officielle du tracé, 2004" data-alt-en="Official presentation of the route, 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Présentation officielle du tracé, 2004</span><span data-l="en" lang="en">Official presentation of the route, 2004</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/ligne/presentation-3.webp" data-cap-fr="Visiteurs découvrant les cartes de la ligne" data-cap-en="Visitors discovering the maps of the line"><img src="assets/img/ligne/presentation-3.webp" width="480" height="360" alt="Visiteurs découvrant les cartes de la ligne" data-alt-fr="Visiteurs découvrant les cartes de la ligne" data-alt-en="Visitors discovering the maps of the line" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Visiteurs découvrant les cartes de la ligne</span><span data-l="en" lang="en">Visitors discovering the maps of the line</span></figcaption></figure>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ============ L'EXPOSITION (aperçu) ============ -->
+<section class="expo-teaser section-pad" id="exposition" aria-labelledby="expo-title">
+  <div class="wrap expo-head">
+    <div>
+      <p class="kicker"><span data-l="fr" lang="fr">15 avril-12 juin 2005</span><span data-l="en" lang="en">15 April-12 June 2005</span></p>
+      <h2 id="expo-title" data-split><span data-l="fr" lang="fr">L’exposition</span><span data-l="en" lang="en">The exhibition</span></h2>
+      <p class="expo-facts" style="margin-top:28px"><span data-l="fr" lang="fr">Aux Galeries Poirel de Nancy, sept espaces ont accueilli plus de 6 000 visiteurs, avec les artistes invités Georges Rousse, Benoît Tremsal et Ben Vautier, et une création musicale de Jérôme Bourdellon.</span><span data-l="en" lang="en">At the Galeries Poirel in Nancy, seven spaces welcomed more than 6,000 visitors, with guest artists Georges Rousse, Benoît Tremsal and Ben Vautier, and music by Jérôme Bourdellon.</span></p>
+    </div>
+    <a class="btn" href="exposition.html" data-magnetic><span class="btn-dot"></span><span data-l="fr" lang="fr">Visiter l’exposition</span><span data-l="en" lang="en">Visit the exhibition</span></a>
+  </div>
+  <div class="rooms-scroller" data-rooms-scroller>
+    <div class="rooms" data-rooms>
+      
+      
+      <a class="room-card" href="exposition.html#salle-1">
+        <div class="room-img"><img src="assets/img/expo/salle1-portraits-statue-1.webp" width="403" height="213" alt="Portraits photographiques de la statue de Stanislas, triptyque" data-alt-fr="Portraits photographiques de la statue de Stanislas, triptyque" data-alt-en="Photographic portraits of the Stanislas statue, triptych" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Salle 1</span><span data-l="en" lang="en">Room 1</span></span>
+        <h3><span data-l="fr" lang="fr">La statue et les images-poèmes</span><span data-l="en" lang="en">The statue and the image-poems</span></h3>
+      </a>
+      
+      <a class="room-card" href="exposition.html#salle-2">
+        <div class="room-img"><img src="assets/img/expo/salle2-living-stan.webp" width="709" height="472" alt="Benoît Tremsal, Living-Stan, 2005, installation" data-alt-fr="Benoît Tremsal, Living-Stan, 2005, installation" data-alt-en="Benoît Tremsal, Living-Stan, 2005, installation" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Salle 2</span><span data-l="en" lang="en">Room 2</span></span>
+        <h3><span data-l="fr" lang="fr">Les matériaux de la place</span><span data-l="en" lang="en">The materials of the square</span></h3>
+      </a>
+      
+      <a class="room-card" href="exposition.html#salle-3">
+        <div class="room-img"><img src="assets/img/expo/salle3-continents.webp" width="837" height="657" alt="Georges Rousse, Continents, Nancy 2005, vu depuis le point de vue idéal" data-alt-fr="Georges Rousse, Continents, Nancy 2005, vu depuis le point de vue idéal" data-alt-en="Georges Rousse, Continents, Nancy 2005, seen from the ideal viewpoint" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Salle 3</span><span data-l="en" lang="en">Room 3</span></span>
+        <h3><span data-l="fr" lang="fr">Continents, de Georges Rousse</span><span data-l="en" lang="en">Continents, by Georges Rousse</span></h3>
+      </a>
+      
+      <a class="room-card" href="exposition.html#salle-4">
+        <div class="room-img"><img src="assets/img/expo/mezzanine-technicolor-1.webp" width="709" height="512" alt="Le monde en technicolor, sphère de drapeaux" data-alt-fr="Le monde en technicolor, sphère de drapeaux" data-alt-en="Le monde en technicolor, a sphere of flags" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Mezzanine</span><span data-l="en" lang="en">Mezzanine</span></span>
+        <h3><span data-l="fr" lang="fr">La Bibliothèque des Terres</span><span data-l="en" lang="en">The Library of Soils</span></h3>
+      </a>
+      
+      <a class="room-card" href="exposition.html#salle-5">
+        <div class="room-img"><img src="assets/img/expo/salle5-centre-du-monde.webp" width="850" height="850" alt="Carte Latitude en forme de longitude, Nancy au centre" data-alt-fr="Carte Latitude en forme de longitude, Nancy au centre" data-alt-en="Map Latitude shaped like longitude, Nancy at the centre" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Salle 5</span><span data-l="en" lang="en">Room 5</span></span>
+        <h3><span data-l="fr" lang="fr">L’Attitude</span><span data-l="en" lang="en">L’Attitude</span></h3>
+      </a>
+      
+      <a class="room-card" href="exposition.html#salle-6">
+        <div class="room-img"><img src="assets/img/expo/salle6-terre.webp" width="356" height="260" alt="La Terre et la ligne rouge projetées devant le public" data-alt-fr="La Terre et la ligne rouge projetées devant le public" data-alt-en="The Earth and the red line projected in front of visitors" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Salle 6</span><span data-l="en" lang="en">Room 6</span></span>
+        <h3><span data-l="fr" lang="fr">La Terre au bout du doigt</span><span data-l="en" lang="en">The Earth at your fingertip</span></h3>
+      </a>
+      
+      <a class="room-card" href="exposition.html#salle-7">
+        <div class="room-img"><img src="assets/img/expo/salle7-salle.webp" srcset="assets/img/expo/salle7-salle-800.webp 800w, assets/img/expo/salle7-salle.webp 902w" sizes="(max-width: 860px) 80vw, 30vw" width="902" height="542" alt="Visiteuse devant la fresque des portraits" data-alt-fr="Visiteuse devant la fresque des portraits" data-alt-en="Visitor in front of the fresco of portraits" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Salle 7</span><span data-l="en" lang="en">Room 7</span></span>
+        <h3><span data-l="fr" lang="fr">Portrait d’une ville</span><span data-l="en" lang="en">Portrait of a city</span></h3>
+      </a>
+      
+      <a class="room-card" href="exposition.html#salle-8">
+        <div class="room-img"><img src="assets/img/expo/sortie-miroir.webp" width="638" height="461" alt="Miroir doré : Devenez votre propre chef-d&#39;œuvre" data-alt-fr="Miroir doré : Devenez votre propre chef-d&#39;œuvre" data-alt-en="Gilded mirror: Become your own masterpiece" loading="lazy" decoding="async"></div>
+        <span class="room-n"><span data-l="fr" lang="fr">Sortie</span><span data-l="en" lang="en">Exit</span></span>
+        <h3><span data-l="fr" lang="fr">Devenez votre propre chef-d’œuvre</span><span data-l="en" lang="en">Become your own masterpiece</span></h3>
+      </a>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ============ PORTRAIT D'UNE VILLE (aperçu) ============ -->
+<section class="portraits-teaser section-pad" id="portraits" aria-labelledby="pt-title">
+  <div class="ph has-img" data-grok="g-portraits-foule-flou-16x9" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-portraits-foule-flou-16x9.webp)"></div><div class="ph-art crowd"></div></div>
+  <div class="wrap pt-grid">
+    <div>
+      <p class="kicker"><span data-l="fr" lang="fr">16-19 septembre 2004</span><span data-l="en" lang="en">16-19 September 2004</span></p>
+      <h2 id="pt-title" data-split><span data-l="fr" lang="fr">Portrait d’une ville</span><span data-l="en" lang="en">Portrait of a city</span></h2>
+      <p class="small muted" style="margin:30px 0 0"><span data-l="fr" lang="fr">plus de</span><span data-l="en" lang="en">more than</span></p>
+      <div class="pt-count" data-count-to="1360">1 360</div>
+      <p class="small muted" style="margin-top:6px"><span data-l="fr" lang="fr">portraits en pied</span><span data-l="en" lang="en">full-length portraits</span></p>
+      <p style="margin-top:26px"><span data-l="fr" lang="fr">Pendant le Livre sur la Place, un studio photo s’installe autour de la place Stanislas. Habitants, passants, auteurs : chacun pose en pied devant l’objectif de Daniel Denise. En 2005, les portraits couvrent les murs d’une salle de l’exposition, dans un ordre tiré au hasard.</span><span data-l="en" lang="en">During the Livre sur la Place book fair, a photo studio was set up around Place Stanislas. Residents, passers-by, authors: each posed full-length for Daniel Denise’s camera. In 2005 the portraits covered the walls of an exhibition room, in random order.</span></p>
+      <a class="btn" href="portraits.html" data-magnetic style="margin-top:14px"><span class="btn-dot"></span><span data-l="fr" lang="fr">Retrouver un portrait</span><span data-l="en" lang="en">Find a portrait</span></a>
+    </div>
+    <div class="pt-rows"><canvas data-pt-rows aria-hidden="true"></canvas></div>
+  </div>
+</section>
+
+<!-- ============ BIBLIOTHÈQUE DES TERRES ============ -->
+<section class="terres section-pad" id="terres" aria-labelledby="terres-title">
+  <div class="ph has-img" data-grok="g-terres-strates-16x9" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-terres-strates-16x9.webp)"></div><div class="ph-art strata"></div></div>
+  <canvas class="grains" data-grains aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="terres-grid">
+      <div>
+        <p class="kicker"><span data-l="fr" lang="fr">Depuis 1999</span><span data-l="en" lang="en">Since 1999</span></p>
+        <h2 id="terres-title" data-split><span data-l="fr" lang="fr">La Bibliothèque des Terres</span><span data-l="en" lang="en">The Library of Soils</span></h2>
+        <p class="lede" style="margin-top:28px"><span data-l="fr" lang="fr">Daniel Denise collecte des échantillons de terre venus du monde entier, avec les lettres, emballages et photos qui les accompagnent.</span><span data-l="en" lang="en">Daniel Denise collects soil samples from all over the world, along with the letters, packaging and photos that come with them.</span></p>
+        <p style="margin-top:20px" class="muted"><span data-l="fr" lang="fr">En 2005, rangées en flacons sur la mezzanine des Galeries Poirel, ces terres forment une bibliothèque. Verrerie réalisée avec Copper Glass (Yannick Hoetzel et Mathieu Grodet), création musicale de Jérôme Bourdellon.</span><span data-l="en" lang="en">In 2005, stored in glass jars on the mezzanine of the Galeries Poirel, these soils formed a library. Glassware made with Copper Glass (Yannick Hoetzel and Mathieu Grodet), music by Jérôme Bourdellon.</span></p>
+      </div>
+      <figure class="print" data-zoomable data-src="assets/img/expo/mezzanine-bibliotheque-terres.webp" data-cap-fr="Bibliothèque des Terres : flacons de terres du monde entier" data-cap-en="Library of Soils: jars of soil from all over the world"><img src="assets/img/expo/mezzanine-bibliotheque-terres.webp" width="640" height="480" alt="Bibliothèque des Terres : flacons de terres du monde entier" data-alt-fr="Bibliothèque des Terres : flacons de terres du monde entier" data-alt-en="Library of Soils: jars of soil from all over the world" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Bibliothèque des Terres : flacons de terres du monde entier</span><span data-l="en" lang="en">Library of Soils: jars of soil from all over the world</span></figcaption></figure>
+    </div>
+    <figure class="print wide" data-zoomable data-src="assets/img/expo/mezzanine-terres-public.webp" data-cap-fr="Visiteurs derrière la Bibliothèque des Terres" data-cap-en="Visitors behind the Library of Soils"><img src="assets/img/expo/mezzanine-terres-public.webp" srcset="assets/img/expo/mezzanine-terres-public-800.webp 800w, assets/img/expo/mezzanine-terres-public.webp 1600w" sizes="90vw" width="1600" height="476" alt="Visiteurs derrière la Bibliothèque des Terres" data-alt-fr="Visiteurs derrière la Bibliothèque des Terres" data-alt-en="Visitors behind the Library of Soils" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Visiteurs derrière la Bibliothèque des Terres</span><span data-l="en" lang="en">Visitors behind the Library of Soils</span></figcaption></figure>
+    <div class="duo">
+      <figure class="print" data-zoomable data-src="assets/img/expo/mezzanine-emballages.webp" data-cap-fr="Détails : lettres, emballages et photos reçus avec les échantillons" data-cap-en="Details: letters, packaging and photos received with the samples"><img src="assets/img/expo/mezzanine-emballages.webp" width="286" height="135" alt="Détails : lettres, emballages et photos reçus avec les échantillons" data-alt-fr="Détails : lettres, emballages et photos reçus avec les échantillons" data-alt-en="Details: letters, packaging and photos received with the samples" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Détails : lettres, emballages et photos reçus avec les échantillons</span><span data-l="en" lang="en">Details: letters, packaging and photos received with the samples</span></figcaption></figure>
+      <figure class="print" data-zoomable data-src="assets/img/expo/mezzanine-ben.webp" data-cap-fr="Ben Vautier, La terre est vraie" data-cap-en="Ben Vautier, La terre est vraie"><img src="assets/img/expo/mezzanine-ben.webp" width="135" height="177" alt="Ben Vautier, La terre est vraie" data-alt-fr="Ben Vautier, La terre est vraie" data-alt-en="Ben Vautier, La terre est vraie" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Ben Vautier, La terre est vraie</span><span data-l="en" lang="en">Ben Vautier, La terre est vraie</span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LE LIVRE SOUS LA PLACE ============ -->
+<section class="livre" id="livre" aria-labelledby="livre-title">
+  <div class="livre-scroll">
+    <div class="wrap livre-pin">
+      <div>
+        <h2 id="livre-title" data-split><span data-l="fr" lang="fr">Le Livre sous la Place</span><span data-l="en" lang="en">The Book under the Square</span></h2>
+        <div class="livre-steps" style="margin-top:34px">
+          <div class="livre-step" data-lstep="0">
+            <p class="kicker"><span data-l="fr" lang="fr">Septembre 2004</span><span data-l="en" lang="en">September 2004</span></p>
+            <p class="lede"><span data-l="fr" lang="fr">Sous un chapiteau du Livre sur la Place, le public écrit et dessine les pages d’un livre unique.</span><span data-l="en" lang="en">Under a marquee at the Livre sur la Place book fair, the public writes and draws the pages of a one-off book.</span></p>
+          </div>
+          <div class="livre-step" data-lstep="1">
+            <p class="kicker"><span data-l="fr" lang="fr">15 avril 2005</span><span data-l="en" lang="en">15 April 2005</span></p>
+            <p class="lede"><span data-l="fr" lang="fr">Relié de rouge et de bleu, le livre est enfoui sous la place Stanislas, alors en pleine rénovation.</span><span data-l="en" lang="en">Bound in red and blue, the book is buried under Place Stanislas, then being renovated.</span></p>
+          </div>
+          <div class="livre-step" data-lstep="2">
+            <p class="kicker"><span data-l="fr" lang="fr">Salle 5 de l’exposition</span><span data-l="en" lang="en">Room 5 of the exhibition</span></p>
+            <p class="lede"><span data-l="fr" lang="fr">Ses pages, scannées avant l’enfouissement, sont montrées aux visiteurs des Galeries Poirel.</span><span data-l="en" lang="en">Its pages, scanned before the burial, are shown to visitors at the Galeries Poirel.</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="book-scene" data-book-scene aria-hidden="true">
+        <div class="paving"><div class="ph has-img" data-grok="g-livre-paves-16x9" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-livre-paves-16x9.webp)"></div><div class="ph-art "></div></div><div class="hole"></div><div class="star"></div></div>
+        <div class="book" data-book>
+          <div class="face front" style="background-image:url(assets/img/livre/couverture.webp)"></div>
+          <div class="face back" style="background-image:url(assets/img/livre/dos.webp)"></div>
+          <div class="face spine" style="background-image:url(assets/img/livre/dos-titre.webp)"></div>
+          <div class="face edge"></div>
+          <div class="face top"></div>
+          <div class="face bottom"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap" style="padding-bottom: clamp(90px, 12vh, 160px)">
+    <div class="livre-photos">
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/ecriture-1.webp" data-cap-fr="Participants écrivant et dessinant les pages du livre, septembre 2004" data-cap-en="Participants writing and drawing pages of the book, September 2004"><img src="assets/img/livre/ecriture-1.webp" width="454" height="454" alt="Participants écrivant et dessinant les pages du livre, septembre 2004" data-alt-fr="Participants écrivant et dessinant les pages du livre, septembre 2004" data-alt-en="Participants writing and drawing pages of the book, September 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Participants écrivant et dessinant les pages du livre, septembre 2004</span><span data-l="en" lang="en">Participants writing and drawing pages of the book, September 2004</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/chapiteau.webp" data-cap-fr="Chapiteau du Livre sur la Place, 2004" data-cap-en="Marquee of the Livre sur la Place book fair, 2004"><img src="assets/img/livre/chapiteau.webp" width="454" height="454" alt="Chapiteau du Livre sur la Place, 2004" data-alt-fr="Chapiteau du Livre sur la Place, 2004" data-alt-en="Marquee of the Livre sur la Place book fair, 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Chapiteau du Livre sur la Place, 2004</span><span data-l="en" lang="en">Marquee of the Livre sur la Place book fair, 2004</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/ecriture-2.webp" data-cap-fr="Participants à la table d'écriture" data-cap-en="Participants at the writing table"><img src="assets/img/livre/ecriture-2.webp" width="454" height="454" alt="Participants à la table d&#39;écriture" data-alt-fr="Participants à la table d&#39;écriture" data-alt-en="Participants at the writing table" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Participants à la table d&#39;écriture</span><span data-l="en" lang="en">Participants at the writing table</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/stand-urbi-orbi.webp" data-cap-fr="Le stand Urbi & Orbi, septembre 2004" data-cap-en="The Urbi & Orbi stand, September 2004"><img src="assets/img/livre/stand-urbi-orbi.webp" width="454" height="454" alt="Le stand Urbi &amp; Orbi, septembre 2004" data-alt-fr="Le stand Urbi &amp; Orbi, septembre 2004" data-alt-en="The Urbi &amp; Orbi stand, September 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Le stand Urbi &amp; Orbi, septembre 2004</span><span data-l="en" lang="en">The Urbi &amp; Orbi stand, September 2004</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/livre-brandi.webp" data-cap-fr="Le livre rouge brandi sur la place, 15 avril 2005" data-cap-en="The red book held up on the square, 15 April 2005"><img src="assets/img/livre/livre-brandi.webp" width="601" height="469" alt="Le livre rouge brandi sur la place, 15 avril 2005" data-alt-fr="Le livre rouge brandi sur la place, 15 avril 2005" data-alt-en="The red book held up on the square, 15 April 2005" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Le livre rouge brandi sur la place, 15 avril 2005</span><span data-l="en" lang="en">The red book held up on the square, 15 April 2005</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/livre-boite.webp" data-cap-fr="Le livre dans sa boîte de métal" data-cap-en="The book in its metal box"><img src="assets/img/livre/livre-boite.webp" width="548" height="513" alt="Le livre dans sa boîte de métal" data-alt-fr="Le livre dans sa boîte de métal" data-alt-en="The book in its metal box" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Le livre dans sa boîte de métal</span><span data-l="en" lang="en">The book in its metal box</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/enfouissement.webp" data-cap-fr="La boîte descendue sous les pavés" data-cap-en="The box lowered beneath the paving"><img src="assets/img/livre/enfouissement.webp" width="383" height="554" alt="La boîte descendue sous les pavés" data-alt-fr="La boîte descendue sous les pavés" data-alt-en="The box lowered beneath the paving" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">La boîte descendue sous les pavés</span><span data-l="en" lang="en">The box lowered beneath the paving</span></figcaption></figure>
+      
+      <figure class="print" data-zoomable data-src="assets/img/livre/remise.webp" data-cap-fr="Remise du livre, 15 avril 2005" data-cap-en="Handing over the book, 15 April 2005"><img src="assets/img/livre/remise.webp" width="704" height="469" alt="Remise du livre, 15 avril 2005" data-alt-fr="Remise du livre, 15 avril 2005" data-alt-en="Handing over the book, 15 April 2005" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Remise du livre, 15 avril 2005</span><span data-l="en" lang="en">Handing over the book, 15 April 2005</span></figcaption></figure>
+      
+    </div>
+  </div>
+</section>
+
+<!-- ============ DANIEL DENISE ============ -->
+<section class="daniel section-pad" id="daniel-denise" aria-labelledby="dd-title">
+  <div class="wrap daniel-grid">
+    <figure class="print portrait"><img src="assets/img/portraits/daniel-denise-appareil.webp" width="900" height="900" alt="Daniel Denise derrière son appareil, septembre 2004" data-alt-fr="Daniel Denise derrière son appareil, septembre 2004" data-alt-en="Daniel Denise behind his camera, September 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Daniel Denise derrière son appareil, septembre 2004</span><span data-l="en" lang="en">Daniel Denise behind his camera, September 2004</span></figcaption></figure>
+    <div>
+      <h2 id="dd-title" data-split>Daniel Denise</h2>
+      <p class="lede" style="margin-top:28px"><span data-l="fr" lang="fr">Photographe et plasticien, né en 1955 à Nancy, où il vit et travaille.</span><span data-l="en" lang="en">Photographer and visual artist, born in 1955 in Nancy, where he lives and works.</span></p>
+      <p style="margin-top:20px"><span data-l="fr" lang="fr">Ses projets mêlent l’art, la science et la participation du public : des Nancéiens qui posent devant son objectif, des terres envoyées du monde entier, un sondage sur les formes et les couleurs. Passionné de volcans, il a parcouru l’Auvergne, La Réunion, les Açores, Lanzarote, l’Islande et le Kamtchatka.</span><span data-l="en" lang="en">His projects combine art, science and public participation: Nancy residents posing for his camera, soils sent from all over the world, a survey on shapes and colours. A volcano enthusiast, he has travelled to the Auvergne, Réunion, the Azores, Lanzarote, Iceland and Kamchatka.</span></p>
+      <p class="muted"><span data-l="fr" lang="fr">Le site Urbi & Orbi a été créé à l’occasion de l’exposition par son frère, Bruno Denise, qui l’a enrichi depuis d’une exploration historique de Stanislas et de Nancy.</span><span data-l="en" lang="en">The Urbi & Orbi website was created for the exhibition by his brother, Bruno Denise, who has since expanded it with a historical exploration of Stanislas and Nancy.</span></p>
+      <figure class="print" style="max-width:520px;margin-top:34px" data-zoomable data-src="assets/img/daniel/volcan-kamtchatka.webp" data-cap-fr="Lac de cratère au Kamtchatka" data-cap-en="Crater lake in Kamchatka"><img src="assets/img/daniel/volcan-kamtchatka.webp" width="886" height="579" alt="Lac de cratère au Kamtchatka" data-alt-fr="Lac de cratère au Kamtchatka" data-alt-en="Crater lake in Kamchatka" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Lac de cratère au Kamtchatka</span><span data-l="en" lang="en">Crater lake in Kamchatka</span></figcaption></figure>
+    </div>
+  </div>
+  <div class="timeline-wrap">
+    <div class="wrap"><h3><span data-l="fr" lang="fr">Repères</span><span data-l="en" lang="en">Milestones</span></h3><p class="timeline-hint"><span data-l="fr" lang="fr">Faites glisser la frise</span><span data-l="en" lang="en">Drag the timeline</span></p></div>
+    <div class="timeline-scroller" data-lenis-prevent data-drag-scroll tabindex="0" aria-label="Frise chronologique">
+      <ol class="timeline" style="list-style:none;margin:30px 0 0">
+        
+        
+        <li class="t-item">
+          <span class="t-year">1996</span>
+          <h3><span data-l="fr" lang="fr">Les yeux de la Terre</span><span data-l="en" lang="en">Les yeux de la Terre</span></h3>
+          <p><span data-l="fr" lang="fr">Maison des Dîmes, Gondreville : 36 artistes autour de la pomme de terre (organisation).</span><span data-l="en" lang="en">Maison des Dîmes, Gondreville: 36 artists around the potato (curated).</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/daniel/autoportrait.webp" data-cap-fr="Photo de présentation de Daniel Denise, pommes de terre devant les yeux" data-cap-en="Daniel Denise's profile photo, potatoes over his eyes"><img src="assets/img/daniel/autoportrait.webp" width="220" height="218" alt="Photo de présentation de Daniel Denise, pommes de terre devant les yeux" data-alt-fr="Photo de présentation de Daniel Denise, pommes de terre devant les yeux" data-alt-en="Daniel Denise&#39;s profile photo, potatoes over his eyes" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">1999</span>
+          <h3><span data-l="fr" lang="fr">Regain</span><span data-l="en" lang="en">Regain</span></h3>
+          <p><span data-l="fr" lang="fr">Installation épistolaire, Galerie Poirel, Nancy.</span><span data-l="en" lang="en">Installation of letters, Galerie Poirel, Nancy.</span></p>
+          
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">2001</span>
+          <h3><span data-l="fr" lang="fr">C’est flou ce que c’est près</span><span data-l="en" lang="en">C’est flou ce que c’est près</span></h3>
+          <p><span data-l="fr" lang="fr">Photographies, Galerie de Visu, Nancy.</span><span data-l="en" lang="en">Photographs, Galerie de Visu, Nancy.</span></p>
+          
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">2002</span>
+          <h3><span data-l="fr" lang="fr">Par nature</span><span data-l="en" lang="en">Par nature</span></h3>
+          <p><span data-l="fr" lang="fr">Installation, Galerie TEM, Goviller.</span><span data-l="en" lang="en">Installation, Galerie TEM, Goviller.</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/daniel/par-nature.webp" data-cap-fr="Par nature, alignement de silhouettes" data-cap-en="Par nature, a row of figures"><img src="assets/img/daniel/par-nature.webp" srcset="assets/img/daniel/par-nature-800.webp 800w, assets/img/daniel/par-nature.webp 1077w" sizes="320px" width="1077" height="511" alt="Par nature, alignement de silhouettes" data-alt-fr="Par nature, alignement de silhouettes" data-alt-en="Par nature, a row of figures" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+        <li class="t-item is-key">
+          <span class="t-year">2005</span>
+          <h3><span data-l="fr" lang="fr">Stanislas Urbi & Orbi</span><span data-l="en" lang="en">Stanislas Urbi & Orbi</span></h3>
+          <p><span data-l="fr" lang="fr">Galeries Poirel, Nancy, 15 avril-12 juin. Plus de 6 000 visiteurs.</span><span data-l="en" lang="en">Galeries Poirel, Nancy, 15 April-12 June. More than 6,000 visitors.</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/expo/affiche-2005.webp" data-cap-fr="Affiche de l'exposition Stanislas Urbi & Orbi, Galeries Poirel, 15 avril-12 juin 2005" data-cap-en="Poster of the Stanislas Urbi & Orbi exhibition, Galeries Poirel, 15 April-12 June 2005"><img src="assets/img/expo/affiche-2005.webp" width="418" height="624" alt="Affiche de l&#39;exposition Stanislas Urbi &amp; Orbi, Galeries Poirel, 15 avril-12 juin 2005" data-alt-fr="Affiche de l&#39;exposition Stanislas Urbi &amp; Orbi, Galeries Poirel, 15 avril-12 juin 2005" data-alt-en="Poster of the Stanislas Urbi &amp; Orbi exhibition, Galeries Poirel, 15 April-12 June 2005" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">2014</span>
+          <h3><span data-l="fr" lang="fr">Le sens commun</span><span data-l="en" lang="en">Le sens commun</span></h3>
+          <p><span data-l="fr" lang="fr">Galerie Lillebonne, Nancy, 12 juin-12 juillet. Avec un sondage sur les formes et les couleurs.</span><span data-l="en" lang="en">Galerie Lillebonne, Nancy, 12 June-12 July. With a survey on shapes and colours.</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/daniel/sens-commun-le-tout-x.webp" data-cap-fr="Le Tout X, sculpture de cubes colorés" data-cap-en="Le Tout X, sculpture of coloured cubes"><img src="assets/img/daniel/sens-commun-le-tout-x.webp" srcset="assets/img/daniel/sens-commun-le-tout-x-800.webp 800w, assets/img/daniel/sens-commun-le-tout-x.webp 1600w" sizes="320px" width="1600" height="1067" alt="Le Tout X, sculpture de cubes colorés" data-alt-fr="Le Tout X, sculpture de cubes colorés" data-alt-en="Le Tout X, sculpture of coloured cubes" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">2016</span>
+          <h3><span data-l="fr" lang="fr">Fragile</span><span data-l="en" lang="en">Fragile</span></h3>
+          <p><span data-l="fr" lang="fr">La Douëra, Malzéville, 5-27 novembre.</span><span data-l="en" lang="en">La Douëra, Malzéville, 5-27 November.</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/daniel/fragile-invitation.webp" data-cap-fr="Invitation à l'exposition Fragile, La Douëra, Malzéville, 2016" data-cap-en="Invitation to the Fragile exhibition, La Douëra, Malzéville, 2016"><img src="assets/img/daniel/fragile-invitation.webp" srcset="assets/img/daniel/fragile-invitation-800.webp 800w, assets/img/daniel/fragile-invitation.webp 1500w" sizes="320px" width="1500" height="1064" alt="Invitation à l&#39;exposition Fragile, La Douëra, Malzéville, 2016" data-alt-fr="Invitation à l&#39;exposition Fragile, La Douëra, Malzéville, 2016" data-alt-en="Invitation to the Fragile exhibition, La Douëra, Malzéville, 2016" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">2016</span>
+          <h3><span data-l="fr" lang="fr">Jardins rêvés du square Louvain</span><span data-l="en" lang="en">Jardins rêvés du square Louvain</span></h3>
+          <p><span data-l="fr" lang="fr">Exposition photo, Festival du film de chercheur.</span><span data-l="en" lang="en">Photo exhibition, Researchers’ Film Festival.</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/daniel/jardins-reves.webp" data-cap-fr="Panneau de l'exposition Jardins rêvés du square Louvain, 2016" data-cap-en="Panel of the Jardins rêvés du square Louvain exhibition, 2016"><img src="assets/img/daniel/jardins-reves.webp" srcset="assets/img/daniel/jardins-reves-800.webp 800w, assets/img/daniel/jardins-reves.webp 1600w" sizes="320px" width="1600" height="664" alt="Panneau de l&#39;exposition Jardins rêvés du square Louvain, 2016" data-alt-fr="Panneau de l&#39;exposition Jardins rêvés du square Louvain, 2016" data-alt-en="Panel of the Jardins rêvés du square Louvain exhibition, 2016" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">2017</span>
+          <h3><span data-l="fr" lang="fr">Horizon</span><span data-l="en" lang="en">Horizon</span></h3>
+          <p><span data-l="fr" lang="fr">Livre de photographies, éditions ARP2.</span><span data-l="en" lang="en">Photo book, ARP2.</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/daniel/horizon-couverture.webp" data-cap-fr="Couverture du livre Horizon, éditions ARP2, 2017" data-cap-en="Cover of the book Horizon, ARP2, 2017"><img src="assets/img/daniel/horizon-couverture.webp" width="835" height="656" alt="Couverture du livre Horizon, éditions ARP2, 2017" data-alt-fr="Couverture du livre Horizon, éditions ARP2, 2017" data-alt-en="Cover of the book Horizon, ARP2, 2017" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+        <li class="t-item">
+          <span class="t-year">2017</span>
+          <h3><span data-l="fr" lang="fr">Petits paysages</span><span data-l="en" lang="en">Petits paysages</span></h3>
+          <p><span data-l="fr" lang="fr">Muséum-Aquarium de Nancy.</span><span data-l="en" lang="en">Muséum-Aquarium de Nancy.</span></p>
+          <div class="t-card" data-tilt><figure class="print" data-zoomable data-src="assets/img/daniel/petits-paysages.webp" data-cap-fr="Invitation Petits paysages, Muséum-Aquarium de Nancy" data-cap-en="Invitation Petits paysages, Muséum-Aquarium de Nancy"><img src="assets/img/daniel/petits-paysages.webp" srcset="assets/img/daniel/petits-paysages-800.webp 800w, assets/img/daniel/petits-paysages.webp 1600w" sizes="320px" width="1600" height="800" alt="Invitation Petits paysages, Muséum-Aquarium de Nancy" data-alt-fr="Invitation Petits paysages, Muséum-Aquarium de Nancy" data-alt-en="Invitation Petits paysages, Muséum-Aquarium de Nancy" loading="lazy" decoding="async"></figure></div>
+        </li>
+        
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STANISLAS ET NANCY ============ -->
+<section class="nancy section-pad" id="stanislas" aria-labelledby="nancy-title">
+  <div class="wrap nancy-grid">
+    <div>
+      <p class="kicker"><span data-l="fr" lang="fr">26 novembre 1755</span><span data-l="en" lang="en">26 November 1755</span></p>
+      <h2 id="nancy-title" data-split><span data-l="fr" lang="fr">Stanislas et Nancy</span><span data-l="en" lang="en">Stanislas and Nancy</span></h2>
+      <p class="lede" style="margin-top:28px"><span data-l="fr" lang="fr">Le site est aussi une exploration historique et touristique, menée par Bruno Denise.</span><span data-l="en" lang="en">The website is also a historical and tourist exploration, led by Bruno Denise.</span></p>
+      <p style="margin-top:20px" class="muted"><span data-l="fr" lang="fr">Biographie et chronologie de Stanislas Leszczynski, genèse de la place Royale inaugurée le 26 novembre 1755, grilles et fontaines de Jean Lamour et Barthélemy Guibal, art de vivre et gastronomie du XVIIIe siècle, et plus de 70 ouvrages de cuisine anciens.</span><span data-l="en" lang="en">Biography and chronology of Stanislas Leszczynski, the genesis of the Place Royale inaugurated on 26 November 1755, gates and fountains by Jean Lamour and Barthélemy Guibal, 18th-century lifestyle and gastronomy, and more than 70 old cookery books.</span></p>
+      <div class="itins">
+        <div class="itin"><span class="n">1</span><h3><span data-l="fr" lang="fr">Du XVIe siècle à l’index de Stanislas</span><span data-l="en" lang="en">From the 16th century to Stanislas’s finger</span></h3><span class="stops"><span data-l="fr" lang="fr">29 arrêts</span><span data-l="en" lang="en">29 stops</span></span></div>
+        <div class="itin"><span class="n">2</span><h3><span data-l="fr" lang="fr">La dernière réalisation commandée par Stanislas</span><span data-l="en" lang="en">The last work commissioned by Stanislas</span></h3><span class="stops"><span data-l="fr" lang="fr">12 arrêts</span><span data-l="en" lang="en">12 stops</span></span></div>
+        <div class="itin"><span class="n">3</span><h3><span data-l="fr" lang="fr">De la place Stanislas à l’église de Bonsecours</span><span data-l="en" lang="en">From Place Stanislas to Bonsecours church</span></h3><span class="stops"><span data-l="fr" lang="fr">28 arrêts</span><span data-l="en" lang="en">28 stops</span></span></div>
+      </div>
+      <p style="margin-top:28px"><a class="link link-red" href="https://www.stanislasurbietorbi.com/itineraires/introduction.htm" rel="noopener"><span data-l="fr" lang="fr">Les itinéraires sur le site actuel</span><span data-l="en" lang="en">The walks on the current website</span></a></p>
+    </div>
+    <figure>
+      <div class="route-map" data-route-map>
+        <svg viewBox="0 0 400 400" aria-hidden="true">
+          <g class="streets">
+            <path d="M40 120 H360"/><path d="M40 250 H360"/><path d="M120 30 V370"/><path d="M250 30 V370"/><path d="M60 330 L330 60"/><path d="M180 30 C 190 150 170 260 200 370"/>
+          </g>
+          <path class="route" d="M250 250 L250 180 L250 120 L200 90 L150 70 L120 120 L90 160 L70 200 L120 250 L170 300 L130 340"/>
+          
+          <circle class="stop" cx="250" cy="250" r="6"/><text class="lbl" x="260" y="242">Place Stanislas</text><circle class="stop" cx="250" cy="120" r="6"/><text class="lbl" x="260" y="112">Arc Héré</text><circle class="stop" cx="200" cy="90" r="6"/><text class="lbl" x="210" y="82">Place de la Carrière</text><circle class="stop" cx="150" cy="70" r="6"/><text class="lbl" x="160" y="62">Palais du Gouvernement</text><circle class="stop" cx="90" cy="160" r="6"/><text class="lbl" x="100" y="152">Grande Rue</text><circle class="stop" cx="70" cy="200" r="6"/><text class="lbl" x="80" y="192">Palais ducal</text><circle class="stop" cx="120" cy="250" r="6"/><text class="lbl" x="130" y="242">Porte de la Craffe</text><circle class="stop" cx="130" cy="340" r="6"/><text class="lbl" x="140" y="332">Place Vaudémont</text>
+        </svg>
+      </div>
+      <figcaption class="small muted" style="margin-top:10px"><span data-l="fr" lang="fr">Schéma illustratif d’un parcours : il ne reproduit pas le plan de la ville.</span><span data-l="en" lang="en">Illustrative diagram of a walk: it does not reproduce the city map.</span> <span class="tag-demo"><span data-l="fr" lang="fr">illustratif</span><span data-l="en" lang="en">illustrative</span></span></figcaption>
+    </figure>
+  </div>
+  <div class="wrap nancy-photos">
+    
+    <figure class="print" data-zoomable data-src="assets/img/nancy/place-stanislas.webp" data-cap-fr="La place Stanislas et la statue, vue large" data-cap-en="Place Stanislas and the statue, wide view"><img src="assets/img/nancy/place-stanislas.webp" width="800" height="377" alt="La place Stanislas et la statue, vue large" data-alt-fr="La place Stanislas et la statue, vue large" data-alt-en="Place Stanislas and the statue, wide view" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">La place Stanislas et la statue, vue large</span><span data-l="en" lang="en">Place Stanislas and the statue, wide view</span></figcaption></figure>
+    
+    <figure class="print" data-zoomable data-src="assets/img/nancy/grilles.webp" data-cap-fr="Grilles dorées de Jean Lamour, place Stanislas" data-cap-en="Jean Lamour's gilded gates, Place Stanislas"><img src="assets/img/nancy/grilles.webp" width="800" height="533" alt="Grilles dorées de Jean Lamour, place Stanislas" data-alt-fr="Grilles dorées de Jean Lamour, place Stanislas" data-alt-en="Jean Lamour&#39;s gilded gates, Place Stanislas" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Grilles dorées de Jean Lamour, place Stanislas</span><span data-l="en" lang="en">Jean Lamour&#39;s gilded gates, Place Stanislas</span></figcaption></figure>
+    
+    <figure class="print" data-zoomable data-src="assets/img/nancy/porte-craffe.webp" data-cap-fr="La porte de la Craffe" data-cap-en="The Craffe gate"><img src="assets/img/nancy/porte-craffe.webp" width="531" height="800" alt="La porte de la Craffe" data-alt-fr="La porte de la Craffe" data-alt-en="The Craffe gate" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">La porte de la Craffe</span><span data-l="en" lang="en">The Craffe gate</span></figcaption></figure>
+    
+    <figure class="print" data-zoomable data-src="assets/img/nancy/tombeau-stanislas.webp" data-cap-fr="Tombeau de Stanislas, Notre-Dame-de-Bonsecours" data-cap-en="Tomb of Stanislas, Notre-Dame-de-Bonsecours"><img src="assets/img/nancy/tombeau-stanislas.webp" width="800" height="607" alt="Tombeau de Stanislas, Notre-Dame-de-Bonsecours" data-alt-fr="Tombeau de Stanislas, Notre-Dame-de-Bonsecours" data-alt-en="Tomb of Stanislas, Notre-Dame-de-Bonsecours" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Tombeau de Stanislas, Notre-Dame-de-Bonsecours</span><span data-l="en" lang="en">Tomb of Stanislas, Notre-Dame-de-Bonsecours</span></figcaption></figure>
+    
+  </div>
+</section>
+
+<!-- ============ PARTENAIRES & PRESSE ============ -->
+<section class="partners" aria-label="Partenaires">
+  <div class="marquee" data-marquee>
+    <span>IGN</span><span>CNRS</span><span>Étienne Deloule</span><span>Reto Stöckli, Blue Marble</span><span>Établissements Cochinaire</span><span>École d’architecture de Nancy</span><span>DRAC Lorraine</span><span>Ville de Nancy</span><span>CCAM de Vandœuvre</span><span>L’Est Républicain</span><span>M6</span>
+  </div>
+</section>
+<section class="presse section-pad" id="presse" aria-labelledby="presse-title">
+  <div class="wrap presse-grid">
+    <div>
+      <p class="kicker">2004-2005</p>
+      <h2 id="presse-title" data-split><span data-l="fr" lang="fr">Dans la presse</span><span data-l="en" lang="en">In the press</span></h2>
+      <p style="margin-top:28px"><span data-l="fr" lang="fr">De la mesure du doigt à la fin de l’exposition, L’Est Républicain, Le Républicain lorrain, la télévision régionale et la presse culturelle ont suivi le projet.</span><span data-l="en" lang="en">From the measuring of the finger to the end of the exhibition, L’Est Républicain, Le Républicain lorrain, regional television and the cultural press followed the project.</span></p>
+      <p class="small muted"><span data-l="fr" lang="fr">Survolez les coupures, cliquez pour les lire.</span><span data-l="en" lang="en">Hover over the clippings, click to read them.</span></p>
+      <p class="small" style="margin-top:28px"><span data-l="fr" lang="fr">Partenaires et amis : IGN, CNRS, Étienne Deloule, Reto Stöckli (Blue Marble Zurich), Établissements Cochinaire, étudiants de l’école d’architecture de Nancy, DRAC Lorraine, Ville de Nancy, CCAM de Vandœuvre, L’Est Républicain, M6.</span><span data-l="en" lang="en">Partners and friends: IGN, CNRS, Étienne Deloule, Reto Stöckli (Blue Marble Zurich), Établissements Cochinaire, students of the Nancy school of architecture, DRAC Lorraine, City of Nancy, CCAM Vandœuvre, L’Est Républicain, M6.</span></p>
+    </div>
+    <div class="clips" data-clips>
+      <div class="clips-bg"><div class="ph has-img" data-grok="g-presse-journaux-4x5" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-presse-journaux-4x5.webp)"></div><div class="ph-art "></div></div></div>
+      
+      <figure class="clip" data-zoomable data-src="assets/img/presse/republicain-lorrain-2004-05-07.webp" data-cap-fr="Le Républicain lorrain, 7 mai 2004 : l'index du roi Stanislas" data-cap-en="Le Républicain lorrain, 7 May 2004: King Stanislas's index finger"><div class="print"><img src="assets/img/presse/republicain-lorrain-2004-05-07.webp" srcset="assets/img/presse/republicain-lorrain-2004-05-07-800.webp 800w, assets/img/presse/republicain-lorrain-2004-05-07.webp 916w" sizes="300px" width="916" height="1062" alt="Le Républicain lorrain, 7 mai 2004 : l&#39;index du roi Stanislas" data-alt-fr="Le Républicain lorrain, 7 mai 2004 : l&#39;index du roi Stanislas" data-alt-en="Le Républicain lorrain, 7 May 2004: King Stanislas&#39;s index finger" loading="lazy" decoding="async"></div></figure>
+      
+      <figure class="clip" data-zoomable data-src="assets/img/presse/republicain-lorrain-2004-08-21.webp" data-cap-fr="Le Républicain lorrain, 21 août 2004 : la Terre à portée de main" data-cap-en="Le Républicain lorrain, 21 August 2004: the Earth within reach"><div class="print"><img src="assets/img/presse/republicain-lorrain-2004-08-21.webp" width="756" height="662" alt="Le Républicain lorrain, 21 août 2004 : la Terre à portée de main" data-alt-fr="Le Républicain lorrain, 21 août 2004 : la Terre à portée de main" data-alt-en="Le Républicain lorrain, 21 August 2004: the Earth within reach" loading="lazy" decoding="async"></div></figure>
+      
+      <figure class="clip" data-zoomable data-src="assets/img/presse/est-2005-03-19.webp" data-cap-fr="L'Est Républicain, 19 mars 2005 : de Stanislas à la Lune" data-cap-en="L'Est Républicain, 19 March 2005: from Stanislas to the Moon"><div class="print"><img src="assets/img/presse/est-2005-03-19.webp" width="838" height="693" alt="L&#39;Est Républicain, 19 mars 2005 : de Stanislas à la Lune" data-alt-fr="L&#39;Est Républicain, 19 mars 2005 : de Stanislas à la Lune" data-alt-en="L&#39;Est Républicain, 19 March 2005: from Stanislas to the Moon" loading="lazy" decoding="async"></div></figure>
+      
+      <figure class="clip" data-zoomable data-src="assets/img/presse/est-2005-04-14.webp" data-cap-fr="L'Est Républicain, 14 avril 2005 : la vie en instantanés" data-cap-en="L'Est Républicain, 14 April 2005: life in snapshots"><div class="print"><img src="assets/img/presse/est-2005-04-14.webp" width="830" height="687" alt="L&#39;Est Républicain, 14 avril 2005 : la vie en instantanés" data-alt-fr="L&#39;Est Républicain, 14 avril 2005 : la vie en instantanés" data-alt-en="L&#39;Est Républicain, 14 April 2005: life in snapshots" loading="lazy" decoding="async"></div></figure>
+      
+      <figure class="clip" data-zoomable data-src="assets/img/presse/est-2005-04-16.webp" data-cap-fr="L'Est Républicain, 16 avril 2005 : le Livre sous la place" data-cap-en="L'Est Républicain, 16 April 2005: the Book under the square"><div class="print"><img src="assets/img/presse/est-2005-04-16.webp" width="842" height="741" alt="L&#39;Est Républicain, 16 avril 2005 : le Livre sous la place" data-alt-fr="L&#39;Est Républicain, 16 avril 2005 : le Livre sous la place" data-alt-en="L&#39;Est Républicain, 16 April 2005: the Book under the square" loading="lazy" decoding="async"></div></figure>
+      
+      <figure class="clip" data-zoomable data-src="assets/img/presse/presse-2005-05-25.webp" data-cap-fr="Presse, 25 mai 2005 : trompe-l'œil contemporain" data-cap-en="Press, 25 May 2005: contemporary trompe-l'œil"><div class="print"><img src="assets/img/presse/presse-2005-05-25.webp" width="638" height="506" alt="Presse, 25 mai 2005 : trompe-l&#39;œil contemporain" data-alt-fr="Presse, 25 mai 2005 : trompe-l&#39;œil contemporain" data-alt-en="Press, 25 May 2005: contemporary trompe-l&#39;œil" loading="lazy" decoding="async"></div></figure>
+      
+      <figure class="clip" data-zoomable data-src="assets/img/presse/presse-2005-06-11.webp" data-cap-fr="Presse, 11 juin 2005 : le crépuscule d'Urbi et Orbi" data-cap-en="Press, 11 June 2005: the twilight of Urbi et Orbi"><div class="print"><img src="assets/img/presse/presse-2005-06-11.webp" srcset="assets/img/presse/presse-2005-06-11-800.webp 800w, assets/img/presse/presse-2005-06-11.webp 1127w" sizes="300px" width="1127" height="1252" alt="Presse, 11 juin 2005 : le crépuscule d&#39;Urbi et Orbi" data-alt-fr="Presse, 11 juin 2005 : le crépuscule d&#39;Urbi et Orbi" data-alt-en="Press, 11 June 2005: the twilight of Urbi et Orbi" loading="lazy" decoding="async"></div></figure>
+      
+    </div>
+  </div>
+</section>
+
+<nav class="next-pages" aria-label="Pages">
+  <a href="exposition.html"><span class="mono red"><span data-l="fr" lang="fr">15 avril-12 juin 2005</span><span data-l="en" lang="en">15 April-12 June 2005</span></span><span class="h2"><span data-l="fr" lang="fr">Visiter l’exposition</span><span data-l="en" lang="en">Visit the exhibition</span></span></a>
+  <a href="portraits.html"><span class="mono red"><span data-l="fr" lang="fr">1 455 portraits en ligne</span><span data-l="en" lang="en">1,455 portraits online</span></span><span class="h2"><span data-l="fr" lang="fr">Retrouver un portrait</span><span data-l="en" lang="en">Find a portrait</span></span></a>
+</nav>
+
+</main>
+
+
+<section class="contact section-pad" id="contact" aria-labelledby="contact-title">
+  <div class="wrap contact-grid">
+    <div>
+      <h2 id="contact-title" data-split><span data-l="fr" lang="fr">Écrire à Daniel Denise</span><span data-l="en" lang="en">Write to Daniel Denise</span></h2>
+      <div class="contact-visual"><div class="ph has-img" data-grok="g-contact-carte-fil-16x9" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-contact-carte-fil-16x9.webp)"></div><div class="ph-art post"><span class="thread-red"></span></div></div></div>
+      <p><span data-l="fr" lang="fr">Pour une question sur le projet, le catalogue de l’exposition, le livre <i>Horizon</i>, ou pour reconnaître un portrait de 2004.</span><span data-l="en" lang="en">For a question about the project, the exhibition catalogue, the book <i>Horizon</i>, or to recognise a 2004 portrait.</span></p>
+      <p class="small" style="margin-top:30px"><span data-l="fr" lang="fr">Adresse publiée sur le site actuel</span><span data-l="en" lang="en">Address published on the current site</span></p>
+      <a class="mail link" href="mailto:stanislasurbietorbi@wanadoo.fr">stanislasurbietorbi@wanadoo.fr</a>
+      <p class="small" style="margin-top:14px"><span class="todo"><span data-l="fr" lang="fr">À confirmer : adresse toujours active, téléphone et adresse postale à compléter.</span><span data-l="en" lang="en">To confirm: address still active; phone and postal address to be added.</span></span></p>
+    </div>
+    <form class="form" data-fake-form novalidate>
+      <div class="field"><label for="f-name"><span data-l="fr" lang="fr">Votre nom</span><span data-l="en" lang="en">Your name</span></label><input id="f-name" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="f-mail"><span data-l="fr" lang="fr">Votre adresse e-mail</span><span data-l="en" lang="en">Your email address</span></label><input id="f-mail" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="f-topic"><span data-l="fr" lang="fr">Sujet</span><span data-l="en" lang="en">Topic</span></label>
+        <select id="f-topic" name="topic">
+          <option value="projet" data-l-fr="Le projet Urbi & Orbi" data-l-en="The Urbi & Orbi project">Le projet Urbi & Orbi</option>
+          <option value="catalogue" data-l-fr="Catalogue de l’exposition 2005" data-l-en="2005 exhibition catalogue">Catalogue de l’exposition 2005</option>
+          <option value="portrait" data-l-fr="J’ai reconnu un portrait" data-l-en="I recognised a portrait">J’ai reconnu un portrait</option>
+          <option value="horizon" data-l-fr="Le livre Horizon" data-l-en="The book Horizon">Le livre Horizon</option>
+          <option value="autre" data-l-fr="Autre" data-l-en="Other">Autre</option>
+        </select>
+      </div>
+      <div class="field"><label for="f-msg"><span data-l="fr" lang="fr">Message</span><span data-l="en" lang="en">Message</span></label><textarea id="f-msg" name="message" required></textarea></div>
+      <button class="btn" type="submit" data-magnetic><span class="btn-dot"></span><span data-l="fr" lang="fr">Envoyer le message</span><span data-l="en" lang="en">Send the message</span></button>
+      <p class="form-note"><span data-l="fr" lang="fr">Formulaire de démonstration : rien n’est envoyé ni enregistré.</span><span data-l="en" lang="en">Demonstration form: nothing is sent or stored.</span></p>
+      <div class="form-ok" role="status"><span data-l="fr" lang="fr">Message prêt. Dans cette maquette, il n’est pas envoyé : écrivez directement à l’adresse ci-contre.</span><span data-l="en" lang="en">Message ready. In this mock-up it is not sent: please write directly to the address shown.</span></div>
+    </form>
+  </div>
+</section>
+
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-anniv"><span data-l="fr" lang="fr">2005-2025 : le site Urbi & Orbi a fêté ses 20 ans.</span><span data-l="en" lang="en">2005-2025: the Urbi & Orbi website turned 20.</span></p>
+      </div>
+      <div>
+        <h4><span data-l="fr" lang="fr">Le projet</span><span data-l="en" lang="en">The project</span></h4>
+        <ul>
+          <li><a class="link" href="index.html#ligne"><span data-l="fr" lang="fr">La ligne géodésique</span><span data-l="en" lang="en">The geodesic line</span></a></li>
+          <li><a class="link" href="exposition.html"><span data-l="fr" lang="fr">L’exposition 2005</span><span data-l="en" lang="en">The 2005 exhibition</span></a></li>
+          <li><a class="link" href="portraits.html"><span data-l="fr" lang="fr">Portrait d’une ville</span><span data-l="en" lang="en">Portrait of a city</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4><span data-l="fr" lang="fr">Sur le site actuel</span><span data-l="en" lang="en">On the current site</span></h4>
+        <ul>
+          <li><a class="link" href="https://www.stanislasurbietorbi.com/stanislas/sommaire-stanislas/page-sommaire.htm" rel="noopener"><span data-l="fr" lang="fr">Stanislas, une place dans l’histoire</span><span data-l="en" lang="en">Stanislas, a place in history</span></a></li>
+          <li><a class="link" href="https://www.stanislasurbietorbi.com/itineraires/introduction.htm" rel="noopener"><span data-l="fr" lang="fr">Itinéraires dans Nancy</span><span data-l="en" lang="en">Walks in Nancy</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h4><span data-l="fr" lang="fr">Crédits</span><span data-l="en" lang="en">Credits</span></h4>
+        <ul>
+          <li><span data-l="fr" lang="fr">Projet : Daniel Denise</span><span data-l="en" lang="en">Project: Daniel Denise</span></li>
+          <li><span data-l="fr" lang="fr">Site : Bruno Denise</span><span data-l="en" lang="en">Website: Bruno Denise</span></li>
+          <li><span data-l="fr" lang="fr">Photos © Daniel Denise et auteurs cités</span><span data-l="en" lang="en">Photos © Daniel Denise and credited authors</span></li>
+        </ul>
+      </div>
+    </div>
+    <details class="legal">
+      <summary><span data-l="fr" lang="fr">Mentions légales</span><span data-l="en" lang="en">Legal notice</span></summary>
+      <div>
+        <p><span data-l="fr" lang="fr">Éditeur et responsable du site : Bruno Denise. Responsable du projet : Daniel Denise. Contact : stanislasurbietorbi@wanadoo.fr. Hébergement du site actuel : OVH. Hébergement du nouveau site : <span class='todo'>à compléter</span>.</span><span data-l="en" lang="en">Publisher and site manager: Bruno Denise. Project lead: Daniel Denise. Contact: stanislasurbietorbi@wanadoo.fr. Current site hosting: OVH. New site hosting: <span class='todo'>to be completed</span>.</span></p>
+        <p><span data-l="fr" lang="fr">Le site, ses textes, logos, photos et animations sont protégés. Reproduction autorisée pour un usage strictement personnel, hors usage publicitaire, commercial ou d’information. Certaines photos de l’exposition sont © Marc Delvaux. Les portraits de 2004 sont © Daniel Denise, usage familial ou personnel uniquement.</span><span data-l="en" lang="en">The site, its texts, logos, photos and animations are protected. Reproduction allowed for strictly personal use only, excluding advertising, commercial or news use. Some exhibition photos are © Marc Delvaux. The 2004 portraits are © Daniel Denise, for family or personal use only.</span></p>
+        <p><span data-l="fr" lang="fr">Données personnelles : les formulaires de cette maquette n’envoient et ne conservent rien. Politique de confidentialité : <span class='todo'>à compléter</span>.</span><span data-l="en" lang="en">Personal data: the forms in this mock-up send and store nothing. Privacy policy: <span class='todo'>to be completed</span>.</span></p>
+      </div>
+    </details>
+    <div class="footer-bottom">
+      <span>Stanislas Urbi & Orbi, Nancy</span>
+      <span><span data-l="fr" lang="fr">Maquette de présentation. Les visuels marqués « illustratif » sont des démonstrations ; les images d’ambiance (pavés, galeries et studio vides, ciel, Terre) sont générées et ne montrent ni œuvre ni lieu réel.</span><span data-l="en" lang="en">Presentation mock-up. Visuals marked “illustrative” are demonstrations; mood images (paving, empty galleries and studio, sky, Earth) are generated and show no real artwork or place.</span></span>
+    </div>
+  </div>
+</footer>
+
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Image">
+  <div class="lb-media"><div class="lb-wall"><div class="ph has-img" data-grok="g-expo-mur-vide-3x2" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-expo-mur-vide-3x2.webp)"></div><div class="ph-art "></div></div></div><img alt=""></div>
+  <div class="lb-info"></div>
+  <button type="button" class="tool lb-close" data-lb-close><span data-l="fr" lang="fr">Fermer</span><span data-l="en" lang="en">Close</span></button>
+</div>
+<div class="lens" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><div class="cursor-ring"></div><div class="cursor-dot"></div><div class="cursor-cross"></div><div class="cursor-label"></div></div>
+
+<script src="assets/vendor/gsap.min.js" defer></script>
+<script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="assets/vendor/SplitText.min.js" defer></script>
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
