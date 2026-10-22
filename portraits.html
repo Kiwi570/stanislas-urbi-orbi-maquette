@@ -96,6 +96,16 @@ setTimeout(function(){d.classList.add('split-fallback')},2500);})();
   <a href="portraits.html"><span class="mono">03</span><span data-l="fr" lang="fr">Portraits</span><span data-l="en" lang="en">Portraits</span></a>
   <a href="index.html#daniel-denise"><span class="mono">04</span>Daniel Denise</a>
   <a href="#contact"><span class="mono">05</span><span data-l="fr" lang="fr">Contact</span><span data-l="en" lang="en">Contact</span></a>
+  <div class="mobile-tools">
+    <button type="button" class="tool" data-sound aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path class="wave" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>
+      <span class="tool-label"><span data-l="fr" lang="fr">Son</span><span data-l="en" lang="en">Sound</span></span>
+    </button>
+    <button type="button" class="tool" data-calm aria-pressed="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 12h4M17 12h4M12 3v4M12 17v4"/><circle cx="12" cy="12" r="3.2"/></svg>
+      <span class="tool-label"><span data-l="fr" lang="fr">Mode calme</span><span data-l="en" lang="en">Calm mode</span></span>
+    </button>
+  </div>
 </nav>
 
 <div class="thread" aria-hidden="true"><div class="thread-fill"></div><div class="thread-head"></div></div>
@@ -103,27 +113,33 @@ setTimeout(function(){d.classList.add('split-fallback')},2500);})();
 <main id="main">
 
 <section class="pr-hero" aria-labelledby="pr-title">
-  <div class="ph has-img" data-grok="g-portraits-studio-vide-16x9" data-grok-m="g-portraits-studio-vide-9x16" aria-hidden="true"><div class="ph-img ph-d" style="background-image:url(assets/img/grok/g-portraits-studio-vide-16x9.webp)"></div><div class="ph-img ph-m" style="background-image:url(assets/img/grok/g-portraits-studio-vide-9x16.webp)"></div><div class="ph-art studio"></div></div>
+  <div class="ph has-img" data-grok="g-portraits-fond-papier-3x2" aria-hidden="true"><div class="ph-img" style="background-image:url(assets/img/grok/g-portraits-fond-papier-3x2.webp)"></div><div class="ph-art studio"></div></div>
+  <figure class="pr-studio print" data-zoomable data-src="assets/img/portraits/studio-2004.webp" data-cap-fr="Le studio photo sous chapiteau, septembre 2004" data-cap-en="The photo studio under a marquee, September 2004"><img src="assets/img/portraits/studio-2004.webp" width="454" height="454" style="--nw:454" alt="Le studio photo sous chapiteau, septembre 2004" data-alt-fr="Le studio photo sous chapiteau, septembre 2004" data-alt-en="The photo studio under a marquee, September 2004" loading="eager" decoding="async"><figcaption><span data-l="fr" lang="fr">Le studio photo sous chapiteau, septembre 2004</span><span data-l="en" lang="en">The photo studio under a marquee, September 2004</span></figcaption></figure>
   <div class="wrap pr-hero-inner">
     <div>
-      <p class="kicker"><span data-l="fr" lang="fr">16-19 septembre 2004, place Stanislas</span><span data-l="en" lang="en">16-19 September 2004, Place Stanislas</span></p>
+      <p class="kicker"><span data-l="fr" lang="fr">16–19 septembre 2004, place Stanislas</span><span data-l="en" lang="en">16–19 September 2004, Place Stanislas</span></p>
       <h1 id="pr-title" class="display" data-split><span data-l="fr" lang="fr">Portrait d’une ville</span><span data-l="en" lang="en">Portrait of a city</span></h1>
     </div>
     <div>
-      <p class="lede"><span data-l="fr" lang="fr">Pendant le Livre sur la Place, un studio photo s’installe autour de la place Stanislas. Plus de 1 360 personnes y posent en pied.</span><span data-l="en" lang="en">During the Livre sur la Place book fair, a photo studio was set up around Place Stanislas. More than 1,360 people posed there, full length.</span></p>
+      <p class="lede"><span data-l="fr" lang="fr">Pendant le Livre sur la Place, un studio photo s’installe autour de la place Stanislas. Plus de 1 360 personnes y posent en pied.</span><span data-l="en" lang="en">During the Livre sur la Place book fair, a photo studio was set up around Place Stanislas. More than 1,360 people posed there, full length.</span></p>
       <p class="small muted" style="margin-top:16px"><span data-l="fr" lang="fr">Habitants, public, auteurs, passants, personnes qui vivent ou travaillent autour de la place.</span><span data-l="en" lang="en">Residents, visitors, authors, passers-by, people living or working around the square.</span></p>
     </div>
   </div>
 </section>
 
 <section class="wall-sec" id="mur" data-chapter="Le mur|The wall" aria-label="Mur des portraits" data-aria-en="Wall of portraits" data-wall-sec>
-  <canvas data-wall tabindex="0" aria-label="Mur interactif des portraits : glisser pour se déplacer, cliquer sur un portrait pour l’agrandir, flèches et Entrée au clavier" data-aria-en="Interactive wall of portraits: drag to move, click a portrait to enlarge it, arrow keys and Enter on a keyboard" aria-describedby="wall-help"></canvas>
-  <p class="wall-count mono"><span data-wall-n>0</span> <span data-l="fr" lang="fr">portraits en ligne</span><span data-l="en" lang="en">portraits online</span></p>
-  <p class="wall-hint" id="wall-help"><span data-l="fr" lang="fr">Glissez pour parcourir, double-cliquez pour zoomer, cliquez sur un portrait</span><span data-l="en" lang="en">Drag to explore, double-click to zoom, click a portrait</span></p>
+  <canvas data-wall tabindex="0" aria-label="Mur interactif des portraits : glisser pour se déplacer, cliquer pour s’approcher puis sur un portrait pour l’agrandir, flèches, + et Entrée au clavier" data-aria-en="Interactive wall of portraits: drag to move, click to move closer then click a portrait to enlarge it, arrow keys, + and Enter on a keyboard" aria-describedby="wall-help"></canvas>
+  <p class="wall-count mono"><span data-wall-n>0</span> <span data-l="fr" lang="fr">photos en ligne</span><span data-l="en" lang="en">photos online</span></p>
+  <p class="wall-hint" id="wall-help"><span class="on-fine"><span data-l="fr" lang="fr">Glissez pour parcourir, cliquez pour vous approcher, puis sur un portrait pour l’agrandir</span><span data-l="en" lang="en">Drag to explore, click to move closer, then click a portrait to enlarge it</span></span><span class="on-touch"><span data-l="fr" lang="fr">Touchez pour vous approcher, puis sur un portrait pour l’agrandir ; le plein écran permet d’explorer le mur</span><span data-l="en" lang="en">Tap to move closer, then tap a portrait to enlarge it; full screen lets you explore the wall</span></span></p>
   <div class="wall-ui">
     <div class="group">
       <button type="button" class="tool" data-wall-shuffle><span data-l="fr" lang="fr">Mélanger</span><span data-l="en" lang="en">Shuffle</span></button>
       <button type="button" class="tool" data-wall-order><span data-l="fr" lang="fr">Par fiche</span><span data-l="en" lang="en">By sheet</span></button>
+      <button type="button" class="tool" data-wall-color><span data-l="fr" lang="fr">Par couleur</span><span data-l="en" lang="en">By colour</span></button>
+      <label class="sr-only" for="wall-color"><span data-l="fr" lang="fr">Je portais du…</span><span data-l="en" lang="en">I was wearing…</span></label>
+      <select id="wall-color" data-wall-colorpick>
+        <option value="" data-l-fr="Je portais du…" data-l-en="I was wearing…">Je portais du…</option><option value="rouge" data-l-fr="rouge" data-l-en="red">rouge</option><option value="orange" data-l-fr="orange ou brun" data-l-en="orange or brown">orange ou brun</option><option value="jaune" data-l-fr="jaune" data-l-en="yellow">jaune</option><option value="vert" data-l-fr="vert" data-l-en="green">vert</option><option value="bleu" data-l-fr="bleu" data-l-en="blue">bleu</option><option value="violet" data-l-fr="violet ou rose" data-l-en="purple or pink">violet ou rose</option><option value="noir" data-l-fr="noir" data-l-en="black">noir</option><option value="gris" data-l-fr="gris" data-l-en="grey">gris</option><option value="blanc" data-l-fr="blanc ou clair" data-l-en="white or light">blanc ou clair</option>
+      </select>
       <label class="sr-only" for="wall-fiche"><span data-l="fr" lang="fr">Aller à la fiche</span><span data-l="en" lang="en">Go to sheet</span></label>
       <select id="wall-fiche" data-wall-fiche>
         <option value="" data-l-fr="Aller à la fiche…" data-l-en="Go to sheet…">Aller à la fiche…</option>
@@ -144,7 +160,7 @@ setTimeout(function(){d.classList.add('split-fallback')},2500);})();
     <div>
       <h2 id="pr-story" data-split><span data-l="fr" lang="fr">Du studio à la fresque</span><span data-l="en" lang="en">From studio to fresco</span></h2>
       <p class="lede" style="margin-top:28px"><span data-l="fr" lang="fr">Chacun pose seul, en pied, face à l’objectif. Les portraits sont ensuite projetés sur grand écran, puis assemblés en une fresque qui couvre les murs d’une salle de l’exposition de 2005.</span><span data-l="en" lang="en">Each person posed alone, full length, facing the camera. The portraits were then projected on a big screen and assembled into a fresco covering the walls of a room in the 2005 exhibition.</span></p>
-      <p style="margin-top:20px" class="muted"><span data-l="fr" lang="fr">Le site actuel annonce plus de 1 360 portraits et publie 1 455 photos, toutes reprises ici.</span><span data-l="en" lang="en">The current website mentions more than 1,360 portraits and publishes 1,455 photos, all shown here.</span></p>
+      <p style="margin-top:20px" class="muted"><span data-l="fr" lang="fr">Le site actuel annonce plus de 1 360 portraits et publie 1 455 photos, toutes reprises ici.</span><span data-l="en" lang="en">The current website mentions more than 1,360 portraits and publishes 1,455 photos, all shown here.</span></p>
       <p class="muted"><span data-l="fr" lang="fr">L’ordre des photos est tiré au hasard : une multitude de personnages qui matérialise la densité urbaine, et la place de chacun dans la collectivité.</span><span data-l="en" lang="en">The order of the photos is random: a multitude of figures embodying the density of the city, and each person’s place within the community.</span></p>
       <dl class="credits-list" style="margin-top:40px">
         <div><dt><span data-l="fr" lang="fr">Photographies</span><span data-l="en" lang="en">Photographs</span></dt><dd>Daniel Denise</dd></div>
@@ -156,17 +172,15 @@ setTimeout(function(){d.classList.add('split-fallback')},2500);})();
     </div>
     <div class="pr-photos">
       
-      <figure class="print" data-zoomable data-src="assets/img/portraits/studio-2004.webp" data-cap-fr="Le studio photo sous chapiteau, septembre 2004" data-cap-en="The photo studio under a marquee, September 2004"><img src="assets/img/portraits/studio-2004.webp" width="454" height="454" style="--nw:454" alt="Le studio photo sous chapiteau, septembre 2004" data-alt-fr="Le studio photo sous chapiteau, septembre 2004" data-alt-en="The photo studio under a marquee, September 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Le studio photo sous chapiteau, septembre 2004</span><span data-l="en" lang="en">The photo studio under a marquee, September 2004</span></figcaption></figure>
-      
       <figure class="print" data-zoomable data-src="assets/img/portraits/daniel-denise-appareil.webp" data-cap-fr="Daniel Denise derrière son appareil, septembre 2004" data-cap-en="Daniel Denise behind his camera, September 2004"><img src="assets/img/portraits/daniel-denise-appareil.webp" width="900" height="900" style="--nw:900" alt="Daniel Denise derrière son appareil, septembre 2004" data-alt-fr="Daniel Denise derrière son appareil, septembre 2004" data-alt-en="Daniel Denise behind his camera, September 2004" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Daniel Denise derrière son appareil, septembre 2004</span><span data-l="en" lang="en">Daniel Denise behind his camera, September 2004</span></figcaption></figure>
       
       <figure class="print" data-zoomable data-src="assets/img/portraits/public-2005.webp" data-cap-fr="Visiteurs devant la fresque des portraits, 2005" data-cap-en="Visitors in front of the portrait fresco, 2005"><img src="assets/img/portraits/public-2005.webp" width="709" height="473" style="--nw:709" alt="Visiteurs devant la fresque des portraits, 2005" data-alt-fr="Visiteurs devant la fresque des portraits, 2005" data-alt-en="Visitors in front of the portrait fresco, 2005" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Visiteurs devant la fresque des portraits, 2005</span><span data-l="en" lang="en">Visitors in front of the portrait fresco, 2005</span></figcaption></figure>
       
       <figure class="print" data-zoomable data-src="assets/img/expo/salle7-salle.webp" data-cap-fr="Visiteuse devant la fresque des portraits" data-cap-en="Visitor in front of the fresco of portraits"><img src="assets/img/expo/salle7-salle.webp" srcset="assets/img/expo/salle7-salle-800.webp 800w, assets/img/expo/salle7-salle.webp 902w" sizes="(max-width: 860px) 90vw, 24vw" width="902" height="542" style="--nw:902" alt="Visiteuse devant la fresque des portraits" data-alt-fr="Visiteuse devant la fresque des portraits" data-alt-en="Visitor in front of the fresco of portraits" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Visiteuse devant la fresque des portraits</span><span data-l="en" lang="en">Visitor in front of the fresco of portraits</span></figcaption></figure>
       
-      <figure class="print" data-zoomable data-src="assets/img/portraits/est-special.webp" data-cap-fr="Une du numéro spécial de L'Est Républicain, 15 avril 2005" data-cap-en="Front page of L'Est Républicain's special issue, 15 April 2005"><img src="assets/img/portraits/est-special.webp" width="338" height="181" style="--nw:338" alt="Une du numéro spécial de L&#39;Est Républicain, 15 avril 2005" data-alt-fr="Une du numéro spécial de L&#39;Est Républicain, 15 avril 2005" data-alt-en="Front page of L&#39;Est Républicain&#39;s special issue, 15 April 2005" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Une du numéro spécial de L&#39;Est Républicain, 15 avril 2005</span><span data-l="en" lang="en">Front page of L&#39;Est Républicain&#39;s special issue, 15 April 2005</span></figcaption></figure>
+      <figure class="print" data-zoomable data-src="assets/img/portraits/est-special.webp" data-cap-fr="Une du numéro spécial de L’Est Républicain, 15 avril 2005" data-cap-en="Front page of L’Est Républicain’s special issue, 15 April 2005"><img src="assets/img/portraits/est-special.webp" width="338" height="181" style="--nw:338" alt="Une du numéro spécial de L’Est Républicain, 15 avril 2005" data-alt-fr="Une du numéro spécial de L’Est Républicain, 15 avril 2005" data-alt-en="Front page of L’Est Républicain’s special issue, 15 April 2005" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Une du numéro spécial de L’Est Républicain, 15 avril 2005</span><span data-l="en" lang="en">Front page of L’Est Républicain’s special issue, 15 April 2005</span></figcaption></figure>
       
-      <figure class="print" data-zoomable data-src="assets/img/expo/salle7-public.webp" data-cap-fr="Public devant la fresque Portrait d'une ville" data-cap-en="Visitors in front of the Portrait of a city fresco"><img src="assets/img/expo/salle7-public.webp" width="373" height="199" style="--nw:373" alt="Public devant la fresque Portrait d&#39;une ville" data-alt-fr="Public devant la fresque Portrait d&#39;une ville" data-alt-en="Visitors in front of the Portrait of a city fresco" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Public devant la fresque Portrait d&#39;une ville</span><span data-l="en" lang="en">Visitors in front of the Portrait of a city fresco</span></figcaption></figure>
+      <figure class="print" data-zoomable data-src="assets/img/expo/salle7-public.webp" data-cap-fr="Public devant la fresque Portrait d’une ville" data-cap-en="Visitors in front of the Portrait of a city fresco"><img src="assets/img/expo/salle7-public.webp" width="373" height="199" style="--nw:373" alt="Public devant la fresque Portrait d’une ville" data-alt-fr="Public devant la fresque Portrait d’une ville" data-alt-en="Visitors in front of the Portrait of a city fresco" loading="lazy" decoding="async"><figcaption><span data-l="fr" lang="fr">Public devant la fresque Portrait d’une ville</span><span data-l="en" lang="en">Visitors in front of the Portrait of a city fresco</span></figcaption></figure>
       
     </div>
   </div>
@@ -175,7 +189,7 @@ setTimeout(function(){d.classList.add('split-fallback')},2500);})();
 <section class="section-pad" style="padding-top:0" aria-labelledby="pr-find">
   <div class="wrap">
     <h2 id="pr-find" class="h3"><span data-l="fr" lang="fr">Vous vous reconnaissez&nbsp;?</span><span data-l="en" lang="en">Do you recognise yourself?</span></h2>
-    <p style="margin-top:14px" class="muted"><span data-l="fr" lang="fr">Cliquez sur votre portrait ou celui d’un proche : son numéro de fiche s’affiche, et vous pouvez écrire directement à Daniel Denise.</span><span data-l="en" lang="en">Click on your portrait or that of someone close to you: its sheet number appears and you can write directly to Daniel Denise.</span></p>
+    <p style="margin-top:14px" class="muted"><span data-l="fr" lang="fr">Choisissez votre portrait ou celui d’un proche : son numéro de fiche s’affiche, et vous pouvez écrire directement à Daniel Denise.</span><span data-l="en" lang="en">Select your portrait or that of someone close to you: its sheet number appears and you can write directly to Daniel Denise.</span></p>
   </div>
 </section>
 
@@ -223,7 +237,8 @@ setTimeout(function(){d.classList.add('split-fallback')},2500);})();
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <p class="footer-anniv"><span data-l="fr" lang="fr">2005-2025 : le site Urbi & Orbi a fêté ses 20 ans.</span><span data-l="en" lang="en">2005-2025: the Urbi & Orbi website turned 20.</span></p>
+        <p class="footer-anniv"><span data-l="fr" lang="fr">Depuis l’index de Stanislas, 39 998,57 km autour de la Terre.</span><span data-l="en" lang="en">From Stanislas’s finger, 39,998.57 km around the Earth.</span></p>
+        <p class="small footer-20"><span data-l="fr" lang="fr">2005–2025 : le site Urbi & Orbi a fêté ses 20 ans.</span><span data-l="en" lang="en">2005–2025: the Urbi & Orbi website turned 20.</span></p>
       </div>
       <div>
         <h4><span data-l="fr" lang="fr">Le projet</span><span data-l="en" lang="en">The project</span></h4>
@@ -259,7 +274,8 @@ setTimeout(function(){d.classList.add('split-fallback')},2500);})();
     </details>
     <div class="footer-bottom">
       <span>Stanislas Urbi & Orbi, Nancy</span>
-      <span><span data-l="fr" lang="fr">Maquette de présentation. Les visuels marqués « illustratif » sont des démonstrations ; les images d’ambiance (pavés, galeries et studio vides, ciel, Terre) sont générées et ne montrent ni œuvre ni lieu réel.</span><span data-l="en" lang="en">Presentation mock-up. Visuals marked “illustrative” are demonstrations; mood images (paving, empty galleries and studio, sky, Earth) are generated and show no real artwork or place.</span></span>
+      <span><span data-l="fr" lang="fr">Maquette de présentation. Les visuels marqués « illustratif » sont des démonstrations ; les images d’ambiance (pavés, ciel, Terre vue d’orbite, papiers, mur et banc d’exposition) sont générées et ne montrent ni œuvre ni lieu réel.</span><span data-l="en" lang="en">Presentation mock-up. Visuals marked “illustrative” are demonstrations; mood images (paving, sky, Earth from orbit, papers, exhibition wall and bench) are generated and show no real artwork or place.</span></span>
+      <button type="button" class="tool notes-toggle" data-notes aria-pressed="true"><span data-l="fr" lang="fr">Notes de maquette</span><span data-l="en" lang="en">Mock-up notes</span></button>
     </div>
   </div>
 </footer>

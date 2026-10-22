@@ -40,6 +40,24 @@ export async function initGlobe(SUO) {
     return { lat: a[0] + (b[0] - a[0]) * t, lonU: unwrapped[lo] + (unwrapped[hi] - unwrapped[lo]) * t, lon: a[1] + (((b[1] - a[1] + 540) % 360) - 180) * t, i: lo + t };
   };
 
+  // ---------- défilement → km : lent sur les terres et les jalons, rapide sur les océans ----------
+  const STEP = 20; const NS = Math.ceil(L / STEP) + 1;
+  const slow = [[0, 140]].concat(labels.map((l) => [l.km - 60, l.to + 60]), [[3415, 4615], [19400, 20600], [23415, 24615], [L - 400, L]]);
+  const wRaw = new Float32Array(NS);
+  for (let i = 0; i < NS; i++) { const k = i * STEP; wRaw[i] = slow.some(([a, b]) => k >= a && k <= b) ? 1 : 0.3; }
+  const R = 8; const cum = new Float32Array(NS); let acc = 0;
+  for (let i = 0; i < NS; i++) {
+    let m = 0; let n = 0; for (let j = Math.max(0, i - R); j <= Math.min(NS - 1, i + R); j++) { m += wRaw[j]; n++; }
+    acc += m / n; cum[i] = acc;
+  }
+  const kmFromProgress = (p) => {
+    const want = p * cum[NS - 1]; let lo = 0; let hi = NS - 1;
+    while (hi - lo > 1) { const mid = (lo + hi) >> 1; if (cum[mid] < want) lo = mid; else hi = mid; }
+    const f = (want - cum[lo]) / ((cum[hi] - cum[lo]) || 1);
+    return Math.min(L, (lo + Math.max(0, Math.min(1, f))) * STEP);
+  };
+  const scrollKm = (s) => kmFromProgress(Math.max(0, Math.min(1, (s.progress - 0.03) / 0.94)));
+
   // ---------- éléments d'interface ----------
   const stage = $('[data-globe-stage]'); const track = $('[data-globe-track]');
   const kmEl = $('[data-km]'); const placeEl = $('[data-place]'); const prog = $('[data-gprog]');
@@ -137,15 +155,15 @@ export async function initGlobe(SUO) {
         float gLon = abs(fract(lon / step15 + 0.5) - 0.5) * step15 * cos(lat);
         float g = max(smoothstep(0.0035, 0.0, gLat), smoothstep(0.0035, 0.0, gLon)) * 0.5;
         float fres = pow(1.0 - max(dot(normalize(vN), vec3(0.0, 0.0, 1.0)), 0.0), 2.2);
-        vec3 c = uOcean + uGrid * g;
+        vec3 c = uOcean + uGrid * g * 1.3;
         c = mix(c, uLand, dotMask);
-        c += uRim * fres * 0.55;
+        c += uRim * fres * 0.35;
         gl_FragColor = vec4(c, 1.0);
       }`,
     uniforms: {
       tLand: { value: tLand }, uRows: { value: 150 },
-      uOcean: { value: new Color('#151a21') }, uLand: { value: new Color('#c9ccd2') },
-      uGrid: { value: new Color('#3b4452') }, uRim: { value: new Color('#5b7aa6') }
+      uOcean: { value: new Color('#121417') }, uLand: { value: new Color('#d9d3c5') },
+      uGrid: { value: new Color('#3d3a34') }, uRim: { value: new Color('#6a6358') }
     }
   });
   const globe = new Mesh(gl, { geometry: new Sphere(gl, { radius: 1, widthSegments: 96, heightSegments: 64 }), program: globeProg });
@@ -160,7 +178,7 @@ export async function initGlobe(SUO) {
       void main() { vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
     fragment: /* glsl */ `
       precision highp float; varying vec3 vN;
-      void main() { float i = pow(0.62 - dot(vN, vec3(0.0, 0.0, 1.0)), 3.0); gl_FragColor = vec4(0.36, 0.5, 0.78, 1.0) * i * 1.4; }`,
+      void main() { float i = pow(0.62 - dot(vN, vec3(0.0, 0.0, 1.0)), 3.0); gl_FragColor = vec4(0.66, 0.6, 0.52, 1.0) * i * 0.5; }`,
     transparent: true, cullFace: gl.FRONT, depthWrite: false
   });
   haloProg.setBlendFunc(gl.SRC_ALPHA, gl.ONE);
@@ -220,7 +238,7 @@ export async function initGlobe(SUO) {
   let visible = false;
   ScrollTrigger.create({
     trigger: track, start: 'top top', end: 'bottom bottom',
-    onUpdate: (s) => { const p = Math.max(0, Math.min(1, (s.progress - 0.03) / 0.94)); km = p * L; }
+    onUpdate: (s) => { km = scrollKm(s); }
   });
   ScrollTrigger.create({ trigger: track, start: 'top bottom', end: 'bottom top', onToggle: (s) => { visible = s.isActive; } });
 
@@ -294,6 +312,11 @@ export async function initGlobe(SUO) {
       <circle class="fb-head" r="2" fill="#e2262e"/>`;
     const fl = $('.fb-line', svg); const len = fl.getTotalLength();
     const labs = $$('.fb-lab', svg); const fh = $('.fb-head', svg);
+    const placedT = [];
+    labs.forEach((g) => {
+      const tx = $('text', g); const x = +tx.getAttribute('x'); const y = +tx.getAttribute('y');
+      if (placedT.some((q) => Math.abs(q[0] - x) < 16 && Math.abs(q[1] - y) < 4.2)) tx.style.display = 'none'; else placedT.push([x, y]);
+    });
     const update = (k) => {
       // la longueur SVG n'est pas proportionnelle aux km : on s'appuie sur l'indice du point
       const h = at(k);
@@ -310,7 +333,7 @@ export async function initGlobe(SUO) {
       return;
     }
     update(0);
-    ScrollTrigger.create({ trigger: track, start: 'top top', end: 'bottom bottom', onUpdate: (s) => { const p = Math.max(0, Math.min(1, (s.progress - 0.03) / 0.94)); km = p * L; } });
+    ScrollTrigger.create({ trigger: track, start: 'top top', end: 'bottom bottom', onUpdate: (s) => { km = scrollKm(s); } });
     gsap.ticker.add(() => { if (Math.abs(km - shownKm) > 0.5) { shownKm += (km - shownKm) * 0.15; update(shownKm); } });
   }
 }

@@ -9,25 +9,25 @@ export default function home(SUO) {
   const hand = $('[data-hand]');
   const tip = $('[data-tip]');
   const linePath = $('.hero-line path');
-  let lineEnd = { x: 0, y: 0 }; let lineProgress = calm ? 1 : 0;
+  const axis = $('[data-axis]');
+  let lineProgress = calm ? 1 : 0;
+  // « prolongée tout droit » : la ligne suit l’axe de l’index jusqu’au bord de l’écran
   function heroLine() {
-    if (!hero || !tip) return;
-    const hr = hero.getBoundingClientRect(); const tr = tip.getBoundingClientRect();
+    if (!hero || !tip || !axis) return;
+    const hr = hero.getBoundingClientRect(); const tr = tip.getBoundingClientRect(); const ar = axis.getBoundingClientRect();
     const sx = tr.left + tr.width / 2 - hr.left; const sy = tr.top + tr.height / 2 - hr.top;
-    const narrow = hr.width < 860;
-    const ex = -20; const ey = (narrow ? 0.06 : 0.17) * hr.height + lineEnd.y * 0.2;
-    const cx = sx - hr.width * (narrow ? 0.1 : 0.18); const cy = Math.min(ey, sy) - hr.height * (narrow ? 0.02 : 0.06) + lineEnd.y * 0.1;
+    let dx = (tr.left + tr.width / 2) - (ar.left + ar.width / 2); let dy = (tr.top + tr.height / 2) - (ar.top + ar.height / 2);
+    if (dx > -1) { dx = -1; dy = 0; }
+    const t = (-24 - sx) / dx; const ex = sx + dx * t; const ey = sy + dy * t;
     const x2 = sx + (ex - sx) * lineProgress; const y2 = sy + (ey - sy) * lineProgress;
-    const qx = sx + (cx - sx) * lineProgress; const qy = sy + (cy - sy) * lineProgress;
-    linePath.setAttribute('d', `M${sx.toFixed(1)} ${sy.toFixed(1)} Q${qx.toFixed(1)} ${qy.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`);
+    linePath.setAttribute('d', `M${sx.toFixed(1)} ${sy.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)}`);
   }
   const h1 = $('#hero-title');
   function heroIntro() {
     if (calm) { heroLine(); return; }
-    const words = [];
-    $$('[data-l]', h1).forEach((sp) => { const s = new SplitText(sp, { type: 'lines,words', linesClass: 'split-line' }); words.push(...s.words); });
-    const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-    tl.from(words, { yPercent: 118, rotate: 4, duration: 1.3, stagger: 0.06 })
+    const sp = SUO.splitWords(h1);
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: () => sp.revert() });
+    tl.from(sp.words, { yPercent: 130, rotate: 4, duration: 1.3, stagger: 0.06 })
       .from(hand, { xPercent: 40, rotate: 6, opacity: 0, duration: 1.6 }, 0.1)
       .from('.hero-sub > *', { y: 24, opacity: 0, duration: 1, stagger: 0.12 }, 0.6)
       .from('.hero-coords', { opacity: 0, duration: 0.8 }, 1.1)
@@ -48,7 +48,7 @@ export default function home(SUO) {
       hero.addEventListener('pointermove', (e) => {
         const r = hero.getBoundingClientRect();
         const nx = (e.clientX - r.left) / r.width - 0.5; const ny = (e.clientY - r.top) / r.height - 0.5;
-        hx(nx * -24); lineEnd.y = ny * 160; wake();
+        hx(nx * -24); wake();
       });
     }
     const heroTick = () => { if (performance.now() < activeUntil) heroLine(); };
@@ -95,7 +95,7 @@ export default function home(SUO) {
         gsap.set([medal, hereFig], { autoAlpha: 0, y: 40 });
         gsap.set(aim, { opacity: 0 }); gsap.set(miss, { strokeDashoffset: () => +miss.dataset.len });
         gsap.set(target, { strokeDashoffset: () => +target.dataset.len });
-        const tl = gsap.timeline({ scrollTrigger: { trigger: '.q-pin', start: 'top top', end: '+=200%', pin: true, scrub: 0.6, onRefresh: geo, invalidateOnRefresh: true } });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: '.q-pin', start: 'top top', end: '+=150%', pin: true, scrub: 0.6, onRefresh: geo, invalidateOnRefresh: true } });
         tl.from('.q-stage .statue', { y: 60, rotate: 2, duration: 1 })
           .to(steps[0], { autoAlpha: 0, y: -30, duration: 0.6 }, 1.2)
           .to(steps[1], { autoAlpha: 1, y: 0, duration: 0.6 }, 1.5)
@@ -153,7 +153,7 @@ export default function home(SUO) {
     mm.add({ desk: '(min-width: 861px)' }, () => {
       if (calm) { $('[data-strip-scroller]').style.overflowX = 'auto'; return; }
       const dist = () => Math.max(0, strip.scrollWidth - window.innerWidth + 40);
-      const tw = gsap.fromTo(strip, { x: 20 }, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '.strip-wrap', start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 0.5, invalidateOnRefresh: true } });
+      const tw = gsap.fromTo(strip, { x: 20 }, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '.strip-wrap', start: 'center center', end: () => '+=' + Math.round(dist() * 0.6), pin: true, scrub: 0.5, invalidateOnRefresh: true } });
       // au clavier, la photo qui reçoit le focus est amenée à l’écran
       const onFocus = (e) => {
         const f = e.target.closest('.frame'); if (!f) return;
@@ -180,6 +180,12 @@ export default function home(SUO) {
       import('./globe.js').then((m) => m.initGlobe(SUO)).then(() => ScrollTrigger.refresh()).catch((e) => console.warn('globe', e));
     };
     ScrollTrigger.create({ trigger: '[data-globe-track]', start: 'top bottom+=150%', end: 'bottom top', once: true, onEnter: start, onEnterBack: start });
+  }
+
+  /* ---------- la réponse ---------- */
+  if ($('[data-answer]') && !calm) {
+    gsap.from('.answer-map', { y: 80, rotate: 5, opacity: 0, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: '[data-answer]', start: 'top 72%', once: true } });
+    gsap.from('.answer .lede, .answer-cta', { y: 24, opacity: 0, duration: 1, stagger: 0.12, ease: 'expo.out', scrollTrigger: { trigger: '[data-answer]', start: 'top 65%', once: true } });
   }
 
   /* ---------- aperçu de l'exposition ---------- */
@@ -282,21 +288,24 @@ export default function home(SUO) {
   /* ---------- le Livre sous la Place ---------- */
   const book = $('[data-book]');
   if (book) {
-    const lsteps = $$('[data-lstep]'); const star = $('.paving .star'); const scene = $('[data-book-scene]');
+    const lsteps = $$('[data-lstep]'); const star = $('.paving .star'); const scene = $('[data-book-scene]'); const real = $('[data-book-real]');
     mm.add({ desk: '(min-width: 901px)', mob: '(max-width: 900px)' }, (ctx) => {
       if (calm) { gsap.set(book, { rotateY: -28 }); return; }
       if (ctx.conditions.desk) {
         gsap.set(lsteps.slice(1), { autoAlpha: 0, y: 30 });
+        gsap.set(real, { autoAlpha: 0, y: 40, rotate: -2 });
         const drop = () => scene.clientHeight * 0.52;
-        const tl = gsap.timeline({ scrollTrigger: { trigger: '.livre-pin', start: 'top top', end: '+=190%', pin: true, scrub: 0.8, invalidateOnRefresh: true } });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: '.livre-pin', start: 'top top', end: '+=210%', pin: true, scrub: 0.8, invalidateOnRefresh: true } });
         tl.fromTo(book, { rotateY: -28, rotateX: -12, y: 0 }, { rotateY: 332, duration: 2, ease: 'none' })
           .to(lsteps[0], { autoAlpha: 0, y: -30, duration: 0.4 }, 1.8)
           .to(lsteps[1], { autoAlpha: 1, y: 0, duration: 0.4 }, 2.1)
           .to(book, { rotateX: -78, rotateY: 360, y: drop, scale: 0.42, duration: 1.4, ease: 'power2.in' }, 2.1)
           .to(book, { autoAlpha: 0, duration: 0.3 }, 3.4)
           .fromTo(star, { opacity: 0, yPercent: -140 }, { opacity: 1, yPercent: 0, duration: 0.9, ease: 'power3.out' }, 3.4)
-          .to(lsteps[1], { autoAlpha: 0, y: -30, duration: 0.4 }, 3.8)
-          .to(lsteps[2], { autoAlpha: 1, y: 0, duration: 0.4 }, 4.1)
+          .to(real, { autoAlpha: 1, y: 0, rotate: 1.5, duration: 0.8, ease: 'power3.out' }, 4.0)
+          .to('.paving', { opacity: 0.35, duration: 0.6 }, 4.0)
+          .to(lsteps[1], { autoAlpha: 0, y: -30, duration: 0.4 }, 4.2)
+          .to(lsteps[2], { autoAlpha: 1, y: 0, duration: 0.4 }, 4.5)
           .to({}, { duration: 0.5 });
       } else {
         gsap.to(book, { rotateY: 300, ease: 'none', scrollTrigger: { trigger: scene, start: 'top bottom', end: 'bottom top', scrub: true } });
@@ -324,7 +333,7 @@ export default function home(SUO) {
       tabs.forEach((b) => { const on = b.dataset.itin === String(n); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
       $$('.itin-panel').forEach((p) => { p.hidden = p.id !== `itin-${n}`; });
       const panel = $(`#itin-${n}`);
-      if (panel && !calm) gsap.from($$('li', panel), { x: -16, opacity: 0, stagger: 0.025, duration: 0.6, ease: 'expo.out' });
+      if (panel && !calm) gsap.from($$('li:not(.more)', panel), { x: -16, opacity: 0, stagger: 0.025, duration: 0.6, ease: 'expo.out' });
       if (panel) panel.scrollTop = 0;
     };
     tabs.forEach((b, i) => {
@@ -336,7 +345,14 @@ export default function home(SUO) {
         show(tabs[(i + d + tabs.length) % tabs.length].dataset.itin, true);
       });
     });
-    if (!calm) gsap.from('#itin-1 li', { x: -16, opacity: 0, stagger: 0.03, duration: 0.7, ease: 'expo.out', scrollTrigger: { trigger: '.itin-panels', start: 'top 75%', once: true } });
+    // la liste complète s’ouvre dans la page, sans zone de défilement imbriquée
+    $$('[data-itin-more]').forEach((btn) => btn.addEventListener('click', () => {
+      const panel = btn.closest('.itin-panel'); const on = !panel.classList.contains('is-expanded');
+      panel.classList.toggle('is-expanded', on); btn.setAttribute('aria-expanded', String(on));
+      btn.hidden = on; ScrollTrigger.refresh();
+      const first = $('li.more', panel); if (first && !calm) gsap.from($$('li.more', panel), { x: -16, opacity: 0, stagger: 0.02, duration: 0.6, ease: 'expo.out' });
+    }));
+    if (!calm) gsap.from('#itin-1 li:not(.more)', { x: -16, opacity: 0, stagger: 0.03, duration: 0.7, ease: 'expo.out', scrollTrigger: { trigger: '.itin-panels', start: 'top 75%', once: true } });
   }
 
   /* ---------- itinéraire ---------- */

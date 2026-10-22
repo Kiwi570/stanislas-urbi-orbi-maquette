@@ -5,12 +5,12 @@ export default async function wall(SUO) {
 
   /* héros */
   if (!calm) {
-    const h1 = $('#pr-title'); const words = [];
-    $$('[data-l]', h1).forEach((sp) => { const s = new SplitText(sp, { type: 'lines,words', linesClass: 'split-line' }); words.push(...s.words); });
-    gsap.timeline({ delay: 0.15, defaults: { ease: 'expo.out' } })
-      .from(words, { yPercent: 118, duration: 1.2, stagger: 0.07 })
+    const sp = SUO.splitWords($('#pr-title'));
+    gsap.timeline({ delay: 0.15, defaults: { ease: 'expo.out' }, onComplete: () => sp.revert() })
+      .from(sp.words, { yPercent: 130, duration: 1.2, stagger: 0.07 })
       .from('.pr-hero .lede, .pr-hero .small', { y: 20, opacity: 0, duration: 1, stagger: 0.1 }, 0.5)
-      .from('.pr-hero .ph-art', { scale: 1.08, duration: 2.4 }, 0);
+      .from('.pr-hero .ph-art', { scale: 1.08, duration: 2.4 }, 0)
+      .from('.pr-studio', { yPercent: -30, rotate: -6, opacity: 0, duration: 1.5 }, 0.1);
     gsap.from('.pr-photos figure', { y: 60, opacity: 0, stagger: 0.08, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.pr-photos', start: 'top 85%', once: true } });
   }
 
@@ -86,7 +86,7 @@ export default async function wall(SUO) {
     for (const it of items) {
       if (it.x < wx0 || it.x > wx1 || it.y < wy0 || it.y > wy1) continue;
       const [sx, sy] = toScreen(it.x, it.y);
-      const dim = highlightFiche && it.f !== highlightFiche;
+      const dim = (highlightFiche && it.f !== highlightFiche) || (hiColor !== null && colors && colors[it.i].cat !== hiColor);
       ctx.globalAlpha = dim ? 0.16 : it.a;
       const im = big ? getImg(it) : null;
       if (im) ctx.drawImage(im, it.s * PW, 0, PW, PH, sx, sy, cw, ch);
@@ -178,14 +178,26 @@ export default async function wall(SUO) {
   const end = (e) => {
     pointers.delete(e.pointerId);
     if (pointers.size < 2) pinch = null;
-    if (e.type === 'pointerup' && drag && moved < 6) { const p = local(e); const h = hit(p[0], p[1]); if (h) open(h); }
+    if (e.type === 'pointerup' && drag && moved < 6) tap(local(e), e.pointerType);
     drag = null;
+  };
+  let tapTimer = 0;
+  const zoomAt = (sx, sy, z) => {
+    const [wx, wy] = toWorld(sx, sy);
+    target.z = z; clampCam();
+    target.x = wx - (sx - W / 2) / target.z; target.y = wy - (sy - H / 2) / target.z; clampCam(); dirty = true;
+  };
+  const tap = ([sx, sy], type) => {
+    const h = hit(sx, sy);
+    if (CELL_H * cam.z < 56) { zoomAt(sx, sy, Math.max(target.z * 2.6, 60 / CELL_H)); return; }
+    if (!h) return;
+    clearTimeout(tapTimer);
+    if (type === 'mouse') tapTimer = setTimeout(() => open(h), 240); else open(h);
   };
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
   cv.addEventListener('dblclick', (e) => {
-    const [sx, sy] = local(e); const [wx, wy] = toWorld(sx, sy);
-    target.z *= 2; clampCam();
-    target.x = wx - (sx - W / 2) / target.z; target.y = wy - (sy - H / 2) / target.z; clampCam();
+    clearTimeout(tapTimer);
+    const [sx, sy] = local(e); zoomAt(sx, sy, target.z * 2);
   });
 
   // sur écran tactile : le mur laisse défiler la page ; « Explorer » l’ouvre en plein écran
@@ -226,13 +238,67 @@ export default async function wall(SUO) {
   });
 
   $$('[data-wall-zoom]').forEach((b) => b.addEventListener('click', () => { target.z *= +b.dataset.wallZoom > 0 ? 1.6 : 1 / 1.6; clampCam(); }));
-  $('[data-wall-fit]').addEventListener('click', () => { highlightFiche = 0; target.z = fitZoom(); target.x = WORLD_W / 2; target.y = WORLD_H / 2; dirty = true; });
-  $('[data-wall-shuffle]').addEventListener('click', () => { highlightFiche = 0; shuffle(); items.forEach((it) => { it.sp = 0.04 + Math.random() * 0.1; }); placeAll(calm); dirty = true; });
+  $('[data-wall-fit]').addEventListener('click', () => { highlightFiche = 0; hiColor = null; target.z = fitZoom(); target.x = WORLD_W / 2; target.y = WORLD_H / 2; dirty = true; });
+  $('[data-wall-shuffle]').addEventListener('click', () => { highlightFiche = 0; hiColor = null; shuffle(); items.forEach((it) => { it.sp = 0.04 + Math.random() * 0.1; }); placeAll(calm); dirty = true; });
   const byFiche = () => { order = items.map((it) => it.i); items.forEach((it) => { it.sp = 0.06 + Math.random() * 0.06; }); placeAll(calm); };
-  $('[data-wall-order]').addEventListener('click', () => { highlightFiche = 0; byFiche(); dirty = true; });
+  $('[data-wall-order]').addEventListener('click', () => { highlightFiche = 0; hiColor = null; byFiche(); dirty = true; });
+
+  // couleur dominante de chaque portrait, lue une seule fois dans l’atlas
+  let colors = null; let hiColor = null;
+  const CATS = ['rouge', 'orange', 'jaune', 'vert', 'bleu', 'violet', 'noir', 'gris', 'blanc'];
+  const readColors = () => {
+    if (colors) return colors;
+    const c = document.createElement('canvas'); c.width = atlas.naturalWidth; c.height = atlas.naturalHeight;
+    const g = c.getContext('2d', { willReadFrequently: true }); g.drawImage(atlas, 0, 0);
+    let d; try { d = g.getImageData(0, 0, c.width, c.height).data; } catch (e) { return null; }
+    colors = items.map((it) => {
+      const x0 = (it.i % ACOLS) * CW; const y0 = Math.floor(it.i / ACOLS) * CH;
+      const hist = new Float32Array(6); let fg = 0; let sat = 0; let lum = 0; let hueSum = 0;
+      for (let y = y0 + 2; y < y0 + CH - 2; y += 2) {
+        for (let x = x0 + 2; x < x0 + CW - 2; x += 2) {
+          const o = (y * c.width + x) * 4; const r = d[o] / 255; const gg = d[o + 1] / 255; const b = d[o + 2] / 255;
+          const mx = Math.max(r, gg, b); const mn = Math.min(r, gg, b);
+          if (mn > 0.86) continue; // fond du studio
+          fg++; lum += (r + gg + b) / 3;
+          const sv = mx ? (mx - mn) / mx : 0; if (sv < 0.32 || mx < 0.18) continue;
+          let h = 0; const dd = mx - mn;
+          if (mx === r) h = ((gg - b) / dd) % 6; else if (mx === gg) h = (b - r) / dd + 2; else h = (r - gg) / dd + 4;
+          h = (h * 60 + 360) % 360;
+          if (h > 8 && h < 40 && sv < 0.62) continue; // peau
+          const bin = h < 15 || h >= 330 ? 0 : h < 45 ? 1 : h < 70 ? 2 : h < 170 ? 3 : h < 260 ? 4 : 5;
+          hist[bin]++; sat++; hueSum += h;
+        }
+      }
+      lum = fg ? lum / fg : 1;
+      let cat; let best = 0;
+      for (let k = 0; k < 6; k++) if (hist[k] > hist[best]) best = k;
+      if (fg && hist[best] / fg > 0.1) cat = best; else cat = lum < 0.34 ? 6 : lum < 0.6 ? 7 : 8;
+      return { cat, lum, hue: sat ? hueSum / sat : 0 };
+    });
+    return colors;
+  };
+  const byColor = () => {
+    const col = readColors(); if (!col) return false;
+    order = items.map((it) => it.i).sort((a, b) => (col[a].cat - col[b].cat) || (col[a].cat < 6 ? col[a].hue - col[b].hue : col[b].lum - col[a].lum));
+    items.forEach((it) => { it.sp = 0.05 + Math.random() * 0.07; }); placeAll(calm); return true;
+  };
+  const colorBtn = $('[data-wall-color]');
+  if (colorBtn) colorBtn.addEventListener('click', () => { highlightFiche = 0; hiColor = null; if (byColor()) { target.z = fitZoom(); target.x = WORLD_W / 2; target.y = WORLD_H / 2; } dirty = true; });
+  const colorSel = $('[data-wall-colorpick]');
+  if (colorSel) colorSel.addEventListener('change', (e) => {
+    const cat = CATS.indexOf(e.target.value); if (cat < 0) { hiColor = null; dirty = true; return; }
+    if (!byColor()) return;
+    highlightFiche = 0; hiColor = cat;
+    const ks = order.map((idx, k) => (colors[idx].cat === cat ? k : -1)).filter((k) => k >= 0);
+    if (!ks.length) return;
+    const k0 = ks[0]; const k1 = ks[ks.length - 1];
+    const y0 = Math.floor(k0 / COLS) * (CELL_H + GAP); const y1 = Math.floor(k1 / COLS) * (CELL_H + GAP) + CELL_H;
+    target.z = Math.min(1.1, Math.min(W / (WORLD_W * 0.5 + 200), H / (y1 - y0 + 300)));
+    target.x = WORLD_W / 2; target.y = (y0 + y1) / 2; clampCam(); dirty = true;
+  });
   $('[data-wall-fiche]').addEventListener('change', (e) => {
     const f = +e.target.value; if (!f) return;
-    byFiche(); highlightFiche = f;
+    byFiche(); highlightFiche = f; hiColor = null;
     const ks = order.map((idx, k) => (items[idx].f === f ? k : -1)).filter((k) => k >= 0);
     const k0 = ks[0]; const k1 = ks[ks.length - 1];
     const x0 = (k0 % COLS) * (CELL_W + GAP); const x1 = (k1 % COLS) * (CELL_W + GAP) + CELL_W;

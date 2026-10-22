@@ -24,7 +24,7 @@ const store = {
 try { history.scrollRestoration = 'manual'; } catch (e) { /* ignore */ }
 const SUO = (window.SUO = { gsap, ScrollTrigger, isCalm, lang, fine, $, $$, langFns: [], ready: [] });
 SUO.onLang = (fn) => SUO.langFns.push(fn);
-SUO.fmt = (n, d = 0) => new Intl.NumberFormat(lang() === 'en' ? 'en-GB' : 'fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d }).format(n);
+SUO.fmt = (n, d = 0) => new Intl.NumberFormat(lang() === 'en' ? 'en-GB' : 'fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d }).format(n).replace(/\u202f/g, '\u00a0');
 
 /* ---------- langue ---------- */
 function applyLang(l) {
@@ -54,8 +54,7 @@ $$('[data-set-lang]').forEach((b) => b.addEventListener('click', () => {
 }));
 
 /* ---------- mode calme ---------- */
-const calmBtn = $('[data-calm]');
-if (calmBtn) {
+$$('[data-calm]').forEach((calmBtn) => {
   calmBtn.setAttribute('aria-pressed', String(isCalm()));
   calmBtn.addEventListener('click', () => {
     store.set('suo-calm', isCalm() ? '0' : '1');
@@ -63,7 +62,15 @@ if (calmBtn) {
     store.sset('suo-seen', '1');
     location.reload();
   });
-}
+});
+
+/* ---------- notes de maquette (« à compléter », « illustratif ») : visibles par défaut ---------- */
+const applyNotes = (on) => { html.classList.toggle('hide-notes', !on); $$('[data-notes]').forEach((b) => b.setAttribute('aria-pressed', String(on))); };
+applyNotes(store.get('suo-notes') !== '0');
+$$('[data-notes]').forEach((b) => b.addEventListener('click', () => {
+  const on = html.classList.contains('hide-notes');
+  store.set('suo-notes', on ? '1' : '0'); applyNotes(on); ScrollTrigger.refresh();
+}));
 
 /* ---------- son (uniquement après un geste du visiteur) ---------- */
 const sound = (SUO.sound = { on: false, ctx: null, master: null,
@@ -107,11 +114,11 @@ const sound = (SUO.sound = { on: false, ctx: null, master: null,
     o.connect(g); g.connect(this.master); o.start(); o.stop(ctx.currentTime + 1.5);
   }
 });
-const soundBtn = $('[data-sound]');
-if (soundBtn) soundBtn.addEventListener('click', () => {
+const soundBtns = $$('[data-sound]');
+soundBtns.forEach((b) => b.addEventListener('click', () => {
   if (sound.on) sound.stop(); else sound.start();
-  soundBtn.setAttribute('aria-pressed', String(sound.on));
-});
+  soundBtns.forEach((x) => x.setAttribute('aria-pressed', String(sound.on)));
+}));
 
 /* ---------- défilement fluide ---------- */
 let lenis = null;
@@ -146,6 +153,14 @@ document.addEventListener('click', (e) => {
   focusTarget(el);
   history.replaceState(null, '', url.hash);
 });
+/* fragment changé sans clic (barre d’adresse, historique) : même trajet qu’un lien interne */
+window.addEventListener('hashchange', () => {
+  const el = location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+  if (!el) return;
+  const custom = new CustomEvent('suo:goto', { detail: { id: el.id, instant: true }, cancelable: true });
+  if (document.dispatchEvent(custom)) SUO.scrollTo(el, { immediate: true, force: true });
+  focusTarget(el);
+});
 function focusTarget(el) {
   if (!el.matches('a, button, input, select, textarea, [tabindex]')) el.setAttribute('tabindex', '-1');
   el.focus({ preventScroll: true });
@@ -156,6 +171,9 @@ SUO.focusTarget = focusTarget;
 const header = $('.site-header');
 let chapterReady = false;
 const thread = $('.thread'); const threadHead = $('.thread-head'); const threadFill = $('.thread-fill');
+const threadLabel = document.createElement('span');
+threadLabel.className = 'thread-label';
+if (thread) thread.appendChild(threadLabel);
 ScrollTrigger.create({
   start: 0, end: 'max',
   onUpdate(self) {
@@ -163,7 +181,9 @@ ScrollTrigger.create({
     header.classList.toggle('is-solid', y > 40);
     const p = self.progress;
     if (threadFill) threadFill.style.transform = `scaleY(${p})`;
-    if (threadHead) threadHead.style.transform = `translateY(${(p * (thread ? thread.clientHeight : 0)).toFixed(1)}px)`;
+    const hy = p * (thread ? thread.clientHeight : 0);
+    if (threadHead) threadHead.style.transform = `translateY(${hy.toFixed(1)}px)`;
+    if (threadLabel) threadLabel.style.transform = `translateY(${Math.max(hy, 150).toFixed(1)}px) translate(-50%, -50%)`;
     if (chapterReady) updateChapter(y);
   }
 });
@@ -172,9 +192,6 @@ ScrollTrigger.create({
 let chapters = [];
 let curChapter = -1;
 let labelTimer = 0;
-const threadLabel = document.createElement('span');
-threadLabel.className = 'thread-label';
-if (thread) thread.appendChild(threadLabel);
 function layoutChapters() {
   if (!thread) return;
   $$('.thread-tick', thread).forEach((t) => t.remove());
@@ -236,7 +253,7 @@ document.addEventListener('keydown', (e) => {
   if (!menuOpen) return;
   if (e.key === 'Escape') { closeMenu(true); return; }
   if (e.key === 'Tab') {
-    const f = [menuBtn, ...$$('#mobile-nav a')]; const i = f.indexOf(document.activeElement);
+    const f = [menuBtn, ...$$('#mobile-nav a, #mobile-nav button')]; const i = f.indexOf(document.activeElement);
     if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
     else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
   }
@@ -250,10 +267,9 @@ if (fine && !isCalm() && cursor) {
   const label = $('.cursor-label', cursor);
   const qx = gsap.quickTo(cursor, 'x', { duration: 0.18, ease: 'power3' });
   const qy = gsap.quickTo(cursor, 'y', { duration: 0.18, ease: 'power3' });
-  window.addEventListener('pointermove', (e) => {
-    qx(e.clientX); qy(e.clientY);
-    cursor.classList.add('is-live');
-    const t = e.target;
+  let lastPt = null;
+  const cursorState = (t) => {
+    if (!t || !t.closest) return;
     const zoom = t.closest && t.closest('[data-zoomable]');
     const inter = t.closest && t.closest('a, button, select, input, textarea, label, [data-wall]');
     const cross = t.closest && t.closest('[data-cursor="cross"]');
@@ -261,9 +277,18 @@ if (fine && !isCalm() && cursor) {
     cursor.classList.toggle('is-cross', !!cross && !inter && !zoom);
     cursor.classList.toggle('has-label', !!zoom);
     if (zoom) label.textContent = lang() === 'en' ? 'enlarge' : 'agrandir';
-    else if (cross) label.textContent = lang() === 'en' ? 'sighting' : 'visée';
+    else if (cross && !inter) label.textContent = lang() === 'en' ? 'sighting' : 'visée';
+    else label.textContent = '';
+  };
+  SUO.cursorRefresh = () => { if (lastPt) cursorState(document.elementFromPoint(lastPt[0], lastPt[1])); };
+  window.addEventListener('pointermove', (e) => {
+    qx(e.clientX); qy(e.clientY); lastPt = [e.clientX, e.clientY];
+    cursor.classList.add('is-live');
+    cursorState(e.target);
   }, { passive: true });
   document.documentElement.addEventListener('pointerleave', () => cursor.classList.remove('is-live'));
+  let cq = 0;
+  window.addEventListener('scroll', () => { if (!cq) cq = requestAnimationFrame(() => { cq = 0; SUO.cursorRefresh(); }); }, { passive: true });
 }
 
 /* ---------- boutons magnétiques & inclinaisons ---------- */
@@ -292,19 +317,33 @@ if (fine && !isCalm()) {
 }
 
 /* ---------- titres révélés ---------- */
+/* découpe d’un titre de héros : langue affichée seulement */
+SUO.splitWords = (h) => {
+  const sp = $$('[data-l]', h); const tg = sp.length ? (sp.find((x) => x.dataset.l === lang()) || sp[0]) : h;
+  return new SplitText(tg, { type: 'lines,words', linesClass: 'split-line' });
+};
 function splitHeadings() {
   $$('[data-split]').forEach((el) => {
     if (el.closest('.hero') || isCalm()) { el.classList.add('is-split'); return; }
-    const targets = $$('[data-l]', el).length ? $$('[data-l]', el) : [el];
-    const words = [];
-    targets.forEach((tg) => {
-      const s = new SplitText(tg, { type: 'lines,words', linesClass: 'split-line' });
-      words.push(...s.words);
-    });
+    // seule la langue affichée est découpée ; le titre retrouve son texte d’origine après l’animation
+    let split = null; let tween = null; let done = false;
+    const target = () => { const sp = $$('[data-l]', el); return sp.length ? (sp.find((x) => x.dataset.l === lang()) || sp[0]) : el; };
+    const arm = () => {
+      split = new SplitText(target(), { type: 'lines,words', linesClass: 'split-line' });
+      const sp = split;
+      tween = gsap.from(sp.words, {
+        yPercent: 130, rotate: 3, duration: 1.1, ease: 'expo.out', stagger: 0.045,
+        scrollTrigger: { trigger: el, start: 'top 86%', once: true },
+        onComplete: () => { done = true; sp.revert(); }
+      });
+    };
+    arm();
     el.classList.add('is-split');
-    gsap.from(words, {
-      yPercent: 115, rotate: 3, duration: 1.1, ease: 'expo.out', stagger: 0.045,
-      scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+    SUO.onLang(() => {
+      if (done || !tween) return;
+      if (tween.progress() > 0) { tween.progress(1); return; }
+      if (tween.scrollTrigger) tween.scrollTrigger.kill();
+      tween.kill(); split.revert(); arm();
     });
   });
 }
@@ -384,7 +423,7 @@ function lbRender() {
   lb.classList.toggle('is-portrait', !!el.dataset.mail);
   const L = lang() === 'en';
   lbInfo.innerHTML = `<h3 class="h3"></h3>
-    ${wall ? `<p class="small">${L ? 'Dimensions to be completed: the wall view uses an indicative scale.' : 'Dimensions à compléter : la vue au mur utilise une échelle indicative.'}</p>` : ''}
+    ${wall ? `<p class="small todo-dim">${L ? 'Dimensions to be completed: the wall view uses an indicative scale.' : 'Dimensions à compléter : la vue au mur utilise une échelle indicative.'}</p>` : ''}
     <div class="lb-nav">
       ${lbItems.length > 1 ? `<button type="button" class="tool" data-lb-prev>${L ? 'Previous' : 'Précédente'}</button><button type="button" class="tool" data-lb-next>${L ? 'Next' : 'Suivante'}</button>` : ''}
       ${wall ? `<button type="button" class="tool" data-lb-wall aria-pressed="false">${L ? 'See on the wall' : 'Voir au mur'}</button>` : ''}
@@ -400,8 +439,32 @@ SUO.openLightbox = (el, group) => {
   lb.classList.add('is-open');
   lenis && lenis.stop();
   $('[data-lb-close]', lb).focus();
+  if (SUO.cursorRefresh) requestAnimationFrame(SUO.cursorRefresh);
+  // l’image part de sa vignette pour rejoindre la visionneuse
+  const thumb = el.querySelector && el.querySelector('img');
+  if (isCalm()) return;
+  gsap.fromTo(lb, { backgroundColor: 'rgba(14,17,21,0)' }, { backgroundColor: 'rgba(14,17,21,1)', duration: 0.45, ease: 'power2.out', clearProps: 'backgroundColor' });
+  gsap.fromTo(lbInfo, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.15, ease: 'expo.out', clearProps: 'all' });
+  const tr = thumb && thumb.getBoundingClientRect();
+  const flip = () => {
+    const fr = lbImg.getBoundingClientRect();
+    lbImg.style.transition = 'none';
+    if (tr && tr.width > 4 && fr.width > 4 && tr.bottom > 0 && tr.top < window.innerHeight) {
+      gsap.fromTo(lbImg, { x: tr.left - fr.left, y: tr.top - fr.top, scaleX: tr.width / fr.width, scaleY: tr.height / fr.height, transformOrigin: '0 0' },
+        { x: 0, y: 0, scaleX: 1, scaleY: 1, duration: 0.7, ease: 'expo.out', clearProps: 'transform,transformOrigin', onComplete: () => { lbImg.style.transition = ''; } });
+    } else {
+      gsap.fromTo(lbImg, { opacity: 0, scale: 0.96 }, { opacity: 1, scale: 1, duration: 0.5, ease: 'expo.out', clearProps: 'opacity,transform', onComplete: () => { lbImg.style.transition = ''; } });
+    }
+  };
+  gsap.set(lbImg, { opacity: 0 });
+  const ready = lbImg.getAttribute('src') && lbImg.decode ? lbImg.decode().catch(() => {}) : Promise.resolve();
+  Promise.race([ready, new Promise((r) => setTimeout(r, 600))]).then(() => { if (!lb.classList.contains('is-open')) return; gsap.set(lbImg, { opacity: 1 }); flip(); });
 };
-function lbClose() { lb.classList.remove('is-open', 'is-wall'); lenis && lenis.start(); lbReturn && lbReturn.focus && lbReturn.focus(); }
+function lbClose() {
+  lb.classList.remove('is-open', 'is-wall'); lenis && lenis.start();
+  lbReturn && lbReturn.focus && lbReturn.focus({ preventScroll: true });
+  SUO.cursorRefresh && SUO.cursorRefresh();
+}
 if (lb) {
   lb.addEventListener('click', (e) => {
     if (e.target.closest('[data-lb-close]') || e.target === lb) return lbClose();
