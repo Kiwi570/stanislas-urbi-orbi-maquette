@@ -7,6 +7,9 @@ const { gsap, ScrollTrigger, SplitText } = window;
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+ScrollTrigger.config({ ignoreMobileResize: true });
+const debounce = (fn, ms = 150) => { let t = 0; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };
+const navType = (() => { try { const n = performance.getEntriesByType('navigation')[0]; return n ? n.type : 'navigate'; } catch (e) { return 'navigate'; } })();
 const isCalm = () => html.classList.contains('calm');
 const lang = () => html.dataset.lang || 'fr';
 const $ = (s, r = document) => r.querySelector(s);
@@ -30,6 +33,18 @@ function applyLang(l) {
   $$('[data-set-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === l)));
   $$('[data-alt-fr]').forEach((im) => { im.alt = im.dataset[l === 'en' ? 'altEn' : 'altFr']; });
   $$('option[data-l-fr]').forEach((o) => { o.textContent = o.dataset[l === 'en' ? 'lEn' : 'lFr']; });
+  $$('[data-aria-en]').forEach((el) => {
+    if (!el.dataset.ariaFr) el.dataset.ariaFr = el.getAttribute('aria-label') || '';
+    el.setAttribute('aria-label', l === 'en' ? el.dataset.ariaEn : el.dataset.ariaFr);
+  });
+  $$('[data-title-en]').forEach((el) => {
+    if (!el.dataset.titleFr) el.dataset.titleFr = el.getAttribute('title') || '';
+    el.setAttribute('title', l === 'en' ? el.dataset.titleEn : el.dataset.titleFr);
+  });
+  const desc = document.querySelector('meta[name="description"]'); const descEn = document.querySelector('meta[name="x-description-en"]');
+  if (desc && descEn) { if (!desc.dataset.fr) desc.dataset.fr = desc.content; desc.content = l === 'en' ? descEn.content : desc.dataset.fr; }
+  const tEn = document.querySelector('meta[name="x-title-en"]');
+  if (tEn) { if (!html.dataset.titleFr) html.dataset.titleFr = document.title; document.title = l === 'en' ? tEn.content : html.dataset.titleFr; }
   SUO.langFns.forEach((fn) => fn(l));
 }
 $$('[data-set-lang]').forEach((b) => b.addEventListener('click', () => {
@@ -116,10 +131,11 @@ SUO.scrollTo = (target, opts = {}) => {
   }
 };
 document.addEventListener('click', (e) => {
-  const a = e.target.closest('a[href^="#"], a[href*=".html#"]');
+  const a = e.target.closest('a[href*="#"]');
   if (!a) return;
   const url = new URL(a.href, location.href);
-  if (url.pathname !== location.pathname || !url.hash || url.hash === '#') return;
+  const norm = (p) => p.replace(/\/index(\.html)?$/, '/').replace(/\.html$/, '');
+  if (url.origin !== location.origin || norm(url.pathname) !== norm(location.pathname) || !url.hash || url.hash === '#') return;
   const el = document.getElementById(decodeURIComponent(url.hash.slice(1)));
   if (!el) return;
   e.preventDefault();
@@ -127,23 +143,73 @@ document.addEventListener('click', (e) => {
   const custom = new CustomEvent('suo:goto', { detail: { id: el.id }, cancelable: true });
   if (!document.dispatchEvent(custom)) return;
   SUO.scrollTo(el, { offset: 0 });
+  focusTarget(el);
   history.replaceState(null, '', url.hash);
 });
+function focusTarget(el) {
+  if (!el.matches('a, button, input, select, textarea, [tabindex]')) el.setAttribute('tabindex', '-1');
+  el.focus({ preventScroll: true });
+}
+SUO.focusTarget = focusTarget;
 
 /* ---------- en-tête, menu, fil rouge ---------- */
 const header = $('.site-header');
-let lastY = 0;
+let chapterReady = false;
+const thread = $('.thread'); const threadHead = $('.thread-head'); const threadFill = $('.thread-fill');
 ScrollTrigger.create({
   start: 0, end: 'max',
   onUpdate(self) {
     const y = self.scroll();
     header.classList.toggle('is-solid', y > 40);
-    lastY = y;
     const p = self.progress;
-    gsap.set('.thread-fill', { scaleY: p });
-    gsap.set('.thread-head', { top: (p * 100) + '%' });
+    if (threadFill) threadFill.style.transform = `scaleY(${p})`;
+    if (threadHead) threadHead.style.transform = `translateY(${(p * (thread ? thread.clientHeight : 0)).toFixed(1)}px)`;
+    if (chapterReady) updateChapter(y);
   }
 });
+
+/* ---------- chapitres sur le fil rouge + navigation active ---------- */
+let chapters = [];
+let curChapter = -1;
+let labelTimer = 0;
+const threadLabel = document.createElement('span');
+threadLabel.className = 'thread-label';
+if (thread) thread.appendChild(threadLabel);
+function layoutChapters() {
+  if (!thread) return;
+  $$('.thread-tick', thread).forEach((t) => t.remove());
+  const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  chapters = $$('[data-chapter]').map((el) => {
+    const [fr, en] = el.dataset.chapter.split('|');
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    const p = Math.min(1, Math.max(0, top / max));
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'thread-tick'; b.style.top = (p * 100) + '%';
+    b.innerHTML = `<span data-l="fr" lang="fr">${fr}</span><span data-l="en" lang="en">${en || fr}</span>`;
+    b.addEventListener('click', () => SUO.scrollTo(el));
+    thread.appendChild(b);
+    return { el, top, fr, en: en || fr, b, nav: el.id };
+  });
+  curChapter = -1;
+  updateChapter(window.scrollY);
+}
+function updateChapter(y) {
+  if (!chapters.length) return;
+  let i = -1;
+  chapters.forEach((c, k) => { if (y + window.innerHeight * 0.4 >= c.top) i = k; });
+  if (i === curChapter) return;
+  curChapter = i;
+  chapters.forEach((c, k) => c.b.classList.toggle('is-past', k <= i));
+  $$('.nav a[data-nav]').forEach((a) => a.classList.toggle('is-active', i >= 0 && chapters[i].nav === a.dataset.nav));
+  if (i < 0) { threadLabel.classList.remove('is-on'); return; }
+  threadLabel.textContent = chapters[i][lang() === 'en' ? 'en' : 'fr'];
+  threadLabel.classList.add('is-on');
+  clearTimeout(labelTimer);
+  labelTimer = setTimeout(() => threadLabel.classList.remove('is-on'), 1800);
+}
+chapterReady = true;
+ScrollTrigger.addEventListener('refresh', layoutChapters);
+window.addEventListener('resize', debounce(layoutChapters, 300));
 $$('[data-night]').forEach((sec) => ScrollTrigger.create({
   trigger: sec, start: 'top 64px', end: 'bottom 64px',
   onToggle: (s) => html.classList.toggle('on-night-zone', s.isActive)
@@ -151,16 +217,29 @@ $$('[data-night]').forEach((sec) => ScrollTrigger.create({
 let menuOpen = false;
 const menuBtn = $('[data-menu]');
 const mobileNav = $('#mobile-nav');
-function closeMenu() {
+function closeMenu(returnFocus) {
   if (!menuOpen) return;
   menuOpen = false; mobileNav.classList.remove('is-open'); menuBtn.setAttribute('aria-expanded', 'false');
+  html.classList.remove('menu-open');
   lenis && lenis.start();
+  if (returnFocus) menuBtn.focus();
 }
 if (menuBtn) menuBtn.addEventListener('click', () => {
-  menuOpen = !menuOpen;
-  mobileNav.classList.toggle('is-open', menuOpen);
-  menuBtn.setAttribute('aria-expanded', String(menuOpen));
-  if (menuOpen) { lenis && lenis.stop(); header.classList.remove('is-hidden'); } else { lenis && lenis.start(); }
+  if (menuOpen) { closeMenu(true); return; }
+  menuOpen = true;
+  mobileNav.classList.add('is-open'); html.classList.add('menu-open');
+  menuBtn.setAttribute('aria-expanded', 'true');
+  lenis && lenis.stop();
+  const first = $('#mobile-nav a'); if (first) setTimeout(() => first.focus(), 50);
+});
+document.addEventListener('keydown', (e) => {
+  if (!menuOpen) return;
+  if (e.key === 'Escape') { closeMenu(true); return; }
+  if (e.key === 'Tab') {
+    const f = [menuBtn, ...$$('#mobile-nav a')]; const i = f.indexOf(document.activeElement);
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
+  }
 });
 $$('#mobile-nav a').forEach((a) => a.addEventListener('click', closeMenu));
 
@@ -200,10 +279,13 @@ if (fine && !isCalm()) {
     el.addEventListener('pointerleave', () => { xTo(0); yTo(0); });
   });
   $$('[data-tilt]').forEach((el) => {
+    gsap.set(el, { transformPerspective: 700 });
+    const ry = gsap.quickTo(el, 'rotateY', { duration: 0.5, ease: 'power2.out' });
+    const rx = gsap.quickTo(el, 'rotateX', { duration: 0.5, ease: 'power2.out' });
     el.addEventListener('pointermove', (e) => {
       const r = el.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width - 0.5; const py = (e.clientY - r.top) / r.height - 0.5;
-      gsap.to(el, { rotateY: px * 14, rotateX: -py * 14, transformPerspective: 700, duration: 0.5, ease: 'power2.out' });
+      ry(px * 14); rx(-py * 14);
     });
     el.addEventListener('pointerleave', () => gsap.to(el, { rotateY: 0, rotateX: 0, duration: 0.8, ease: 'elastic.out(1,0.5)' }));
   });
@@ -255,9 +337,10 @@ $$('[data-drag-scroll]').forEach((el) => {
 function marquee() {
   $$('[data-marquee]').forEach((m) => {
     if (isCalm()) return;
-    m.innerHTML += m.innerHTML;
-    const tw = gsap.to(m, { xPercent: -50, ease: 'none', duration: 40, repeat: -1 });
-    ScrollTrigger.create({ trigger: m, start: 'top bottom', end: 'bottom top', onUpdate: (s) => {
+    const clone = document.createElement('span'); clone.setAttribute('aria-hidden', 'true'); clone.className = 'marquee-clone';
+    clone.innerHTML = m.innerHTML; m.appendChild(clone);
+    const tw = gsap.to(m, { xPercent: -50, ease: 'none', duration: 40, repeat: -1, paused: true });
+    ScrollTrigger.create({ trigger: m, start: 'top bottom', end: 'bottom top', onToggle: (s) => (s.isActive ? tw.play() : tw.pause()), onUpdate: (s) => {
       const v = Math.min(Math.abs(s.getVelocity()) / 400, 6);
       gsap.to(tw, { timeScale: 1 + v, duration: 0.3, overwrite: true });
       gsap.to(tw, { timeScale: 1, duration: 1.2, delay: 0.3 });
@@ -291,11 +374,12 @@ const lbInfo = lb && $('.lb-info', lb);
 let lbReturn = null; let lbItems = []; let lbIndex = 0;
 function lbRender() {
   const el = lbItems[lbIndex];
-  const src = el.dataset.src || ($('img', el) && $('img', el).src);
-  lbImg.src = src;
+  const src = el.dataset.src || ($('img', el) && ($('img', el).currentSrc || $('img', el).src));
+  if (src) lbImg.src = src;
+  else if (el._load) { lbImg.removeAttribute('src'); el._load().then((u) => { el.dataset.src = u; if (lbItems[lbIndex] === el) lbRender(); }); }
   const cap = el.dataset[lang() === 'en' ? 'capEn' : 'capFr'] || '';
   lbImg.alt = cap;
-  const wall = el.hasAttribute('data-wall');
+  const wall = el.hasAttribute('data-wallview');
   lb.classList.remove('is-wall');
   lb.classList.toggle('is-portrait', !!el.dataset.mail);
   const L = lang() === 'en';
@@ -337,9 +421,15 @@ if (lb) {
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
+  const zoomLabel = (el) => {
+    const c = el.dataset[lang() === 'en' ? 'capEn' : 'capFr'] || '';
+    el.setAttribute('aria-label', (lang() === 'en' ? 'Enlarge: ' : 'Agrandir : ') + c);
+  };
+  SUO.onLang(() => $$('[data-zoomable]').forEach(zoomLabel));
   $$('[data-zoomable]').forEach((el) => {
     el.setAttribute('tabindex', '0');
     el.setAttribute('role', 'button');
+    zoomLabel(el);
     const open = () => {
       const scope = el.closest('[data-clips], .works, .strip, .livre-photos, .nancy-photos, .trio, .makingof, .pr-photos') || null;
       const group = scope ? $$('[data-zoomable]', scope.closest('.visit-track') || scope) : null;
@@ -377,27 +467,36 @@ $$('[data-fake-form]').forEach((f) => {
   if (qty) { qty.addEventListener('input', upd); SUO.onLang(upd); upd(); }
   f.addEventListener('submit', (e) => {
     e.preventDefault();
-    const bad = $$('[required]', f).find((i) => !i.value.trim() || (i.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(i.value)));
-    if (bad) { bad.focus(); bad.setAttribute('aria-invalid', 'true'); return; }
-    $$('[aria-invalid]', f).forEach((i) => i.removeAttribute('aria-invalid'));
+    const L = lang() === 'en';
+    $$('.field-err', f).forEach((m) => m.remove());
+    $$('[aria-invalid]', f).forEach((i) => { i.removeAttribute('aria-invalid'); i.removeAttribute('aria-describedby'); });
+    const errs = $$('[required]', f).map((i) => {
+      if (!i.value.trim()) return [i, L ? 'Please fill in this field.' : 'Ce champ est à remplir.'];
+      if (i.type === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(i.value)) return [i, L ? 'Enter an email address such as name@example.com.' : 'Saisissez une adresse e-mail du type nom@exemple.fr.'];
+      return null;
+    }).filter(Boolean);
+    if (errs.length) {
+      errs.forEach(([i, msg]) => {
+        const m = document.createElement('span'); m.className = 'field-err'; m.id = `${i.id}-err`; m.textContent = msg;
+        i.setAttribute('aria-invalid', 'true'); i.setAttribute('aria-describedby', m.id); i.after(m);
+      });
+      errs[0][0].focus();
+      return;
+    }
     f.classList.add('is-sent');
     const ok = $('.form-ok', f); ok && ok.setAttribute('tabindex', '-1'); ok && ok.focus();
   });
 });
 
 /* ---------- images Grok / ChatGPT (si fournies) ---------- */
-function applyGrok(list) {
-  const set = new Set(list || []);
-  $$('.ph[data-grok]').forEach((ph) => {
-    if (ph.classList.contains('has-img') || !set.has(ph.dataset.grok)) return;
-    const hasM = ph.dataset.grokM && set.has(ph.dataset.grokM);
-    const d = document.createElement('div'); d.className = 'ph-img' + (hasM ? ' ph-d' : ''); d.style.backgroundImage = `url(assets/img/grok/${ph.dataset.grok}.webp)`; ph.prepend(d);
-    if (hasM) { const m = document.createElement('div'); m.className = 'ph-img ph-m'; m.style.backgroundImage = `url(assets/img/grok/${ph.dataset.grokM}.webp)`; d.after(m); }
-    ph.classList.add('has-img');
-  });
-  if (set.has('g-portraits-fond-papier-3x2')) html.classList.add('has-portrait-bg');
+/* ---------- images d’ambiance : chargées à l’approche ---------- */
+function lazyBackgrounds() {
+  const els = $$('[data-bg]');
+  const load = (el) => { el.style.backgroundImage = `url(${el.dataset.bg})`; el.removeAttribute('data-bg'); };
+  if (!('IntersectionObserver' in window)) { els.forEach(load); return; }
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => { if (en.isIntersecting) { load(en.target); io.unobserve(en.target); } }), { rootMargin: '150% 0px' });
+  els.forEach((el) => io.observe(el));
 }
-fetch('assets/img/grok/manifest.json').then((r) => (r.ok ? r.json() : [])).then(applyGrok).catch(() => {});
 
 /* ---------- ouverture ---------- */
 function intro() {
@@ -428,7 +527,10 @@ function dms(v, en) {
 SUO.dms = dms;
 
 /* ---------- démarrage ---------- */
+window.addEventListener('pagehide', () => store.sset(`suo-pos:${location.pathname}`, String(Math.round(window.scrollY))));
+function jumpTo(y) { window.scrollTo(0, y); if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); }
 function boot() {
+  lazyBackgrounds();
   applyLang(lang());
   splitHeadings();
   counters();
@@ -437,21 +539,27 @@ function boot() {
   const mod = { home: './home.js', exposition: './expo.js', portraits: './wall.js' }[page];
   const after = () => {
     intro();
+    ScrollTrigger.sort();
     ScrollTrigger.refresh();
+    if (lenis) lenis.resize();
     const sy = store.sget('suo-scroll');
-    if (sy) { store.sset('suo-scroll', ''); window.scrollTo(0, parseInt(sy, 10) || 0); }
-    else if (!location.hash) { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true }); }
-    else if (location.hash) {
-      const el = document.getElementById(location.hash.slice(1));
+    const keep = (navType === 'back_forward' || navType === 'reload') ? store.sget(`suo-pos:${location.pathname}`) : null;
+    requestAnimationFrame(() => {
+      if (sy) { store.sset('suo-scroll', ''); jumpTo(parseInt(sy, 10) || 0); return; }
+      const el = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
       if (el) {
         const ev = new CustomEvent('suo:goto', { detail: { id: el.id, instant: true }, cancelable: true });
-        if (document.dispatchEvent(ev)) setTimeout(() => SUO.scrollTo(el, { immediate: true }), 60);
+        if (document.dispatchEvent(ev)) jumpTo(el.getBoundingClientRect().top + window.scrollY);
+        focusTarget(el);
+        return;
       }
-    }
+      if (keep) { jumpTo(parseInt(keep, 10) || 0); return; }
+      jumpTo(0);
+    });
   };
   if (mod) import(mod).then((m) => m.default && m.default(SUO)).catch((e) => console.warn('module', e)).finally(after);
   else after();
 }
 if (document.fonts && document.fonts.ready) {
-  Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1200))]).then(boot);
+  Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 500))]).then(boot);
 } else boot();

@@ -36,20 +36,24 @@ export default function home(SUO) {
       .fromTo(tip, { scale: 0 }, { scale: 1, duration: 0.6, ease: 'back.out(3)' }, 0.8);
   }
   if (h1) { h1.classList.add('is-split'); }
-  window.addEventListener('resize', heroLine);
+  // le fil ne se redessine que pendant un mouvement (défilement, souris, redimensionnement)
+  let activeUntil = 0;
+  const wake = () => { activeUntil = performance.now() + 1500; };
+  window.addEventListener('resize', () => { wake(); heroLine(); });
   if (!calm) {
     gsap.set(hand, { opacity: 1 });
-    gsap.to(hand, { yPercent: 18, rotate: -3, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true, onUpdate: heroLine } });
+    gsap.to(hand, { yPercent: 18, rotate: -3, ease: 'none', scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom top', scrub: true, onUpdate: wake } });
     if (fine) {
       const hx = gsap.quickTo(hand, 'x', { duration: 1.2, ease: 'power3' });
       hero.addEventListener('pointermove', (e) => {
         const r = hero.getBoundingClientRect();
         const nx = (e.clientX - r.left) / r.width - 0.5; const ny = (e.clientY - r.top) / r.height - 0.5;
-        hx(nx * -24); lineEnd.y = ny * 160;
+        hx(nx * -24); lineEnd.y = ny * 160; wake();
       });
     }
-    gsap.ticker.add(heroLine);
-    ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', onLeave: () => gsap.ticker.remove(heroLine), onEnterBack: () => gsap.ticker.add(heroLine) });
+    const heroTick = () => { if (performance.now() < activeUntil) heroLine(); };
+    gsap.ticker.add(heroTick);
+    ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom top', onLeave: () => gsap.ticker.remove(heroTick), onEnterBack: () => { gsap.ticker.add(heroTick); wake(); } });
   }
   document.addEventListener('suo:intro', heroIntro, { once: true });
   heroLine();
@@ -67,8 +71,15 @@ export default function home(SUO) {
       const m = { x: mr.left - sr.left + mr.width * 0.5, y: mr.top - sr.top + mr.height * 0.45 };
       aim.setAttribute('d', `M${f.x} ${f.y} L${m.x} ${m.y}`);
       target.setAttribute('cx', m.x); target.setAttribute('cy', m.y); target.setAttribute('r', Math.min(mr.width, mr.height) * 0.42);
-      const ang = Math.atan2(m.y - f.y, m.x - f.x) + 0.34; const L = Math.hypot(sr.width, sr.height) * 1.2;
-      miss.setAttribute('d', `M${f.x} ${f.y} Q${f.x + Math.cos(ang) * L * 0.25} ${f.y + Math.sin(ang) * L * 0.25 - 10} ${f.x + Math.cos(ang - 0.08) * L} ${f.y + Math.sin(ang - 0.08) * L}`);
+      // la vraie direction passe au-dessus du médaillon et file hors champ, vers le nord-ouest
+      const ang = Math.atan2(m.y - f.y, m.x - f.x) + 0.3;
+      const topY = -stage.offsetTop + 96; const leftX = -stage.getBoundingClientRect().left + 8;
+      const tY = (topY - f.y) / Math.sin(ang); const tX = (leftX - f.x) / Math.cos(ang);
+      const L = Math.max(40, Math.min(tY > 0 ? tY : 1e5, tX > 0 ? tX : 1e5));
+      const ex = f.x + Math.cos(ang) * L; const ey = f.y + Math.sin(ang) * L;
+      miss.setAttribute('d', `M${f.x.toFixed(1)} ${f.y.toFixed(1)} L${ex.toFixed(1)} ${ey.toFixed(1)}`);
+      const az = svg.querySelector('.miss-label');
+      if (az) { az.setAttribute('x', ex + 10); az.setAttribute('y', ey + 18); }
       [aim, miss].forEach((p) => { const len = p.getTotalLength(); p.style.strokeDasharray = p === aim ? '6 7' : `${len}`; p.dataset.len = len; });
       const tl2 = target.getTotalLength ? target.getTotalLength() : 300; target.style.strokeDasharray = tl2; target.dataset.len = tl2;
     };
@@ -84,7 +95,7 @@ export default function home(SUO) {
         gsap.set([medal, hereFig], { autoAlpha: 0, y: 40 });
         gsap.set(aim, { opacity: 0 }); gsap.set(miss, { strokeDashoffset: () => +miss.dataset.len });
         gsap.set(target, { strokeDashoffset: () => +target.dataset.len });
-        const tl = gsap.timeline({ scrollTrigger: { trigger: '.q-pin', start: 'top top', end: '+=260%', pin: true, scrub: 0.6, onRefresh: geo, invalidateOnRefresh: true } });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: '.q-pin', start: 'top top', end: '+=200%', pin: true, scrub: 0.6, onRefresh: geo, invalidateOnRefresh: true } });
         tl.from('.q-stage .statue', { y: 60, rotate: 2, duration: 1 })
           .to(steps[0], { autoAlpha: 0, y: -30, duration: 0.6 }, 1.2)
           .to(steps[1], { autoAlpha: 1, y: 0, duration: 0.6 }, 1.5)
@@ -98,6 +109,7 @@ export default function home(SUO) {
           .to(target, { opacity: 0.25, duration: 0.5 }, 3.6)
           .to(medal, { autoAlpha: 0.35, duration: 0.5 }, 3.6)
           .to(miss, { strokeDashoffset: 0, duration: 1.4, ease: 'power2.inOut' }, 3.8)
+          .fromTo('.miss-label', { opacity: 0 }, { opacity: 1, duration: 0.4 }, 5)
           .to({}, { duration: 0.6 });
       } else {
         gsap.from([medal, hereFig], { autoAlpha: 0, y: 30, stagger: 0.2, scrollTrigger: { trigger: stage, start: 'top 75%' } });
@@ -141,28 +153,58 @@ export default function home(SUO) {
     mm.add({ desk: '(min-width: 861px)' }, () => {
       if (calm) { $('[data-strip-scroller]').style.overflowX = 'auto'; return; }
       const dist = () => Math.max(0, strip.scrollWidth - window.innerWidth + 40);
-      gsap.fromTo(strip, { x: 20 }, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '.strip-wrap', start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 0.5, invalidateOnRefresh: true } });
+      const tw = gsap.fromTo(strip, { x: 20 }, { x: () => -dist(), ease: 'none', scrollTrigger: { trigger: '.strip-wrap', start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 0.5, invalidateOnRefresh: true } });
+      // au clavier, la photo qui reçoit le focus est amenée à l’écran
+      const onFocus = (e) => {
+        const f = e.target.closest('.frame'); if (!f) return;
+        const st = tw.scrollTrigger; const d = dist(); if (!d) return;
+        const want = Math.max(0, Math.min(1, (f.offsetLeft + f.offsetWidth / 2 - window.innerWidth / 2 + 20) / d));
+        SUO.scrollTo(st.start + (st.end - st.start) * want, { immediate: true });
+      };
+      strip.addEventListener('focusin', onFocus);
+      return () => strip.removeEventListener('focusin', onFocus);
     });
   }
 
   /* ---------- le tour du monde ---------- */
   const globeCanvas = $('[data-globe]');
-  if (globeCanvas) import('./globe.js').then((m) => m.initGlobe(SUO)).catch((e) => console.warn('globe', e));
+  if (globeCanvas) {
+    let started = false;
+    const start = () => {
+      if (started) return; started = true;
+      // les modules WebGL sont demandés en parallèle plutôt qu’en cascade
+      ['core/Renderer', 'core/Camera', 'core/Transform', 'core/Program', 'core/Mesh', 'core/Texture', 'core/Geometry', 'extras/Sphere', 'extras/Polyline', 'math/Vec2', 'math/Vec3', 'math/Mat3', 'math/Mat4', 'math/Quat', 'math/Euler', 'math/Color', 'math/functions/Vec2Func', 'math/functions/Vec3Func', 'math/functions/Vec4Func', 'math/functions/Mat3Func', 'math/functions/Mat4Func', 'math/functions/QuatFunc', 'math/functions/EulerFunc', 'math/functions/ColorFunc'].forEach((p) => {
+        const l = document.createElement('link'); l.rel = 'modulepreload'; l.href = `assets/vendor/ogl/${p}.js`; document.head.appendChild(l);
+      });
+      const pre = document.createElement('link'); pre.rel = 'preload'; pre.as = 'image'; pre.href = 'assets/data/land-2048.png'; document.head.appendChild(pre);
+      import('./globe.js').then((m) => m.initGlobe(SUO)).then(() => ScrollTrigger.refresh()).catch((e) => console.warn('globe', e));
+    };
+    ScrollTrigger.create({ trigger: '[data-globe-track]', start: 'top bottom+=150%', end: 'bottom top', once: true, onEnter: start, onEnterBack: start });
+  }
 
   /* ---------- aperçu de l'exposition ---------- */
   const rooms = $('[data-rooms]');
   if (rooms) mm.add({ desk: '(min-width: 861px)' }, () => {
     if (calm) { $('[data-rooms-scroller]').style.overflowX = 'auto'; return; }
-    gsap.fromTo(rooms, { x: () => window.innerWidth * 0.12 }, { x: () => -(rooms.scrollWidth - window.innerWidth + 40), ease: 'none', scrollTrigger: { trigger: '.expo-teaser', start: 'top bottom', end: 'bottom top', scrub: 0.6, invalidateOnRefresh: true } });
+    const x0 = () => window.innerWidth * 0.12; const x1 = () => -(rooms.scrollWidth - window.innerWidth + 40);
+    const tw = gsap.fromTo(rooms, { x: x0 }, { x: x1, ease: 'none', scrollTrigger: { trigger: '.expo-teaser', start: 'top bottom', end: 'bottom top', scrub: 0.6, invalidateOnRefresh: true } });
+    rooms.addEventListener('focusin', (e) => {
+      const c = e.target.closest('.room-card'); if (!c) return;
+      const st = tw.scrollTrigger; const wantX = window.innerWidth / 2 - (c.offsetLeft + c.offsetWidth / 2);
+      const p = Math.max(0, Math.min(1, (wantX - x0()) / (x1() - x0())));
+      SUO.scrollTo(st.start + (st.end - st.start) * p, { immediate: true });
+    });
     $$('.room-card', rooms).forEach((c, i) => gsap.from($('.room-img', c), { clipPath: 'inset(0 0 100% 0)', duration: 1.4, ease: 'expo.out', delay: i * 0.05, scrollTrigger: { trigger: '.expo-teaser', start: 'top 60%', once: true } }));
   });
 
   /* ---------- rangées de portraits ---------- */
   const ptc = $('[data-pt-rows]');
-  if (ptc) fetch('assets/portraits/portraits.json').then((r) => r.json()).then((data) => {
-    const atlas = new Image(); atlas.decoding = 'async'; atlas.src = 'assets/portraits/atlas.webp';
-    atlas.onload = () => portraitRows(ptc, atlas, data);
-  }).catch(() => {});
+  if (ptc) ScrollTrigger.create({ trigger: ptc, start: 'top bottom+=120%', once: true, onEnter: () => {
+    fetch('assets/portraits/portraits.json').then((r) => r.json()).then((data) => {
+      const atlas = new Image(); atlas.decoding = 'async'; atlas.src = 'assets/portraits/atlas.webp';
+      atlas.onload = () => portraitRows(ptc, atlas, data);
+    }).catch(() => {});
+  } });
   function portraitRows(cv, atlas, data) {
     const ctx = cv.getContext('2d');
     const [CW, CH] = data.cell; const cols = data.cols; const N = data.count;
@@ -201,10 +243,15 @@ export default function home(SUO) {
     const ctx = gc.getContext('2d'); const sec = $('.terres');
     const palette = ['#8b5a3c', '#a8705a', '#c39a6b', '#d9c7a4', '#6f6a62', '#b9946d', '#5a4636', '#cfb48a', '#9a3b2e'];
     let W = 0; let H = 0; let dpr = 1; let visible = false; let gather = 0; const mouse = { x: -1e4, y: -1e4 };
-    const n = window.innerWidth < 700 ? 380 : 900;
+    const n = window.innerWidth < 700 ? 240 : 560;
     const P = Array.from({ length: n }, () => ({ x: Math.random(), y: Math.random(), vx: 0, vy: 0, r: 0.6 + Math.random() * 2.2, c: palette[(Math.random() * palette.length) | 0], a: Math.random() * Math.PI * 2, k: Math.random() }));
-    const resize = () => { dpr = Math.min(2, window.devicePixelRatio || 1); W = sec.clientWidth; H = sec.clientHeight; gc.width = W * dpr; gc.height = H * dpr; };
-    resize(); window.addEventListener('resize', resize);
+    const ring = { cx: 0, cy: 0, R: 100 };
+    const measure = () => {
+      const fig = $('.terres-grid figure'); const fr = fig.getBoundingClientRect(); const sr = sec.getBoundingClientRect();
+      ring.cx = fr.left - sr.left + fr.width / 2; ring.cy = fr.top - sr.top + fr.height / 2; ring.R = Math.max(fr.width, fr.height) * 0.68;
+    };
+    const resize = () => { dpr = Math.min(1.5, window.devicePixelRatio || 1); W = sec.clientWidth; H = sec.clientHeight; gc.width = W * dpr; gc.height = H * dpr; measure(); };
+    resize(); window.addEventListener('resize', resize); ScrollTrigger.addEventListener('refresh', resize);
     sec.addEventListener('pointermove', (e) => { const r = sec.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
     sec.addEventListener('pointerleave', () => { mouse.x = mouse.y = -1e4; });
     ScrollTrigger.create({ trigger: sec, start: 'top bottom', end: 'bottom top', onToggle: (s) => { visible = s.isActive; } });
@@ -212,8 +259,7 @@ export default function home(SUO) {
     gsap.ticker.add(() => {
       if (!visible) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
-      const fig = $('.terres-grid figure'); const fr = fig.getBoundingClientRect(); const sr = sec.getBoundingClientRect();
-      const cx = fr.left - sr.left + fr.width / 2; const cy = fr.top - sr.top + fr.height / 2; const R = Math.max(fr.width, fr.height) * 0.68;
+      const { cx, cy, R } = ring;
       for (const p of P) {
         const px = p.x * W; const py = p.y * H;
         p.a += 0.002 + p.k * 0.003;
@@ -242,7 +288,7 @@ export default function home(SUO) {
       if (ctx.conditions.desk) {
         gsap.set(lsteps.slice(1), { autoAlpha: 0, y: 30 });
         const drop = () => scene.clientHeight * 0.52;
-        const tl = gsap.timeline({ scrollTrigger: { trigger: '.livre-pin', start: 'top top', end: '+=240%', pin: true, scrub: 0.8, invalidateOnRefresh: true } });
+        const tl = gsap.timeline({ scrollTrigger: { trigger: '.livre-pin', start: 'top top', end: '+=190%', pin: true, scrub: 0.8, invalidateOnRefresh: true } });
         tl.fromTo(book, { rotateY: -28, rotateX: -12, y: 0 }, { rotateY: 332, duration: 2, ease: 'none' })
           .to(lsteps[0], { autoAlpha: 0, y: -30, duration: 0.4 }, 1.8)
           .to(lsteps[1], { autoAlpha: 1, y: 0, duration: 0.4 }, 2.1)
@@ -265,6 +311,34 @@ export default function home(SUO) {
     gsap.from('.t-item', { x: 80, opacity: 0, stagger: 0.07, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.timeline', start: 'top 85%', once: true } });
   }
 
+  /* ---------- bandeau ciel ---------- */
+  if (!calm && $('.sky-band')) {
+    gsap.fromTo('.sky-band .ph', { yPercent: -7, scale: 1.08 }, { yPercent: 7, scale: 1, ease: 'none', scrollTrigger: { trigger: '.sky-band', start: 'top bottom', end: 'bottom top', scrub: true } });
+    gsap.from('.sky-band p', { y: 40, opacity: 0, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: '.sky-band', start: 'top 60%', once: true } });
+  }
+
+  /* ---------- itinéraires (onglets) ---------- */
+  const tabs = $$('[data-itin]');
+  if (tabs.length) {
+    const show = (n, focus) => {
+      tabs.forEach((b) => { const on = b.dataset.itin === String(n); b.setAttribute('aria-selected', String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+      $$('.itin-panel').forEach((p) => { p.hidden = p.id !== `itin-${n}`; });
+      const panel = $(`#itin-${n}`);
+      if (panel && !calm) gsap.from($$('li', panel), { x: -16, opacity: 0, stagger: 0.025, duration: 0.6, ease: 'expo.out' });
+      if (panel) panel.scrollTop = 0;
+    };
+    tabs.forEach((b, i) => {
+      b.addEventListener('click', () => show(b.dataset.itin));
+      b.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp' && e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const d = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1 : -1;
+        show(tabs[(i + d + tabs.length) % tabs.length].dataset.itin, true);
+      });
+    });
+    if (!calm) gsap.from('#itin-1 li', { x: -16, opacity: 0, stagger: 0.03, duration: 0.7, ease: 'expo.out', scrollTrigger: { trigger: '.itin-panels', start: 'top 75%', once: true } });
+  }
+
   /* ---------- itinéraire ---------- */
   const route = $('[data-route-map] .route');
   if (route) {
@@ -279,6 +353,6 @@ export default function home(SUO) {
   if (!calm) {
     $$('.nancy-photos figure').forEach((f, i) => gsap.fromTo(f, { y: 40 + i * 30 }, { y: -20 - i * 10, ease: 'none', scrollTrigger: { trigger: '.nancy-photos', start: 'top bottom', end: 'bottom top', scrub: true } }));
     gsap.from('.releve-facts > div', { y: 40, opacity: 0, stagger: 0.12, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: '.releve-facts', start: 'top 85%', once: true } });
-    gsap.fromTo('.terres .wide img', { scale: 1.12 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: '.terres .wide', start: 'top bottom', end: 'bottom top', scrub: true } });
+    gsap.fromTo('.terres .wide img', { clipPath: 'inset(0 50% 0 50%)' }, { clipPath: 'inset(0 0% 0 0%)', ease: 'none', scrollTrigger: { trigger: '.terres .wide', start: 'top 90%', end: 'center 55%', scrub: 0.6 } });
   }
 }

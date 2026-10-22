@@ -54,13 +54,16 @@ export async function initGlobe(SUO) {
   const head = document.createElement('div'); head.className = 'g-head'; hud.appendChild(head);
 
   let km = 0; let shownKm = 0; let lastLabel = -1; let lastCard = null;
+  const last = { km: '', place: '', prog: -1, cardOn: null, ms: undefined };
+  const setText = (el, key, v) => { if (last[key] !== v) { last[key] = v; el.textContent = v; } };
   const setHud = (k) => {
-    kmEl.textContent = k >= L - 0.6 ? SUO.fmt(L, 2) : SUO.fmt(Math.round(k));
-    prog.style.transform = `scaleX(${k / L})`;
+    setText(kmEl, 'km', k >= L - 0.6 ? SUO.fmt(L, 2) : SUO.fmt(Math.round(k)));
+    const pr = Math.round((k / L) * 1000) / 1000;
+    if (pr !== last.prog) { last.prog = pr; prog.style.transform = `scaleX(${pr})`; }
     let li = 0; for (let i = 0; i < labels.length; i++) if (labels[i].km <= k + 0.5) li = i;
     const l = labels[li];
     const inside = k <= l.to + 30 || li === 0;
-    placeEl.textContent = inside ? l[lang()] : (lang() === 'en' ? 'at sea' : 'en mer');
+    setText(placeEl, 'place', inside ? l[lang()] : (lang() === 'en' ? 'at sea' : 'en mer'));
     if (li !== lastLabel) { if (lastLabel >= 0 && li > lastLabel && SUO.sound) SUO.sound.ping(660 + li * 24); lastLabel = li; }
     // carte IGN du pays traversé
     let mapL = null;
@@ -71,13 +74,14 @@ export async function initGlobe(SUO) {
       cardImg.alt = lang() === 'en' ? `IGN map extract: ${mapL.en}` : `Extrait de carte IGN : ${mapL.fr}`;
       cardCap.textContent = (lang() === 'en' ? 'IGN map, 2004: ' : 'Carte IGN, 2004 : ') + mapL[lang()];
     }
-    card.classList.toggle('is-on', !!mapL && k > 60);
+    const cardOn = !!mapL && k > 60;
+    if (cardOn !== last.cardOn) { last.cardOn = cardOn; card.classList.toggle('is-on', cardOn); }
     // jalons
     let on = null;
     ms.forEach((m) => { const mk = +m.dataset.ms; if (k >= mk - 40 && (k - mk < 3200 || mk >= 39998)) on = m; });
-    ms.forEach((m) => m.classList.toggle('is-on', m === on));
+    if (on !== last.ms) { last.ms = on; ms.forEach((m) => m.classList.toggle('is-on', m === on)); }
   };
-  SUO.onLang(() => { lastCard = null; setHud(shownKm); });
+  SUO.onLang(() => { lastCard = null; last.km = last.place = ''; setHud(shownKm); });
 
   // ---------- WebGL ? ----------
   let renderer = null;
@@ -205,8 +209,8 @@ export async function initGlobe(SUO) {
     camera.perspective({ aspect: W / H });
     const mobile = W < 860;
     offX = mobile ? 0 : 0.34;
-    const fit = mobile ? 4.9 * Math.max(1, (H / W) * 0.62) : 4.25;
-    camera.position.set(-offX, mobile ? -0.18 : 0, fit);
+    const fit = mobile ? 5.4 * Math.max(1, (H / W) * 0.55) : 4.25;
+    camera.position.set(-offX, mobile ? 0.16 : 0, fit);
     line.resize();
   };
   resize();
@@ -251,19 +255,25 @@ export async function initGlobe(SUO) {
     const hp = project(h.lat, h.lon);
     head.style.transform = `translate(${hp.x}px, ${hp.y}px)`;
     head.style.opacity = hp.front > -0.05 ? 1 : 0.2;
-    labels.forEach((l, i) => {
+    // étiquettes : de la plus récente à la plus ancienne, sans chevauchement
+    const placed = [{ x: hp.x, y: hp.y }];
+    for (let i = labels.length - 1; i >= 0; i--) {
+      const l = labels[i];
       const pp = project(l.ll[0], l.ll[1]);
-      const on = l.km <= shownKm + 1 && pp.front > 0.18 && (shownKm - l.km < 6000 || i === 0);
-      labelEls[i].style.transform = `translate(${pp.x}px, ${pp.y}px) translate(-50%, -50%)`;
-      labelEls[i].classList.toggle('is-on', on);
-    });
+      let on = l.km <= shownKm + 1 && pp.front > 0.18 && (shownKm - l.km < 6000 || i === 0);
+      if (on) on = !placed.some((q) => Math.abs(q.x - pp.x) < 86 && Math.abs(q.y - pp.y) < 22);
+      if (on) placed.push({ x: pp.x, y: pp.y });
+      const el = labelEls[i];
+      if (on || el._on) el.style.transform = `translate(${pp.x.toFixed(1)}px, ${pp.y.toFixed(1)}px) translate(-50%, -50%)`;
+      if (el._on !== on) { el._on = on; el.classList.toggle('is-on', on); }
+    }
     setHud(shownKm);
   };
   gsap.ticker.add(render);
   visible = true; render(0, 1000); visible = false;
   setHud(0);
   // texte d'accessibilité
-  $('[data-globe]').setAttribute('aria-label', lang() === 'en' ? 'Animated globe showing the route of the geodesic line from Nancy around the Earth' : 'Globe animé montrant le tracé de la ligne géodésique depuis Nancy autour de la Terre');
+
 
   // ---------- repli SVG ----------
   async function fallback() {

@@ -93,6 +93,11 @@ export default async function wall(SUO) {
       else ctx.drawImage(atlas, (it.i % ACOLS) * CW, Math.floor(it.i / ACOLS) * CH, CW, CH, sx, sy, cw, ch);
     }
     ctx.globalAlpha = 1;
+    // au clavier : le portrait au centre est celui qu’ouvre la touche Entrée
+    if (document.activeElement === cv && !hover) {
+      const c = hit(W / 2, H / 2);
+      if (c) { const [sx, sy] = toScreen(c.x, c.y); ctx.strokeStyle = '#d3222a'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]); ctx.strokeRect(sx - 4, sy - 4, cw + 8, ch + 8); ctx.setLineDash([]); }
+    }
     if (hover) {
       const [sx, sy] = toScreen(hover.x, hover.y);
       ctx.strokeStyle = '#d3222a'; ctx.lineWidth = 2; ctx.strokeRect(sx - 3, sy - 3, cw + 6, ch + 6);
@@ -173,10 +178,33 @@ export default async function wall(SUO) {
   const end = (e) => {
     pointers.delete(e.pointerId);
     if (pointers.size < 2) pinch = null;
-    if (drag && moved < 6) { const p = local(e); const h = hit(p[0], p[1]); if (h) open(h); }
+    if (e.type === 'pointerup' && drag && moved < 6) { const p = local(e); const h = hit(p[0], p[1]); if (h) open(h); }
     drag = null;
   };
   cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+  cv.addEventListener('dblclick', (e) => {
+    const [sx, sy] = local(e); const [wx, wy] = toWorld(sx, sy);
+    target.z *= 2; clampCam();
+    target.x = wx - (sx - W / 2) / target.z; target.y = wy - (sy - H / 2) / target.z; clampCam();
+  });
+
+  // sur écran tactile : le mur laisse défiler la page ; « Explorer » l’ouvre en plein écran
+  const exploreBtn = $('[data-wall-explore]');
+  let exploring = false;
+  const setExplore = (on) => {
+    exploring = on;
+    sec.classList.toggle('is-exploring', on);
+    document.documentElement.classList.toggle('wall-lock', on);
+    if (SUO.lenis) { if (on) SUO.lenis.stop(); else SUO.lenis.start(); }
+    if (exploreBtn) {
+      exploreBtn.setAttribute('aria-pressed', String(on));
+      exploreBtn.querySelector('[data-l="fr"]').textContent = on ? 'Fermer' : 'Explorer en plein écran';
+      exploreBtn.querySelector('[data-l="en"]').textContent = on ? 'Close' : 'Explore full screen';
+    }
+    requestAnimationFrame(() => { resize(); clampCam(); dirty = true; });
+  };
+  if (exploreBtn) exploreBtn.addEventListener('click', () => setExplore(!exploring));
+  document.addEventListener('keydown', (e) => { if (exploring && e.key === 'Escape') setExplore(false); });
   cv.addEventListener('pointerleave', () => { hover = null; dirty = true; });
   cv.addEventListener('wheel', (e) => {
     if (!(e.ctrlKey || e.metaKey)) return; // la molette seule fait défiler la page
@@ -185,6 +213,8 @@ export default async function wall(SUO) {
     target.z *= Math.exp(-e.deltaY * 0.0022); clampCam();
     target.x = wx - (sx - W / 2) / target.z; target.y = wy - (sy - H / 2) / target.z; clampCam();
   }, { passive: false });
+  cv.addEventListener('focus', () => { dirty = true; });
+  cv.addEventListener('blur', () => { dirty = true; });
   cv.addEventListener('keydown', (e) => {
     const step = 120 / target.z;
     if (e.key === 'ArrowLeft') target.x -= step; else if (e.key === 'ArrowRight') target.x += step;
@@ -224,11 +254,13 @@ export default async function wall(SUO) {
   }
   async function open(it) {
     const same = items.filter((o) => o.f === it.f).sort((a, b) => a.n - b.n);
-    const srcs = await Promise.all(same.map(cropUrl));
+    const first = await cropUrl(it);
     proxy.innerHTML = '';
-    const els = same.map((o, k) => {
+    const els = same.map((o) => {
       const d = document.createElement('div');
-      d.dataset.src = srcs[k];
+      if (o === it) d.dataset.src = first;
+      else if (urls.has(o.i)) d.dataset.src = urls.get(o.i);
+      else d._load = () => cropUrl(o);
       d.dataset.capFr = `Portrait d’une ville, fiche ${o.f}, n° ${o.n}`;
       d.dataset.capEn = `Portrait of a city, sheet ${o.f}, no. ${o.n}`;
       d.dataset.mail = `Portrait fiche ${o.f} n° ${o.n}`;
