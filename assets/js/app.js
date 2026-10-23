@@ -202,6 +202,7 @@ function layoutChapters() {
     const p = Math.min(1, Math.max(0, top / max));
     const b = document.createElement('button');
     b.type = 'button'; b.className = 'thread-tick'; b.style.top = (p * 100) + '%';
+    b.tabIndex = -1; // repère visuel : la navigation principale le double au clavier
     b.innerHTML = `<span data-l="fr" lang="fr">${fr}</span><span data-l="en" lang="en">${en || fr}</span>`;
     b.addEventListener('click', () => SUO.scrollTo(el));
     thread.appendChild(b);
@@ -320,7 +321,8 @@ if (fine && !isCalm()) {
 /* découpe d’un titre de héros : langue affichée seulement */
 SUO.splitWords = (h) => {
   const sp = $$('[data-l]', h); const tg = sp.length ? (sp.find((x) => x.dataset.l === lang()) || sp[0]) : h;
-  return new SplitText(tg, { type: 'lines,words', linesClass: 'split-line' });
+  // aria-label interdit sur <span> : découpe en mots laissée lisible
+  return new SplitText(tg, { type: 'lines,words', linesClass: 'split-line', aria: tg.tagName === 'SPAN' ? 'none' : 'auto' });
 };
 function splitHeadings() {
   $$('[data-split]').forEach((el) => {
@@ -329,7 +331,8 @@ function splitHeadings() {
     let split = null; let tween = null; let done = false;
     const target = () => { const sp = $$('[data-l]', el); return sp.length ? (sp.find((x) => x.dataset.l === lang()) || sp[0]) : el; };
     const arm = () => {
-      split = new SplitText(target(), { type: 'lines,words', linesClass: 'split-line' });
+      const tg = target();
+      split = new SplitText(tg, { type: 'lines,words', linesClass: 'split-line', aria: tg.tagName === 'SPAN' ? 'none' : 'auto' });
       const sp = split;
       tween = gsap.from(sp.words, {
         yPercent: 130, rotate: 3, duration: 1.1, ease: 'expo.out', stagger: 0.045,
@@ -423,11 +426,11 @@ function lbRender() {
   lb.classList.toggle('is-portrait', !!el.dataset.mail);
   const L = lang() === 'en';
   lbInfo.innerHTML = `<h3 class="h3"></h3>
-    ${wall ? `<p class="small todo-dim">${L ? 'Dimensions to be completed: the wall view uses an indicative scale.' : 'Dimensions à compléter : la vue au mur utilise une échelle indicative.'}</p>` : ''}
+    ${wall ? `<p class="small todo-dim">${L ? 'Dimensions to be completed: the wall view uses an indicative scale.' : 'Dimensions à compléter\u00a0: la vue au mur utilise une échelle indicative.'}</p>` : ''}
     <div class="lb-nav">
       ${lbItems.length > 1 ? `<button type="button" class="tool" data-lb-prev>${L ? 'Previous' : 'Précédente'}</button><button type="button" class="tool" data-lb-next>${L ? 'Next' : 'Suivante'}</button>` : ''}
       ${wall ? `<button type="button" class="tool" data-lb-wall aria-pressed="false">${L ? 'See on the wall' : 'Voir au mur'}</button>` : ''}
-      ${el.dataset.mail ? `<a class="tool" href="mailto:stanislasurbietorbi@wanadoo.fr?subject=${encodeURIComponent(el.dataset.mail)}">${L ? 'This is me: write to Daniel Denise' : 'C’est moi : écrire à Daniel Denise'}</a>` : ''}
+      ${el.dataset.mail ? `<a class="tool" href="mailto:stanislasurbietorbi@wanadoo.fr?subject=${encodeURIComponent(el.dataset.mail)}">${L ? 'This is me: write to Daniel Denise' : 'C’est moi\u00a0: écrire à Daniel Denise'}</a>` : ''}
     </div>`;
   $('h3', lbInfo).textContent = cap;
 }
@@ -437,6 +440,7 @@ SUO.openLightbox = (el, group) => {
   lbIndex = Math.max(0, lbItems.indexOf(el));
   lbRender();
   lb.classList.add('is-open');
+  html.classList.add('lb-open');
   lenis && lenis.stop();
   $('[data-lb-close]', lb).focus();
   if (SUO.cursorRefresh) requestAnimationFrame(SUO.cursorRefresh);
@@ -461,15 +465,15 @@ SUO.openLightbox = (el, group) => {
   Promise.race([ready, new Promise((r) => setTimeout(r, 600))]).then(() => { if (!lb.classList.contains('is-open')) return; gsap.set(lbImg, { opacity: 1 }); flip(); });
 };
 function lbClose() {
-  lb.classList.remove('is-open', 'is-wall'); lenis && lenis.start();
+  lb.classList.remove('is-open', 'is-wall'); html.classList.remove('lb-open'); lenis && lenis.start();
   lbReturn && lbReturn.focus && lbReturn.focus({ preventScroll: true });
   SUO.cursorRefresh && SUO.cursorRefresh();
 }
 if (lb) {
   lb.addEventListener('click', (e) => {
     if (e.target.closest('[data-lb-close]') || e.target === lb) return lbClose();
-    if (e.target.closest('[data-lb-next]')) { lbIndex = (lbIndex + 1) % lbItems.length; return lbRender(); }
-    if (e.target.closest('[data-lb-prev]')) { lbIndex = (lbIndex - 1 + lbItems.length) % lbItems.length; return lbRender(); }
+    if (e.target.closest('[data-lb-next]')) { lbIndex = (lbIndex + 1) % lbItems.length; lbRender(); return $('[data-lb-next]', lb)?.focus(); }
+    if (e.target.closest('[data-lb-prev]')) { lbIndex = (lbIndex - 1 + lbItems.length) % lbItems.length; lbRender(); return $('[data-lb-prev]', lb)?.focus(); }
     const w = e.target.closest('[data-lb-wall]');
     if (w) { const on = lb.classList.toggle('is-wall'); w.setAttribute('aria-pressed', String(on)); }
   });
@@ -480,13 +484,17 @@ if (lb) {
     if (e.key === 'ArrowLeft' && lbItems.length > 1) { lbIndex = (lbIndex - 1 + lbItems.length) % lbItems.length; lbRender(); }
     if (e.key === 'Tab') {
       const f = $$('button, a', lb); const first = f[0]; const last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      if (!lb.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
+      else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
   const zoomLabel = (el) => {
     const c = el.dataset[lang() === 'en' ? 'capEn' : 'capFr'] || '';
-    el.setAttribute('aria-label', (lang() === 'en' ? 'Enlarge: ' : 'Agrandir : ') + c);
+    // le nom reprend la légende visible (date / numéro) pour la commande vocale
+    const vu = (el.innerText || '').replace(/\s+/g, ' ').trim();
+    const verbe = lang() === 'en' ? 'Enlarge: ' : 'Agrandir\u00a0: ';
+    el.setAttribute('aria-label', vu && !c.includes(vu) ? vu + ', ' + verbe.toLowerCase() + c : verbe + c);
   };
   SUO.onLang(() => $$('[data-zoomable]').forEach(zoomLabel));
   $$('[data-zoomable]').forEach((el) => {
@@ -625,4 +633,7 @@ function boot() {
 }
 if (document.fonts && document.fonts.ready) {
   Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 500))]).then(boot);
+  // polices ou images arrivées après le calcul des épinglages : on recalcule les positions
+  document.fonts.ready.then(() => { if (window.ScrollTrigger) window.ScrollTrigger.refresh(); });
 } else boot();
+window.addEventListener('load', () => { if (window.ScrollTrigger) window.ScrollTrigger.refresh(); });

@@ -329,7 +329,10 @@ export async function initGlobe(SUO) {
       track.style.height = 'auto';
       stage.style.position = 'relative';
       update(L);
-      ms.forEach((m) => m.classList.remove('is-on'));
+      // mouvement réduit : les jalons restent lisibles, en liste sous la carte (voir style.css)
+      ms.forEach((m) => m.classList.add('is-on'));
+      const liste = ms[0] && ms[0].parentElement;
+      if (liste) { track.after(liste); liste.classList.add('milestones--liste'); }
       return;
     }
     update(0);

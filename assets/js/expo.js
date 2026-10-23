@@ -67,6 +67,11 @@ export default function expo(SUO) {
         P = stops();
         SUO.scrollTo(s.start + (s.end - s.start) * P[n - 1], now ? { immediate: true, force: true } : {});
       };
+      // au clavier, la salle qui reçoit le focus est amenée à l'écran
+      if (!track.dataset.focusNav) {
+        track.dataset.focusNav = '1';
+        track.addEventListener('focusin', (e) => { const p = e.target.closest('[data-panel]'); if (p && window.matchMedia('(min-width: 901px)').matches) gotoPanel(panels.indexOf(p) + 1, true); });
+      }
     } else {
       panels.forEach((p, i) => ScrollTrigger.create({ trigger: p, start: 'top 55%', end: 'bottom 55%', onToggle: (s) => { if (s.isActive) { setRoom(i + 1); p.style.backgroundColor = mix(tintOf(p), 0.12); } } }));
       if (!calm) panels.forEach((p) => gsap.from($$('.work, .viewpoint', p), { y: 60, opacity: 0, stagger: 0.08, duration: 1, ease: 'expo.out', scrollTrigger: { trigger: p, start: 'top 75%', once: true } }));

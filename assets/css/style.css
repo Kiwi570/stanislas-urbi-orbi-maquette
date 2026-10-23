@@ -225,7 +225,10 @@ html.calm.has-cursor a, html.calm.has-cursor button { cursor: pointer; }
 .loader svg.uo { width: 160px; height: auto; margin: 0 auto; overflow: visible; }
 .loader .loader-line { position: absolute; top: 50%; left: 50%; width: 100vw; height: 2px; background: var(--red); transform-origin: left; transform: scaleX(0); }
 .loader .loader-coords { margin-top: 28px; text-align: center; color: var(--ink-2); min-height: 3em; }
-html.no-loader .loader, html.calm .loader { display: none; }
+html.no-loader .loader, html.calm .loader, html:not(.js) .loader { display: none; }
+/* filet : si le script d'ouverture ne s'exécute pas, le loader s'efface de lui-même */
+.loader { animation: loader-secours .5s 6s forwards; }
+@keyframes loader-secours { to { opacity: 0; visibility: hidden; } }
 
 /* ---- sections ---- */
 section { position: relative; }
@@ -777,7 +780,17 @@ html.has-portrait-bg .lightbox.is-portrait .lb-media { background: url(../img/gr
   .book .top { transform: rotateX(90deg) translateZ(84px); } .book .bottom { transform: rotateX(-90deg) translateZ(84px); }
 }
 .question { overflow: clip; }
+.milestones--liste { position: static; width: auto; max-width: 760px; display: grid; gap: 10px; margin: 32px var(--gutter) 0; }
+.milestones--liste .milestone { position: relative; opacity: 1; transform: none; }
 html.calm .q-pin, html.calm .livre-pin { height: auto; padding-block: 80px; }
+/* sans JavaScript : mêmes replis qu'en mode calme */
+html:not(.js) .q-pin, html:not(.js) .livre-pin { height: auto; padding-block: 80px; }
+html:not(.js) .q-steps, html:not(.js) .livre-steps { height: auto; display: grid; gap: 34px; }
+html:not(.js) .q-step, html:not(.js) .livre-step { position: relative; }
+html:not(.js) .rooms-scroller, html:not(.js) .visit-pin { overflow-x: auto; }
+html:not(.js) .visit-pin { height: auto; }
+html:not(.js) .milestones { position: static; width: auto; display: grid; gap: 10px; margin-top: 24px; }
+html:not(.js) .milestone, html:not(.js) .map-card { position: relative; opacity: 1; transform: none; }
 html.calm .q-steps, html.calm .livre-steps { height: auto; display: grid; gap: 34px; }
 html.calm .q-step, html.calm .livre-step { position: relative; }
 html.calm .book-scene { height: min(60vh, 520px); }
@@ -1025,7 +1038,7 @@ html.no-webgl .globe-stage > .ph { display: none; }
 .answer .lede { color: var(--night-ink); max-width: 46ch; }
 .answer-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 34px; }
 .answer-map { justify-self: end; width: min(100%, 440px); transform: rotate(1.2deg); }
-.answer-map figcaption { color: var(--ink-3); }
+.answer-map figcaption { color: var(--night-mute); }
 .monde .btn.btn-ghost { background: transparent; color: var(--night-ink); box-shadow: inset 0 0 0 1px rgba(255,255,255,.3); }
 .monde .btn.btn-ghost:hover { background: var(--night-ink); color: var(--night); }
 @media (max-width: 860px) { .answer { grid-template-columns: 1fr; } .answer-map { justify-self: center; } }
@@ -1131,3 +1144,12 @@ html.calm .book-scene .book, html.calm .book-scene .paving { display: none; }
   .ex-hero .lede, .pr-hero .lede { font-size: 1rem; }
   .stamp { display: none; }
 }
+
+/* audit : verrou de défilement sans Lenis (mode calme), cibles tactiles, champs ≥ 16 px sur iOS, titres équilibrés */
+html.menu-open, html.lb-open { overflow: hidden; }
+@media (pointer: coarse) {
+  .wall-ui select { font-size: 1rem; }
+  .lang-switch button { min-width: 44px; min-height: 44px; }
+  details.legal > summary { padding-block: 10px; }
+}
+h1, h2, h3, .display { text-wrap: balance; }
