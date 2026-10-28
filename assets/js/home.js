@@ -177,7 +177,7 @@ export default function home(SUO) {
         const l = document.createElement('link'); l.rel = 'modulepreload'; l.href = `assets/vendor/ogl/${p}.js`; document.head.appendChild(l);
       });
       const pre = document.createElement('link'); pre.rel = 'preload'; pre.as = 'image'; pre.href = 'assets/data/land-2048.png'; document.head.appendChild(pre);
-      import('./globe.js?v=20261028').then((m) => m.initGlobe(SUO)).then(() => ScrollTrigger.refresh()).catch((e) => console.warn('globe', e));
+      import('./globe.js?v=20261028-2').then((m) => m.initGlobe(SUO)).then(() => ScrollTrigger.refresh()).catch((e) => console.warn('globe', e));
     };
     ScrollTrigger.create({ trigger: '[data-globe-track]', start: 'top bottom+=150%', end: 'bottom top', once: true, onEnter: start, onEnterBack: start });
   }
@@ -311,7 +311,7 @@ export default function home(SUO) {
         gsap.to(book, { rotateY: 300, ease: 'none', scrollTrigger: { trigger: scene, start: 'top bottom', end: 'bottom top', scrub: true } });
       }
     });
-    gsap.from('.livre-photos figure', { y: 80, opacity: 0, stagger: 0.07, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.livre-photos', start: 'top 85%', once: true } });
+    if (!calm) gsap.from('.livre-photos figure', { y: 80, opacity: 0, stagger: 0.07, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: '.livre-photos', start: 'top 85%', once: true } });
   }
 
   /* ---------- Daniel Denise ---------- */

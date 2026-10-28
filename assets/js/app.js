@@ -597,6 +597,33 @@ function dms(v, en) {
 }
 SUO.dms = dms;
 
+/* ---------- hauteur réelle de l’en-tête (sections épinglées) ---------- */
+if (header && 'ResizeObserver' in window) {
+  new ResizeObserver(() => html.style.setProperty('--entete-h', `${Math.round(header.getBoundingClientRect().height)}px`)).observe(header);
+}
+
+/* ---------- barre du bas sur téléphone : portraits et contact, déjà présents sur le site ---------- */
+const heroSec = $('.hero, .ex-hero, .pr-hero');
+if (heroSec && $('#contact') && 'IntersectionObserver' in window) {
+  const bar = document.createElement('nav');
+  bar.className = 'bottom-bar';
+  bar.setAttribute('aria-label', 'Actions rapides'); bar.dataset.ariaEn = 'Quick actions';
+  const toWall = page === 'portraits' ? '#mur' : 'portraits.html';
+  bar.innerHTML = `<a href="${toWall}"><span data-l="fr" lang="fr">Retrouver un portrait</span><span data-l="en" lang="en">Find a portrait</span></a>`
+    + '<a class="is-main" href="#contact"><span data-l="fr" lang="fr">Écrire</span><span data-l="en" lang="en">Write</span></a>';
+  document.body.appendChild(bar); document.body.classList.add('has-bottom-bar');
+  const setH = () => html.style.setProperty('--barres-h', `${Math.round(bar.getBoundingClientRect().height)}px`);
+  if ('ResizeObserver' in window) new ResizeObserver(setH).observe(bar); else setH();
+  // masquée sur le héros, le mur, les formulaires et le pied de page
+  const hide = new Set();
+  const watched = [heroSec, $('#mur'), $('#contact'), $('.site-footer'), ...$$('form')].filter(Boolean);
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) hide.add(e.target); else hide.delete(e.target); });
+    bar.classList.toggle('is-on', hide.size === 0);
+  });
+  watched.forEach((el) => io.observe(el));
+}
+
 /* ---------- démarrage ---------- */
 window.addEventListener('pagehide', () => store.sset(`suo-pos:${location.pathname}`, String(Math.round(window.scrollY))));
 function jumpTo(y) { window.scrollTo(0, y); if (lenis) lenis.scrollTo(y, { immediate: true, force: true }); }
@@ -607,7 +634,7 @@ function boot() {
   counters();
   marquee();
   clips();
-  const mod = { home: './home.js?v=20261028', exposition: './expo.js?v=20261028', portraits: './wall.js?v=20261028' }[page];
+  const mod = { home: './home.js?v=20261028-2', exposition: './expo.js?v=20261028-2', portraits: './wall.js?v=20261028-2' }[page];
   const after = () => {
     intro();
     ScrollTrigger.sort();
