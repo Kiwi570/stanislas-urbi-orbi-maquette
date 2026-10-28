@@ -607,7 +607,7 @@ function boot() {
   counters();
   marquee();
   clips();
-  const mod = { home: './home.js', exposition: './expo.js', portraits: './wall.js' }[page];
+  const mod = { home: './home.js?v=20261028', exposition: './expo.js?v=20261028', portraits: './wall.js?v=20261028' }[page];
   const after = () => {
     intro();
     ScrollTrigger.sort();
